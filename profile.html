@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Profile</title>
+  <link rel="stylesheet" href="profile.css">
+  
+</head>
+
+<body>
+    <header>
+        <h1>Logo</h1>
+      </header>
+        <footer>
+        <p>text</p>
+      </footer>
+  <div class="profile-container">
+    <h2 class="profile-title">Edit profile</h2>
+    <div class="profile-wrapper">
+      <div class="profile-photo">
+        <img src="Avatar 2.png" alt="Profile Photo">
+        <div class="upload-photo">
+          <button class="ChooseImage">Choose Image</button>
+          <button class="RemoveImage">Remove</button>
+        </div>
+      </div>
+      <div class="profile-details">
+        <div class="form-group">
+          <label for="full name">Full name</label>
+          <input type="text" id="full name" placeholder="Your full name">
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="Your email">
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone number</label>
+          <input type="tel" id="phone" placeholder="Your phone number">
+        </div>
+        <div class="form-group">
+          <label for="location">Location</label>
+          <select id="location">
+            <option value="">-Select your country-</option>
+            <!-- Add options for countries -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="about-me">About me</label>
+          <textarea id="about-me" placeholder="Tell something about yourself"></textarea>
+        </div>
+        <div class="button-group">
+            <button class="cancel-button">Cancel</button>
+            <button class="save-button">Save profile</button>
+      </div>
+    </div>
+
+    </div>
+  </div>
+</body>
+</html>
