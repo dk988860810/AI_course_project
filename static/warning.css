@@ -13,4 +13,11 @@ header {
 body {
     margin: 0;
     padding: 0;
-  }
+}
+
+.container {
+    top: 100px;
+    height: 540px;
+    flex: 1; /* 让容器平均分配父容器的宽度 */
+    position: relative;
+}
