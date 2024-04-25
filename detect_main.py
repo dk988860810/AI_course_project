@@ -13,7 +13,7 @@ class Camera:
         self.cap = cv2.VideoCapture(camera_index)
         self.frame_queue = Queue()
         self.class_label_set = []
-        self.model = YOLO("runs/detect/train27/weights/best.pt")
+        self.model = YOLO("model/best.pt")
 
     def detect_objects(self, frame, model):
         pre_result_cam = model.predict(frame)
