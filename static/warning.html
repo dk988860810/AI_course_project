@@ -13,7 +13,9 @@
         <h1>Warning</h1>
     </header>
     <div class="container">
-        <div id="clickedImageInfo"></div>
+        <div>This is a warning from <span id="clickedImageInfo"> !</span></br>
+             Please check!
+        </div>
     </div>
     <script>
         // 获取 URL 参数
@@ -22,7 +24,7 @@
 
         // 显示被点击的图片信息
         const clickedImageInfoElement = document.getElementById('clickedImageInfo');
-        clickedImageInfoElement.textContent = `You clicked image ${clickedImage}.`;
+        clickedImageInfoElement.textContent = `${clickedImage}`;
     </script>
 
     </script>
