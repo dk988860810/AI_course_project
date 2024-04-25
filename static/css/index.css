@@ -1,0 +1,52 @@
+header {
+  z-index: 999;
+  background-color: #CCCCCC;
+  color: white;
+  padding: 0px;
+  margin: 0px;
+  text-align: left;
+  position: fixed; /* 将页眉固定在页面上方 */
+  top: 0; /* 从页面顶部开始定位 */
+  width: 100%; /* 设置页眉宽度为100% */
+}
+
+.flex-container {
+  display: flex; /* 使用 Flexbox 布局 */
+  justify-content: space-between; /* 让容器内的项目分散对齐 */
+}
+
+.container {
+  top: 100px;
+  height: 540px;
+  flex: 1; /* 让容器平均分配父容器的宽度 */
+  position: relative;
+}
+
+.topleft {
+  position: absolute;
+  top: 30px;
+  left: 16px;
+  font-size: 18px;
+  color: white;
+}
+
+.bottomleft{
+  position: absolute;
+  bottom: 0px;
+  left: 16px;
+  font-size: 18px;
+  color: black;
+}
+
+img {
+  border-radius: 8px;
+  margin-top: 20px; /* 添加顶部间距 */
+  margin-bottom: 20px; /* 添加底部间距 */
+  margin-left: auto; /* 将左右边距设为自动以实现水平居中 */
+  margin-right: auto;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}

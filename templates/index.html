@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Stream</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Video Stream</h1>
+    </header>
+    <div class="flex-container">
+        <div class="container" id="first_container">
+            <a href="static/warning.html?clickedImage=1">
+                <img src="/video_feed_1" width="640" height="480">
+            </a>
+            <div class="topleft">First camera</div>
+            <div class="bottomleft">Detected Object: <span id="class_label_first"></span></div>
+             <!-- 用于显示类标签值的元素 -->
+        </div>
+    
+        <div class="container" id="second_container">
+            <img src="/video_feed_2" width="640" height="480">
+            <div class="topleft">Second camera</div>
+            <div class="bottomleft">Detected Object: <span id="class_label_second"></span></div> <!-- 用于显示类标签值的元素 -->
+        </div>
+    
+        <div class="container" id="third_container">
+            <img src="/video_feed_3" width="640" height="480">
+            <div class="topleft">Third camera</div>
+            <div class="bottomleft">Detected Object: <span id="class_label_third"></span></div> <!-- 用于显示类标签值的元素 -->
+        </div>
+    </div>
+    <!-- <div class="bottomleft">Detected Object: <span id="class_label"></span></div> -->
+    
+    <script>
+        
+        // 定义一个函数，用于更新类标签值
+        function updateClassLabel(labelId, route) {
+            fetch(route) // 发送 GET 请求到后端获取类标签值
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById(labelId).innerText = data;
+                }); // 调用 updateClassLabel 函数更新网页上的类标签值
+        }
+        
+        // 使用 JavaScript 定时器每隔一段时间从后端更新类标签值
+        setInterval(function() {
+            updateClassLabel('class_label_first', '/get_class_label_1'); // 更新第一个摄像头的类标签值
+        }, 1000); // 每隔一秒更新一次
+
+        setInterval(function() {
+            updateClassLabel('class_label_second', '/get_class_label_2'); // 更新第二个摄像头的类标签值
+        }, 1000); // 每隔一秒更新一次
+
+        setInterval(function() {
+            updateClassLabel('class_label_third', '/get_class_label_3'); // 更新第三个摄像头的类标签值
+        }, 1000); // 每隔一秒更新一次
+
+    </script>
+</body>
+</html>
