@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Warning</title>
     <link rel="stylesheet" href="warning.css">
+    <script src="js/get_image_info.js"></script>
+    <script src="js/time_countdown.js"></script>
 </head>
 
 <body>
@@ -24,6 +26,8 @@
     <div class="container">
         <div class="child1">This is a warning from <span id="clickedImageInfo"> !</span></br>
              Please check!</br>
+             <h5>3Min Countdown</h5>
+             <div id="countdown"></div>
              <button class="button">Checking</button>
         </div>
         
@@ -31,22 +35,14 @@
    
         <div class="child2">This is a warning from <span id="clickedImageInfo"> !</span></br>
              Please check!</br>
-             <button class="button">Checking</button>
+             <button class="button">Confirm</button>
+             <button class="button2">Cancel</button>
         </div>
         
     </div>
 
-    <script>
-        // 获取 URL 参数
-        const urlParams = new URLSearchParams(window.location.search);
-        const clickedImage = urlParams.get('clickedImage');
+    
 
-        // 显示被点击的图片信息
-        const clickedImageInfoElement = document.getElementById('clickedImageInfo');
-        clickedImageInfoElement.textContent = `${clickedImage}`;
-    </script>
-
-    </script>
 </body>
 
 </html>
