@@ -18,4 +18,14 @@ aaa
 push test
 
 zzz
+<<<<<<< HEAD
+sdafsd
+=======
+<<<<<<< HEAD
 
+teat
+=======
+aaa
+>>>>>>> 59adfca44adc5806bae1e1f9c1c1a685e2f87e73
+>>>>>>> e7aa6703b9a06fcf758242dbcad0c261d808d3f0
+aaa
