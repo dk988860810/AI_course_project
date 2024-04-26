@@ -32,7 +32,7 @@
     
         <div class="container" id="second_container">
             <a href="static/warning.html?clickedImage=1F_Area_B" target="_blank">
-                <img src="/video_feed_2" width="640" height="480">
+                <img src="/video_feed_2" width="640" height="480" >
             </a>
             <div class="topleft">1樓B區</div>
             <div class="bottomleft">Detected Object: <span id="class_label_second"></span></div> <!-- 用于显示类标签值的元素 -->
@@ -40,7 +40,7 @@
     
         <div class="container" id="third_container">
             <a href="static/warning.html?clickedImage=1F_Area_C" target="_blank">
-                <img src="/video_feed_3" width="640" height="480">
+                <img src="{{ url_for('static', filename='icon.jpg') }}" onerror="this.onerror=null; this.src='/video_feed_3'" width="640" height="480">
             </a>
             <div class="topleft">1樓C區</div>
             <div class="bottomleft">Detected Object: <span id="class_label_third"></span></div> <!-- 用于显示类标签值的元素 -->
@@ -49,7 +49,7 @@
     <!-- <div class="bottomleft">Detected Object: <span id="class_label"></span></div> -->
     
     <script>
-        
+
         // 定义一个函数，用于更新类标签值
         function updateClassLabel(labelId, route) {
             fetch(route) // 发送 GET 请求到后端获取类标签值

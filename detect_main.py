@@ -80,9 +80,9 @@ class Camera:
                     b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 # Example usage:
-camera_1 = Camera(0)  # First camera
+camera_1 = Camera(2)  # First camera
 camera_2 = Camera(1)  # Second camera
-camera_3 = Camera(2)  # Third camera
+camera_3 = Camera(0)  # Third camera
 
 @app.route('/')
 def index():
