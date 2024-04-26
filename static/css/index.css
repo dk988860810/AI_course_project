@@ -36,10 +36,13 @@ nav ul li {
 }
 
 nav ul li a {
-  color: white;
-  /* 设置链接颜色为白色 */
-  text-decoration: none;
-  /* 去除链接下划线 */
+  color: white; /* 设置链接颜色为白色 */
+  background-color: blue;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 20px;
+  text-decoration: none; /* 去除链接下划线 */
 }
 
 .flex-container {
