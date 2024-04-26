@@ -23,7 +23,7 @@
     <div class="flex-container">
         <div class="container" id="first_container">
             <a href="static/warning.html?clickedImage=1F_Area_A" target="_blank">
-                <img src="/video_feed_1" width="640" height="480">
+                <img src="/video_feed_1" width="640" height="480" >
             </a>
             <div class="topleft">1樓A區</div>
             <div class="bottomleft">Detected Object: <span id="class_label_first"></span></div>
@@ -40,7 +40,7 @@
     
         <div class="container" id="third_container">
             <a href="static/warning.html?clickedImage=1F_Area_C" target="_blank">
-                <img src="{{ url_for('static', filename='icon.jpg') }}" onerror="this.onerror=null; this.src='/video_feed_3'" width="640" height="480">
+                <img src="/video_feed_3" width="640" height="480" >
             </a>
             <div class="topleft">1樓C區</div>
             <div class="bottomleft">Detected Object: <span id="class_label_third"></span></div> <!-- 用于显示类标签值的元素 -->

@@ -59,7 +59,8 @@ class Camera:
                     success, frame = self.cap.read()
         
                     if not success:
-                        break
+                        frame=cv2.imread("static/icon.jpg")
+                        self.frame_queue.put(frame)
                     else:
                         self.class_label_set = []
                         frame = self.detect_objects(frame, self.model)
@@ -80,9 +81,9 @@ class Camera:
                     b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 # Example usage:
-camera_1 = Camera(2)  # First camera
+camera_1 = Camera(0)  # First camera
 camera_2 = Camera(1)  # Second camera
-camera_3 = Camera(0)  # Third camera
+camera_3 = Camera(2)  # Third camera
 
 @app.route('/')
 def index():
@@ -126,8 +127,4 @@ def get_class_label_3():
 
 if __name__ == "__main__":
     app.run(debug=True)
-<<<<<<< HEAD
-#git
-=======
-#git 
->>>>>>> 59adfca44adc5806bae1e1f9c1c1a685e2f87e73
+
