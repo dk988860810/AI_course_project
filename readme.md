@@ -18,5 +18,9 @@ aaa
 push test
 
 zzz
+<<<<<<< HEAD
 
 teat
+=======
+aaa
+>>>>>>> 59adfca44adc5806bae1e1f9c1c1a685e2f87e73
