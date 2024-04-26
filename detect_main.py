@@ -7,6 +7,9 @@ from datetime import datetime
 import os
 
 app = Flask(__name__)
+current_datetime = datetime.now()
+formatted_date = current_datetime.strftime("%Y-%m-%d")
+formatted_time = current_datetime.strftime("%H-%M-%S")
 
 class Camera:
     def __init__(self, camera_index):
@@ -37,15 +40,16 @@ class Camera:
     
     def video_feed_and_save(self, camera_id=None):
         def detect_and_save():
-            count = 0
-            current_datetime = datetime.now()
-            formatted_date = current_datetime.strftime("%Y-%m-%d")
+            #count = 0
+            # current_datetime = datetime.now()
+            # formatted_date = current_datetime.strftime("%Y-%m-%d")
+            # formatted_time = current_datetime.strftime("%H-%M-%S")
             path="C:/Users/dk988/Desktop/AI_project_video/camera_"+str(camera_id)
-            file_name = "{}/{}.avi".format(path,str(camera_id)+"_"+formatted_date)
+            file_name = "{}/{}_{}.avi".format(path,formatted_date,formatted_time)
             
-            while os.path.exists(file_name):
-                file_name = "{}/{}.avi".format(path,str(camera_id)+"_"+formatted_date + "_" + str(count))
-                count += 1
+            # while os.path.exists(file_name):
+            #     file_name = "{}/{}.avi".format(path,str(camera_id)+"_"+formatted_date + "_" + str(count))
+            #     count += 1
 
             fourcc = cv2.VideoWriter_fourcc(*'XVID')
             out = cv2.VideoWriter(file_name, fourcc, 30.0, (640, 480))

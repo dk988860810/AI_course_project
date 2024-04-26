@@ -1,0 +1,46 @@
+header {
+    z-index: 999;
+    background-color: #CCCCCC;
+    color: white;
+    padding: 0px;
+    margin: 0px;
+    text-align: left;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display: flex; /* 使用 flexbox 布局 */
+    justify-content: space-between; /* 将标题和导航栏分开 */
+    align-items: center; /* 垂直居中 */
+}
+
+header h1 {
+    margin-left: 20px; 
+}
+
+nav ul {
+    list-style-type: none; /* 去除列表默认样式 */
+    margin-right: 50px;
+    
+    padding: 0;
+}
+
+nav ul li {
+    display: inline; /* 将列表项水平排列 */
+    margin-left: 20px; /* 添加一些左侧间距 */
+}
+
+nav ul li a {
+    color: white; /* 设置链接颜色为白色 */
+    background-color: blue;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 20px;
+    text-decoration: none; /* 去除链接下划线 */
+}
+
+
+body {
+    margin: 0;
+    padding: 0;
+}
