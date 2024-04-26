@@ -129,7 +129,7 @@ body {
     top: 200px;
     cursor: pointer;
     display: block; /* 将按钮的 display 属性设置为 block */
-    margin: 50px auto 0; /* 使用 margin: 0 auto; 让按钮水平居中 */
+    margin: 20px auto 0; /* 使用 margin: 0 auto; 让按钮水平居中 */
 
 }
 
@@ -143,6 +143,20 @@ body {
     top: 200px;
     cursor: pointer;
     display: block; /* 将按钮的 display 属性设置为 block */
-    margin: 50px auto 0; /* 使用 margin: 0 auto; 让按钮水平居中 */
+    margin: 100px auto 0; /* 使用 margin: 0 auto; 让按钮水平居中 */
+    float: right;
+}
 
+.button3{
+    border: none;
+    border-radius: 5px;
+    background-color: red;
+    text-align: center;
+    box-shadow: 5px 5px 5px gray;
+    font-size: 35px;
+    top: 200px;
+    cursor: pointer;
+    display: block; /* 将按钮的 display 属性设置为 block */
+    margin: 100px auto 0; /* 使用 margin: 0 auto; 让按钮水平居中 */
+    float: left;
 }
