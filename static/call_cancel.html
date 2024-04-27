@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warning</title>
+    <link rel="stylesheet" href="call_cancel.css">
+    
+    <script src="js/time_countdown.js"></script>
+</head>
+
+<body>
+    <header>
+        <h1>Warning</h1>
+    </header>
+
+
+    <div class="container">
+        <div class="child1">This is a warning from </br>
+            <span id="clickedImageInfo"></span></br>
+             Please check!</br>
+             10Min Countdown
+             <div id="countdown"></div>
+             <button class="button">Confirm</button>
+             <button class="button2">Cancel</button>
+        </div>
+    </div>
+
+    <script src="js/get_image_info.js"></script>
+    <script>
+        // 在页面加载完毕后开始倒计时器
+        window.onload = function() {
+            // 3 分钟倒计时
+            startCountdown(10);
+        };
+    </script>
+
+</body>
+
+</html>

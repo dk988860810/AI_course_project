@@ -50,6 +50,7 @@ body {
     border: none;
     border-radius: 5px;
     background-color: red;
+    background: linear-gradient(180deg,#eb3329 0%,#9b2617 100%);
     text-align: center;
     box-shadow: 5px 5px 5px gray;
     font-size: 35px;
