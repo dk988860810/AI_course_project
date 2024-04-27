@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Stream</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 </head>
+
 <body>
     <header>
         <h1>Video Stream</h1>
@@ -22,32 +24,28 @@
 
     <div class="flex-container">
         <div class="container" id="first_container">
-            <a href="static/warning.html?clickedImage=1F_Area_A" target="_blank">
-                <img src="/video_feed_1" width="640" height="480" >
-            </a>
+            <img src="/video_feed_1" width="640" height="480" onclick="openPopup('1F_Area_A')">
             <div class="topleft">1樓A區</div>
             <div class="bottomleft">Detected Object: <span id="class_label_first"></span></div>
-             <!-- 用于显示类标签值的元素 -->
+            <!-- 用于显示类标签值的元素 -->
         </div>
-    
+
         <div class="container" id="second_container">
-            <a href="static/warning.html?clickedImage=1F_Area_B" target="_blank">
-                <img src="/video_feed_2" width="640" height="480" >
-            </a>
+            <img src="/video_feed_2" width="640" height="480" onclick="openPopup('1F_Area_B')">
             <div class="topleft">1樓B區</div>
-            <div class="bottomleft">Detected Object: <span id="class_label_second"></span></div> <!-- 用于显示类标签值的元素 -->
+            <div class="bottomleft">Detected Object: <span id="class_label_second"></span></div>
+            <!-- 用于显示类标签值的元素 -->
         </div>
-    
+
         <div class="container" id="third_container">
-            <a href="static/warning.html?clickedImage=1F_Area_C" target="_blank">
-                <img src="/video_feed_3" width="640" height="480" >
-            </a>
+            <img src="/video_feed_3" width="640" height="480" onclick="openPopup('1F_Area_C')">
             <div class="topleft">1樓C區</div>
-            <div class="bottomleft">Detected Object: <span id="class_label_third"></span></div> <!-- 用于显示类标签值的元素 -->
+            <div class="bottomleft">Detected Object: <span id="class_label_third"></span></div>
+            <!-- 用于显示类标签值的元素 -->
         </div>
     </div>
     <!-- <div class="bottomleft">Detected Object: <span id="class_label"></span></div> -->
-    
+
     <script>
 
         // 定义一个函数，用于更新类标签值
@@ -58,20 +56,45 @@
                     document.getElementById(labelId).innerText = data;
                 }); // 调用 updateClassLabel 函数更新网页上的类标签值
         }
-        
+
         // 使用 JavaScript 定时器每隔一段时间从后端更新类标签值
-        setInterval(function() {
+        setInterval(function () {
             updateClassLabel('class_label_first', '/get_class_label_1'); // 更新第一个摄像头的类标签值
         }, 1000); // 每隔一秒更新一次
 
-        setInterval(function() {
+        setInterval(function () {
             updateClassLabel('class_label_second', '/get_class_label_2'); // 更新第二个摄像头的类标签值
         }, 1000); // 每隔一秒更新一次
 
-        setInterval(function() {
+        setInterval(function () {
             updateClassLabel('class_label_third', '/get_class_label_3'); // 更新第三个摄像头的类标签值
         }, 1000); // 每隔一秒更新一次
 
+
+
+        function openPopup(imageId) {
+    // 创建一个新窗口并设置大小和位置
+            var width = 800;
+            var height = 600;
+            var left = (screen.width - width) / 2;
+            var top = (screen.height - height) / 2;
+            var options = 'width=' + width + ',height=' + height + ',top=' + top + ',left=' + left;
+
+            // 构建要打开的网页的 URL
+            var imageURL = 'static/warning.html?clickedImage=' + imageId;
+
+            // 打开弹出窗口
+            var popup = window.open(imageURL, '_blank', options);
+
+            // 如果浏览器阻止了弹出窗口，则提醒用户手动允许弹出窗口
+            if (!popup) {
+                alert('请允许浏览器弹出窗口以查看网页！');
+                }
+        }
+    
+
+
     </script>
 </body>
+
 </html>
