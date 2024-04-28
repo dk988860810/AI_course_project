@@ -22,8 +22,8 @@
              Please check!</br>
              10Min Countdown
              <div id="countdown"></div>
-             <button class="button">Confirm</button>
-             <button class="button2">Cancel</button>
+             <button class="button" id="confirmbutton">Confirm</button>
+             <button class="button2" id="cancelbutton">Cancel</button>
         </div>
     </div>
 
@@ -35,7 +35,25 @@
             startCountdown(10);
         };
 
+        const cancelbutton = document.getElementById("cancelbutton");
+
+        cancelbutton.addEventListener('click',function(){
+            const userInput = window.prompt("Please write down the reanson why cancel!")
+
+            if (userInput !== null){
+                console.log("User entered:",userInput)
+            } else {
+                console.log("User canceles.")
+            }
+        })
         
+        const confirmbutton = document.getElementById("confirmbutton");
+
+        confirmbutton.addEventListener("click",function(){
+            const userCall = window.alert("You have called the 911!")
+            window.close();
+        })
+
     </script>
 
 </body>

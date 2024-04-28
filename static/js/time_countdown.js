@@ -21,6 +21,7 @@ function startCountdown(minutesToAdd) {
         if (distance <= 0) {
             clearInterval(interval);
             countdownElement.innerHTML = '時間到！';
+            alert("時間到 已報警")
         }
     }, 1000); // 每秒更新一次
 }
