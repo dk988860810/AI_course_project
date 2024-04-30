@@ -60,4 +60,5 @@ body {
     /* 将按钮的 display 属性设置为 block */
     margin: 20px auto 0;
     /* 使用 margin: 0 auto; 让按钮水平居中 */
+    text-decoration: none;
 }
