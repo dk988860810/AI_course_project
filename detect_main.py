@@ -4,7 +4,7 @@ from threading import Thread
 from queue import Queue
 from ultralytics import YOLO
 from datetime import datetime
-import os
+#import mysql.connector
 
 app = Flask(__name__)
 current_datetime = datetime.now()
