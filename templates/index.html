@@ -74,7 +74,7 @@
     
     
     <div class="modal fade" id="check" role="dialog" tabindex="-1" aria-labelledby="videoModalLabel" >
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="videoModalLabel">Modal title</h5>
@@ -83,8 +83,18 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <video id="video" width="640" height="480" controls>
-                        <source src="/video_feed_1" type="video/mp4">
+                    <div class="video_container">
+                        <video id="video" width="640" height="480" controls>
+                            <source src="/video_feed_1" type="video/mp4">
+                    </div>
+                    <div class="check_submit">
+                        This is a warning from </br>
+                        <span id="check_text"></span></br>
+                        Please check!</br>
+                        3Min Countdown
+                        <div id="countdown"></div>
+                        <a href="#" id="checkButton" class="button">Checking</a>
+                    </div>
                 </div>   
             </div>       
         </div>
@@ -95,10 +105,11 @@
         // 获取模态框的标题元素和视频元素
         var modalTitle = document.getElementById('videoModalLabel');
         var videoSource = document.querySelector('#check video source');
-    
+        var checktext = document.getElementById('check_text');
         // 函数：点击图片时更新模态框的标题和视频源
         function updateModal(title, src) {
             modalTitle.innerText = title; // 更新模态框标题
+            checktext.innerText = title;
             videoSource.src = src; // 更新视频源
             var video = document.getElementById('video');
             video.load(); // 重新加载视频
