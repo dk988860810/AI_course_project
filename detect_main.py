@@ -81,8 +81,8 @@ class Camera:
                     b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 # Example usage:
-camera_1 = Camera(0)  # First camera
-camera_2 = Camera(1)  # Second camera
+camera_1 = Camera(1)  # First camera
+camera_2 = Camera(0)  # Second camera
 camera_3 = Camera(2)  # Third camera
 
 @app.route('/')

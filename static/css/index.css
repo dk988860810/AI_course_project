@@ -126,11 +126,12 @@ body {
   padding: 0;
 }
 
-.check_submit {
+.checking {
   width: 300px;
   font-size: 30px;
   margin-left: 80px; 
 }
+
 .modal-body {
   position: relative;
   flex: 1 1 auto;
@@ -138,12 +139,21 @@ body {
   display: flex;
 }
 
+.reporting {
+  width: 500px;
+  font-size: 30px;
+  margin-left: 80px; 
+  margin: auto;
+}
+
+
 .button {
   border: none;
   border-radius: 5px;
   background-color: red;
   background: linear-gradient(180deg,#eb3329 0%,#9b2617 100%);
   text-align: center;
+  text-decoration: none;
   box-shadow: 5px 5px 5px gray;
   font-size: 35px;
   top: 200px;
@@ -152,5 +162,37 @@ body {
   /* 将按钮的 display 属性设置为 block */
   margin: 20px auto 0;
   /* 使用 margin: 0 auto; 让按钮水平居中 */
+}
+
+.button1{
+  border: none;
+  border-radius: 5px;
+  background-color: red;
+  text-align: center;
   text-decoration: none;
+  box-shadow: 5px 5px 5px gray;
+  background: linear-gradient(180deg,#eb3329 0%,#9b2617 100%);
+  font-size: 35px;
+  top: 200px;
+  cursor: pointer;
+  display: block; /* 将按钮的 display 属性设置为 block */
+  margin: 20px 30px 0px 100px; /* 使用 margin: 0 auto; 让按钮水平居中 */
+  float: left;
+
+}
+
+.button2{
+  border: none;
+  border-radius: 5px;
+  background-color: rgb(59, 59, 253);
+  background: linear-gradient(180deg,#68bc1e 0%,#549b17 100%);
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 5px 5px 5px gray;
+  font-size: 35px;
+  top: 200px;
+  cursor: pointer;
+  display: block; /* 将按钮的 display 属性设置为 block */
+  margin: 20px 100px 0px 30px; /* 使用 margin: 0 auto; 让按钮水平居中 */
+  float: right;
 }
