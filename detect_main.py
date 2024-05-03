@@ -1,10 +1,18 @@
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, Response, request
 import cv2
 from threading import Thread
 from queue import Queue
 from ultralytics import YOLO
 from datetime import datetime
-#import mysql.connector
+import mysql.connector
+
+mysql_config={
+    'host': '127.0.0.1',
+    'port': '3306',
+    'user': 'root',
+    'password': 'ccps971304',
+    'database': 'AI_course'
+}
 
 app = Flask(__name__)
 current_datetime = datetime.now()
@@ -19,7 +27,7 @@ class Camera:
         self.model = YOLO("model/best.pt")
 
     def detect_objects(self, frame, model):
-        pre_result_cam = model.predict(frame)
+        pre_result_cam = model.predict(frame,verbose=False)
         self.class_label_set = []
         for data in pre_result_cam[0].boxes:
             x1, y1, x2, y2 = data.xyxy[0]
@@ -124,6 +132,30 @@ def get_class_label_2():
 def get_class_label_3():
     global camera_3
     return ' '.join(camera_3.class_label_set)
+
+@app.route('/submit_data',methods=['POST'])
+def submit():
+    if request.method=='POST':
+        data=request.get_json()
+        floor=data['floor']
+        area=data['area']
+        cancel_reason=data['cancel_reason']
+
+        conn=mysql.connector.connect(**mysql_config)
+        cursor=conn.cursor()
+
+        insert_query="INSERT into test(floor,area,cancel_reason) VALUES(%s,%s,%s)"
+        cursor.execute(insert_query, (floor, area, cancel_reason))
+
+        conn.commit()
+
+        # 關閉資料庫連接
+        cursor.close()
+        conn.close()
+
+        return '資料已成功提交到資料庫！'
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
