@@ -223,6 +223,7 @@
             var floor=title.substring(0,2);
             var area=title.substring(2);
             var cancel_reason=document.getElementById('multilineInput').value;
+            var situation="Cancel"
 
             var xhr = new XMLHttpRequest();
             xhr.open('POST', '/submit_data', true);
@@ -232,10 +233,27 @@
                     console.log('Data submitted successfully!');
                 }
             };
-            var data = JSON.stringify({'floor': floor, 'area': area, 'cancel_reason': cancel_reason});
+            var data = JSON.stringify({'floor': floor, 'area': area, 'cancel_reason': cancel_reason ,'situation':situation});
             xhr.send(data);
         });
         
+        document.getElementById('confirmButton').addEventListener('click',function() {
+            var title=document.getElementById('videoModalLabel').innerText;
+            var floor=title.substring(0,2);
+            var area=title.substring(2);
+            var situation="Confirm"
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/submit_data', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log('Data submitted successfully!');
+                }
+            };
+            var data = JSON.stringify({'floor': floor, 'area': area ,'cancel_reason': 'null','situation':situation});
+            xhr.send(data);
+        });
             
         
     </script>

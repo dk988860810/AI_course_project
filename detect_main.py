@@ -135,24 +135,29 @@ def get_class_label_3():
 
 @app.route('/submit_data',methods=['POST'])
 def submit():
-    if request.method=='POST':
-        data=request.get_json()
-        floor=data['floor']
-        area=data['area']
-        cancel_reason=data['cancel_reason']
-
-        conn=mysql.connector.connect(**mysql_config)
-        cursor=conn.cursor()
-
-        insert_query="INSERT into test(floor,area,cancel_reason) VALUES(%s,%s,%s)"
-        cursor.execute(insert_query, (floor, area, cancel_reason))
-
+    if request.method == 'POST':
+        data = request.get_json()
+        floor = data['floor']
+        area = data['area']
+        cancel_reason = data['cancel_reason']
+        situation = data['situation']
+        
+        conn = mysql.connector.connect(**mysql_config)
+        cursor = conn.cursor()
+        
+        # 獲取當前日期和時間
+        current_date = datetime.now().date()
+        current_time = datetime.now().time()
+        
+        insert_query = "INSERT INTO test (date, time, floor, area, cancel_reason, situation) VALUES (%s, %s, %s, %s, %s, %s)"
+        cursor.execute(insert_query, (current_date, current_time, floor, area, cancel_reason, situation))
+        
         conn.commit()
-
+        
         # 關閉資料庫連接
         cursor.close()
         conn.close()
-
+        
         return '資料已成功提交到資料庫！'
 
 
