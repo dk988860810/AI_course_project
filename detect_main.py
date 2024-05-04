@@ -174,6 +174,11 @@ def get_data():
         page = request.args.get('page', 1, type=int)
         offset = (page - 1) * 20  # 每頁20筆資料,計算起始位置
 
+        # 獲取總數據條目數
+        count_query = "SELECT COUNT(*) FROM test"
+        cursor.execute(count_query)
+        total_count = cursor.fetchone()[0]
+
         # 從資料庫獲取資料
         query = "SELECT * FROM test ORDER BY id DESC LIMIT 20 OFFSET %s"
         cursor.execute(query, (offset,))
@@ -191,6 +196,9 @@ def get_data():
                 'cancel_reason': row[5],
                 'situation': row[6]
             })
+            
+        if result:
+            result[0]['total_count'] = total_count
 
         return jsonify(result)
 

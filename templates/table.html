@@ -33,21 +33,39 @@
         </table>
     </div>
 
+    <div class="pagination">
+        <button id="prev-page" disabled>上一頁</button>
+        <span id="page-info">第 <span id="current-page">1</span> 頁</span>
+        <button id="next-page">下一頁</button>
+    </div>
+
     <script>
         var currentPage = 1;
+        var totalPages = 1;
 
-        function loadData() {
+        function loadData(page) {
             $.ajax({
                 url: '/get_data',
                 type: 'GET',
                 data: {
-                    page: currentPage
+                    page: page
                 },
-                success: function(data) {
+                success: function (data) {
                     var tableBody = $('#data-table tbody');
                     tableBody.empty();
 
-                    $.each(data, function(index, item) {
+                    if (data.length > 0) {
+                        totalPages = Math.ceil(data[0].total_count / 20);
+                        $('#page-info').html(`第 <span id="current-page">${page}</span> 頁 (共 ${totalPages} 頁)`);
+                        $('#prev-page').prop('disabled', page === 1);
+                        $('#next-page').prop('disabled', page === totalPages);
+                    } else {
+                        $('#page-info').html('第 <span id="current-page">1</span> 頁 (共 0 頁)');
+                        $('#prev-page').prop('disabled', true);
+                        $('#next-page').prop('disabled', true);
+                    }
+
+                    $.each(data, function (index, item) {
                         var row = $('<tr>');
                         row.append($('<td>').text(item.id));
                         row.append($('<td>').text(item.date));
@@ -62,9 +80,24 @@
             });
         }
 
-        $(document).ready(function() {
-            loadData();
+        $(document).ready(function () {
+            loadData(1);
+
+            $('#prev-page').click(function () {
+                if (currentPage > 1) {
+                    currentPage--;
+                    loadData(currentPage);
+                }
+            });
+
+            $('#next-page').click(function () {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    loadData(currentPage);
+                }
+            });
         });
     </script>
 </body>
+
 </html>

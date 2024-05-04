@@ -28,3 +28,16 @@ header {
   #data-table{
     margin-top: 100px;
   }
+
+  .pagination {
+    text-align: center; /* 將內容置中 */
+}
+
+.pagination button {
+    margin: 0 auto; /* 將按鈕置中 */
+    display: block; /* 讓按鈕元素佔據整個父容器的寬度 */
+}
+
+#page-info {
+    margin: 0 10px; /* 可以根據需要進行微調 */
+}
