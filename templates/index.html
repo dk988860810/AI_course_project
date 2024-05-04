@@ -160,7 +160,7 @@
                     <textarea id="multilineInput" placeholder="Enter your text here"></textarea>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="submitbtn">Submit</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="submitbtn">Submit</button>
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -231,6 +231,7 @@
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     console.log('Data submitted successfully!');
+                    document.getElementById('multilineInput').value = '';
                 }
             };
             var data = JSON.stringify({'floor': floor, 'area': area, 'cancel_reason': cancel_reason ,'situation':situation});

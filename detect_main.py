@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Response, request
+from flask import Flask, render_template, Response, request , jsonify
 import cv2
 from threading import Thread
 from queue import Queue
@@ -160,7 +160,43 @@ def submit():
         
         return '資料已成功提交到資料庫！'
 
+@app.route('/table')
+def table():
+    return render_template('table.html')
 
+@app.route('/get_data', methods=['GET'])
+def get_data():
+    conn = mysql.connector.connect(**mysql_config)
+    cursor = conn.cursor()
+
+    try:
+        # 獲取查詢參數,例如頁碼
+        page = request.args.get('page', 1, type=int)
+        offset = (page - 1) * 20  # 每頁20筆資料,計算起始位置
+
+        # 從資料庫獲取資料
+        query = "SELECT * FROM test ORDER BY id DESC LIMIT 20 OFFSET %s"
+        cursor.execute(query, (offset,))
+        data = cursor.fetchall()
+
+        # 將資料轉換為JSON格式
+        result = []
+        for row in data:
+            result.append({
+                'id': row[0],
+                'date': row[1].isoformat(),
+                'time': row[2].strftime('%H:%M:%S') if isinstance(row[2], datetime) else str(row[2]),
+                'floor': row[3],
+                'area': row[4],
+                'cancel_reason': row[5],
+                'situation': row[6]
+            })
+
+        return jsonify(result)
+
+    finally:
+        cursor.close()
+        conn.close()
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -1,0 +1,30 @@
+header {
+    z-index: 999;
+    background-color: #CCCCCC;
+    color: white;
+    padding: 0px;
+    margin: 0px;
+    text-align: left;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display: flex;
+    /* 使用 flexbox 布局 */
+    justify-content: space-between;
+    /* 将标题和导航栏分开 */
+    align-items: center;
+    /* 垂直居中 */
+  }
+  
+  header h1 {
+    margin-left: 20px;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  #data-table{
+    margin-top: 100px;
+  }
