@@ -15,7 +15,7 @@ header {
     align-items: center;
     /* 垂直居中 */
   }
-  
+  s
   header h1 {
     margin-left: 20px;
   }
@@ -26,7 +26,8 @@ header {
   }
 
   #data-table{
-    margin-top: 100px;
+    margin-top: 60px;
+    border: #000000;
   }
 
   .pagination {
