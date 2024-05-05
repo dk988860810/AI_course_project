@@ -21,24 +21,24 @@
                     <a href="#">監視影像</a>
                     <ul>
                         <li><a href="http://127.0.0.1:5000/" target="_blank"">First Floor</a> </li>
-                        <li><a href="http://127.0.0.1:5000/" target="_blank"">Second Floor</a></li>
-                        <li><a href="http://127.0.0.1:5000/" target="_blank"">Third Floor</a> </li>
-                        <li><a href="http://127.0.0.1:5000/" target="_blank"">Fourth Floor</a></li>
-                        <li><a href="http://127.0.0.1:5000/" target="_blank"">Fifth Floor</a> </li> 
+                        <li><a href=" http://127.0.0.1:5000/" target="_blank"">Second Floor</a></li>
+                        <li><a href=" http://127.0.0.1:5000/" target="_blank"">Third Floor</a> </li>
+                        <li><a href=" http://127.0.0.1:5000/" target="_blank"">Fourth Floor</a></li>
+                        <li><a href=" http://127.0.0.1:5000/" target="_blank"">Fifth Floor</a> </li> 
                     </ul>
                 </li>    
                 <li>
-                    <a href="#">樓層平面圖</a>
-                    <ul>
-                        <li><a href="static/floor_plan.html" target="_blank">一樓平面圖</a></li>
-                        <li><a href="static/floor_plan.html" target="_blank">二樓平面圖</a></li>
-                        <li><a href="static/floor_plan.html" target="_blank">三樓平面圖</a></li>
-                        <li><a href="static/floor_plan.html" target="_blank">四樓平面圖</a></li>
-                        <li><a href="static/floor_plan.html" target="_blank">五樓平面圖</a></li>    
+                    <a href=" #">樓層平面圖</a>
+                            <ul>
+                                <li><a href="static/floor_plan.html" target="_blank">一樓平面圖</a></li>
+                                <li><a href="static/floor_plan.html" target="_blank">二樓平面圖</a></li>
+                                <li><a href="static/floor_plan.html" target="_blank">三樓平面圖</a></li>
+                                <li><a href="static/floor_plan.html" target="_blank">四樓平面圖</a></li>
+                                <li><a href="static/floor_plan.html" target="_blank">五樓平面圖</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">Link 3</a></li>
                     </ul>
-                </li>    
-                <li><a href="#">Link 3</a></li>
-            </ul>
         </nav>
 
     </header>
@@ -47,7 +47,7 @@
     <div class="flex-container">
         <div class="container" id="first_container">
             <a href="#" data-bs-toggle="modal" data-bs-target="#check">
-                <img src="/video_feed_1" width="640" height="480" >
+                <img src="/video_feed_1" width="640" height="480">
             </a>
             <div class="topleft">1樓A區</div>
             <!--<div class="bottomleft">Detected Object: <span id="class_label_first"></span></div>-->
@@ -56,7 +56,7 @@
 
         <div class="container" id="second_container">
             <a href="#" data-bs-toggle="modal" data-bs-target="#check">
-                <img src="/video_feed_2" width="640" height="480" >
+                <img src="/video_feed_2" width="640" height="480">
             </a>
             <div class="topleft">1樓B區</div>
             <!--<div class="bottomleft">Detected Object: <span id="class_label_second"></span></div>-->
@@ -65,7 +65,7 @@
 
         <div class="container" id="third_container">
             <a href="#" data-bs-toggle="modal" data-bs-target="#check">
-                <img src="/video_feed_3" width="640" height="480" >
+                <img src="/video_feed_3" width="640" height="480">
             </a>
             <div class="topleft">1樓C區</div>
             <!--<div class="bottomleft">Detected Object: <span id="class_label_third"></span></div>-->
@@ -73,20 +73,20 @@
         </div>
     </div>
     <!-- <div class="bottomleft">Detected Object: <span id="class_label"></span></div> -->
-    
-    
-    <div class="modal fade" id="check" role="dialog" tabindex="-1" aria-labelledby="videoModalLabel" >
+
+
+    <div class="modal fade" id="check" role="dialog" tabindex="-1" aria-labelledby="videoModalLabel">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="videoModalLabel">Modal title</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" >
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
                         <!--<span aria-hidden="true">&times;</span>-->
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="video_container">
-                        <img id="image" src="" width="640" height="480" >
+                        <img id="image" src="" width="640" height="480">
                         <!-- <video id="video" width="640" height="480" controls>
                             <source src="/video_feed_1" type="video/mp4"> -->
                     </div>
@@ -96,15 +96,16 @@
                         Please check!</br>
                         3Min Countdown
                         <div id="countdown_warning"></div>
-                        <a href="#" id="checkButton" class="button" data-bs-toggle="modal" data-bs-target="#call_cancel">Checking</a>
+                        <a href="#" id="checkButton" class="button" data-bs-toggle="modal"
+                            data-bs-target="#call_cancel">Checking</a>
                     </div>
-                </div>   
-            </div>       
+                </div>
+            </div>
         </div>
 
     </div>
 
-    <div class="modal fade" id="call_cancel" role="dialog" tabindex="-1" aria-labelledby="callcancellabel" >
+    <div class="modal fade" id="call_cancel" role="dialog" tabindex="-1" aria-labelledby="callcancellabel">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -118,15 +119,17 @@
                         The 10-Min Countdown has startd!</br>
                         Please report or cancel!</br>
                         <div id="countdown_reporting"></div>
-                        <a href="#" id="confirmButton" class="button1" data-bs-toggle="modal" data-bs-target="#endreport">Report</a>
-                        <a href="#" id="cancelButton" class="button2" data-bs-toggle="modal" data-bs-target="#cancelreport">Cancel</a>
+                        <a href="#" id="confirmButton" class="button1" data-bs-toggle="modal"
+                            data-bs-target="#endreport">Report</a>
+                        <a href="#" id="cancelButton" class="button2" data-bs-toggle="modal"
+                            data-bs-target="#cancelreport">Cancel</a>
                     </div>
-                </div>   
-            </div>       
+                </div>
+            </div>
         </div>
 
     </div>
-    <div class="modal fade" id="endreport" >
+    <div class="modal fade" id="endreport">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -147,7 +150,7 @@
 
     </div>
 
-    <div class="modal fade" id="cancelreport" >
+    <div class="modal fade" id="cancelreport">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -169,8 +172,48 @@
 
     </div>
 
-    
+
     <script>
+        // 定义一个函数，用于更新类标签值
+        var containerMap = {
+            '1': 'first_container',
+            '2': 'second_container',
+            '3': 'third_container'
+        }
+        var cooldownTimers = {};
+        $(document).ready(function () {
+            // 监听单个路由的返回值
+            function listenRoute(route, containerId) {
+                $.get(route, function (data) {
+                    if (data === "Fire" || data === "Smoke") {
+                        console.log(route + ":", data);
+                        var containerLink = $('#' + containerId + ' a')[0]; // 獲取容器中的 <a> 元素
+
+                        // 檢查是否在冷卻時間內
+                        var now = new Date().getTime();
+                        if (cooldownTimers[containerId] && now < cooldownTimers[containerId]) {
+                            console.log('Container', containerId, 'is in cooldown');
+                            return; // 在冷卻時間內,不觸發modal
+                        }
+
+                        if (containerLink) {
+                            containerLink.click(); // 模擬點擊容器中的 <a> 元素
+                            cooldownTimers[containerId] = new Date().getTime() + 10 * 60 * 1000; // 設置10分鐘的冷卻時間
+                        }
+                    }
+                });
+            }
+
+            // 循环监听每个摄像头的路由
+            for (var i = 1; i <= 3; i++) {
+                var route = "/get_class_label?camera_id=" + i;
+                var containerId = containerMap[String(i)];
+                setInterval(listenRoute.bind(null, route, containerId), 1000);
+            }
+        });
+
+
+
         // 获取模态框的标题元素和视频元素
         var modalTitle = document.getElementById('videoModalLabel');
         var videoSource = document.querySelector('#image');
@@ -183,82 +226,82 @@
             var video = document.getElementById('video');
             video.load(); // 重新加载视频
         }
-    
+
         // 为每个图片容器添加点击事件监听器
-        document.getElementById('first_container').addEventListener('click', function() {
+        document.getElementById('first_container').addEventListener('click', function () {
             updateModal('1樓A區', '/video_feed_1');
         });
-    
-        document.getElementById('second_container').addEventListener('click', function() {
+
+        document.getElementById('second_container').addEventListener('click', function () {
             updateModal('1樓B區', '/video_feed_2');
         });
-    
-        document.getElementById('third_container').addEventListener('click', function() {
+
+        document.getElementById('third_container').addEventListener('click', function () {
             updateModal('1樓C區', '/video_feed_3');
         });
 
         $('#check').on('shown.bs.modal', function (e) {
-         // 3 分鐘倒計時
-        startCountdown(3,'countdown_warning');
+            // 3 分鐘倒計時
+            startCountdown(3, 'countdown_warning');
         });
 
         $('#check').on('hidden.bs.modal', function (e) {
-         // 停止倒計時
-        stopCountdown('countdown_warning');
+            // 停止倒計時
+            stopCountdown('countdown_warning');
         });
 
 
         $('#call_cancel').on('shown.bs.modal', function (e) {
-         // 3 分鐘倒計時
-        startCountdown(10,'countdown_reporting');
+            // 3 分鐘倒計時
+            startCountdown(10, 'countdown_reporting');
         });
 
         $('#call_cancel').on('hidden.bs.modal', function (e) {
-         // 停止倒計時
-        stopCountdown('countdown_reporting');
+            // 停止倒計時
+            stopCountdown('countdown_reporting');
         });
-        
-        document.getElementById('submitbtn').addEventListener('click',function() {
-            var title=document.getElementById('videoModalLabel').innerText;
-            var floor=title.substring(0,2);
-            var area=title.substring(2);
-            var cancel_reason=document.getElementById('multilineInput').value;
-            var situation="Cancel"
+
+        document.getElementById('submitbtn').addEventListener('click', function () {
+            var title = document.getElementById('videoModalLabel').innerText;
+            var floor = title.substring(0, 2);
+            var area = title.substring(2);
+            var cancel_reason = document.getElementById('multilineInput').value;
+            var situation = "Cancel"
 
             var xhr = new XMLHttpRequest();
             xhr.open('POST', '/submit_data', true);
             xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onreadystatechange = function() {
+            xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     console.log('Data submitted successfully!');
                     document.getElementById('multilineInput').value = '';
                 }
             };
-            var data = JSON.stringify({'floor': floor, 'area': area, 'cancel_reason': cancel_reason ,'situation':situation});
+            var data = JSON.stringify({ 'floor': floor, 'area': area, 'cancel_reason': cancel_reason, 'situation': situation });
             xhr.send(data);
         });
-        
-        document.getElementById('confirmButton').addEventListener('click',function() {
-            var title=document.getElementById('videoModalLabel').innerText;
-            var floor=title.substring(0,2);
-            var area=title.substring(2);
-            var situation="Confirm"
+
+        document.getElementById('confirmButton').addEventListener('click', function () {
+            var title = document.getElementById('videoModalLabel').innerText;
+            var floor = title.substring(0, 2);
+            var area = title.substring(2);
+            var situation = "Confirm"
 
             var xhr = new XMLHttpRequest();
             xhr.open('POST', '/submit_data', true);
             xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onreadystatechange = function() {
+            xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     console.log('Data submitted successfully!');
                 }
             };
-            var data = JSON.stringify({'floor': floor, 'area': area ,'cancel_reason': 'null','situation':situation});
+            var data = JSON.stringify({ 'floor': floor, 'area': area, 'cancel_reason': 'null', 'situation': situation });
             xhr.send(data);
         });
-            
-        
+
+
     </script>
-    
+
 </body>
 
 </html>

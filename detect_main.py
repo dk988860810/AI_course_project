@@ -35,7 +35,8 @@ class Camera:
             class_label = pre_result_cam[0].names[class_id]
             class_conf = "{:.2f}".format(float(data.conf))
             if data.conf >= 0.5:
-                self.class_label_set.append(f'{class_label} {class_conf}')
+                #self.class_label_set.append(f'{class_label} {class_conf}')
+                self.class_label_set.append(f'{class_label}')
                 org = (int(x1), int(y1))
                 font = cv2.FONT_HERSHEY_SIMPLEX
                 fontScale = 1
@@ -118,20 +119,36 @@ def video_feed_route_3():
     camera_3.video_feed_and_save(camera_id=3)
     return Response(camera_3.generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-@app.route('/get_class_label_1')
-def get_class_label_1():
-    global camera_1
-    return ' '.join(camera_1.class_label_set)
+@app.route('/get_class_label')
+def get_class_label():
+    camera_id = request.args.get('camera_id', type=int)
 
-@app.route('/get_class_label_2')
-def get_class_label_2():
-    global camera_2
-    return ' '.join(camera_2.class_label_set)
+    if camera_id == 1:
+        class_label_set = camera_1.class_label_set
+    elif camera_id == 2:
+        class_label_set = camera_2.class_label_set
+    elif camera_id == 3:
+        class_label_set = camera_3.class_label_set
+    else:
+        # 如果提供了无效的摄像头 ID，则返回空字符串或其他适当的响应
+        return ''
 
-@app.route('/get_class_label_3')
-def get_class_label_3():
-    global camera_3
-    return ' '.join(camera_3.class_label_set)
+    return ' '.join(class_label_set)
+
+# @app.route('/get_class_label_1')
+# def get_class_label_1():
+#     global camera_1
+#     return ' '.join(camera_1.class_label_set)
+
+# @app.route('/get_class_label_2')
+# def get_class_label_2():
+#     global camera_2
+#     return ' '.join(camera_2.class_label_set)
+
+# @app.route('/get_class_label_3')
+# def get_class_label_3():
+#     global camera_3
+#     return ' '.join(camera_3.class_label_set)
 
 @app.route('/submit_data',methods=['POST'])
 def submit():
@@ -196,7 +213,7 @@ def get_data():
                 'cancel_reason': row[5],
                 'situation': row[6]
             })
-            
+
         if result:
             result[0]['total_count'] = total_count
 
