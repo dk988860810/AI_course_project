@@ -49,22 +49,28 @@ class Camera:
     
     def video_feed_and_save(self, camera_id=None):
         def detect_and_save():
-            #count = 0
-            # current_datetime = datetime.now()
-            # formatted_date = current_datetime.strftime("%Y-%m-%d")
-            # formatted_time = current_datetime.strftime("%H-%M-%S")
+
             path="C:/Users/dk988/Desktop/AI_project_video/camera_"+str(camera_id)
             file_name = "{}/{}_{}.avi".format(path,formatted_date,formatted_time)
             
-            # while os.path.exists(file_name):
-            #     file_name = "{}/{}.avi".format(path,str(camera_id)+"_"+formatted_date + "_" + str(count))
-            #     count += 1
+            # fourcc = cv2.VideoWriter_fourcc(*'XVID')
+            # out = cv2.VideoWriter(file_name, fourcc, 30.0, (640, 480))
 
-            fourcc = cv2.VideoWriter_fourcc(*'XVID')
-            out = cv2.VideoWriter(file_name, fourcc, 30.0, (640, 480))
-
-            try:
-                while True:
+            # try:
+            #     while True:
+            #         success, frame = self.cap.read()
+        
+            #         if not success:
+            #             frame=cv2.imread("static/icon.jpg")
+            #             self.frame_queue.put(frame)
+            #         else:
+            #             self.class_label_set = []
+            #             frame = self.detect_objects(frame, self.model)
+            #             out.write(frame)
+            #             self.frame_queue.put(frame)
+            # finally:
+            #     out.release()
+            while True:
                     success, frame = self.cap.read()
         
                     if not success:
@@ -73,10 +79,8 @@ class Camera:
                     else:
                         self.class_label_set = []
                         frame = self.detect_objects(frame, self.model)
-                        out.write(frame)
+                        #out.write(frame)
                         self.frame_queue.put(frame)
-            finally:
-                out.release()
 
         t = Thread(target=detect_and_save)
         t.start()
@@ -89,9 +93,9 @@ class Camera:
             yield (b'--frame\r\n'
                     b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
-# Example usage:
+
 camera_1 = Camera(1)  # First camera
-camera_2 = Camera(0)  # Second camera
+camera_2 = Camera(3)  # Second camera
 camera_3 = Camera(2)  # Third camera
 
 @app.route('/')

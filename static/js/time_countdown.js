@@ -22,7 +22,8 @@ function startCountdown(minutesToAdd, modalname) {
         if (distance <= 0) {
             clearInterval(countdownInterval);
             countdownElement.innerHTML = '時間到！';
-            alert("時間到,已報警!");
+            $('#check').modal('hide');
+            $('#countdownreport').modal('show');
         }
     }, 1000); // 每秒更新一次
 }
