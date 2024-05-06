@@ -52,7 +52,7 @@ class Camera:
 
             path="C:/Users/dk988/Desktop/AI_project_video/camera_"+str(camera_id)
             file_name = "{}/{}_{}.avi".format(path,formatted_date,formatted_time)
-            
+            #-----影片存檔----
             # fourcc = cv2.VideoWriter_fourcc(*'XVID')
             # out = cv2.VideoWriter(file_name, fourcc, 30.0, (640, 480))
 
@@ -70,6 +70,7 @@ class Camera:
             #             self.frame_queue.put(frame)
             # finally:
             #     out.release()
+            #-----影片不存檔----
             while True:
                     success, frame = self.cap.read()
         
@@ -138,21 +139,6 @@ def get_class_label():
         return ''
 
     return ' '.join(class_label_set)
-
-# @app.route('/get_class_label_1')
-# def get_class_label_1():
-#     global camera_1
-#     return ' '.join(camera_1.class_label_set)
-
-# @app.route('/get_class_label_2')
-# def get_class_label_2():
-#     global camera_2
-#     return ' '.join(camera_2.class_label_set)
-
-# @app.route('/get_class_label_3')
-# def get_class_label_3():
-#     global camera_3
-#     return ' '.join(camera_3.class_label_set)
 
 @app.route('/submit_data',methods=['POST'])
 def submit():
