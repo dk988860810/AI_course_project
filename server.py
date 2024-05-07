@@ -1,5 +1,9 @@
 # server.py
-from flask import Flask, render_template, Response, request, jsonify
+from flask import Flask, render_template, Response, request , jsonify
+import socket
+import pickle
+from datetime import datetime
+from threading import Thread
 import mysql.connector
 
 # Flask 設置和路由
@@ -14,14 +18,73 @@ mysql_config={
     'database': 'AI_course'
 }
 
+current_datetime = datetime.now()
+formatted_date = current_datetime.strftime("%Y-%m-%d")
+formatted_time = current_datetime.strftime("%H-%M-%S")
+
+connections = {}
+
+def handle_connection(conn, addr):
+    print(f'Got connection from {addr}')
+    try:
+        while True:
+            data = conn.recv(1024 * 1024)  # 接收資料
+            if not data:
+                break
+
+            # 解碼資料
+            data_tuple = pickle.loads(data)
+            frame = data_tuple[0]  # 影像資料
+            class_label_set = pickle.loads(data_tuple[1])  # class_label_set
+
+            # 在這裡處理接收到的影像資料流和 class_label_set
+            # 例如，將影像資料流和 class_label_set 存儲在 connections 字典中
+            connections[addr] = (frame, class_label_set)
+    finally:
+        conn.close()
+        print(f'Connection from {addr} closed')
+
+def stream_video():
+    while True:
+        frames = []
+        for addr, (frame, class_label_set) in connections.items():
+            frames.append(frame)
+            # 在這裡處理 class_label_set
+            print(f'Labels from {addr}: {class_label_set}')
+
+        if frames:
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + b''.join(frames) + b'\r\n')
 
 
-# 接收影像資料流並進行即時播放
-@app.route('/video_feed')
-def video_feed():
-    # 接收來自邊緣計算端的影像資料流
-    # 實現即時播放功能
-    # ...
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/video_feed_1')
+def video_feed_1():
+    return Response(stream_video(1), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/video_feed_2')
+def video_feed_2():
+    return Response(stream_video(2), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/video_feed_3')
+def video_feed_3():
+    return Response(stream_video(3), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+@app.route('/get_class_label')
+def get_class_label():
+    camera_id = request.args.get('camera_id', type=int)
+    class_label_set = []
+    
+    for addr, (frame, labels) in connections.items():
+        if addr in devices[camera_id]:
+            class_label_set = labels
+            break
+
+    return jsonify(list(class_label_set))
 
 # 處理用戶介面資料並存儲到資料庫
 @app.route('/submit_data', methods=['POST'])
@@ -108,4 +171,14 @@ def get_data():
         cursor.close()
         conn.close()
 if __name__ == "__main__":
-    app.run(debug=True)
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.bind(('localhost', 8000))
+    server_socket.listen(5)
+    print('Server is listening on localhost:8000')
+
+    while True:
+        conn, addr = server_socket.accept()
+        thread = Thread(target=handle_connection, args=(conn, addr))
+        thread.start()
+
+    server_socket.close()
