@@ -5,11 +5,14 @@ import socket
 import pickle
 
 class EdgeComputing:
-    def __init__(self, camera_index):
+    def __init__(self, camera_index, server_ip, server_port):
         self.cap = cv2.VideoCapture(camera_index)
         self.model = YOLO("model/best.pt")
         self.class_label_set = []
-        self.server_socket=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        self.server_ip = server_ip
+        self.server_port = server_port
+        self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.server_socket.connect((self.server_ip, self.server_port))
 
 
     def detect_objects(self, frame, model):
@@ -39,10 +42,12 @@ class EdgeComputing:
         while True:
             success, frame = self.cap.read()
             if success:
-                frame_with_detections = self.detect_objects(frame)
+                frame_with_detections = self.detect_objects(frame,self.model)
                 # 將檢測到的影像資料流傳送到伺服器端
                 frame_encoded = cv2.imencode('.jpg', frame_with_detections)[1].tobytes()
-                data_to_send = pickle.dumps((frame_encoded, self.class_label_set))
+                # 將 class_label_set 轉換為字串
+                class_label_str = ', '.join(self.class_label_set)
+                data_to_send = pickle.dumps((frame_encoded, class_label_str))
                 
                 self.server_socket.sendall(data_to_send)
 
@@ -50,5 +55,5 @@ class EdgeComputing:
                 break
 
 if __name__ == "__main__":
-    edge_computing = EdgeComputing(camera_index=0,server_ip='localhost',server_port=8000)
+    edge_computing = EdgeComputing(camera_index=0,server_ip='192.168.8.26',server_port=8000)
     edge_computing.stream_video()
