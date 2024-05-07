@@ -5,6 +5,7 @@ import pickle
 from datetime import datetime
 from threading import Thread
 import mysql.connector
+import json
 
 # Flask 設置和路由
 # ...
@@ -35,7 +36,7 @@ def handle_connection(conn, addr):
             # 解碼資料
             data_tuple = pickle.loads(data)
             frame = data_tuple[0]  # 影像資料
-            class_label_set = pickle.loads(data_tuple[1])  # class_label_set
+            class_label_set = json.loads(data_tuple[1])  # class_label_set
 
             # 在這裡處理接收到的影像資料流和 class_label_set
             # 例如，將影像資料流和 class_label_set 存儲在 connections 字典中
@@ -172,9 +173,9 @@ def get_data():
         conn.close()
 if __name__ == "__main__":
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.bind(('localhost', 8000))
+    server_socket.bind(('192.168.8.26', 8000))
     server_socket.listen(5)
-    print('Server is listening on localhost:8000')
+    print('Server is listening on 192.168.8.26:8000')
 
     while True:
         conn, addr = server_socket.accept()

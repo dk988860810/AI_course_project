@@ -50,5 +50,5 @@ class EdgeComputing:
                 break
 
 if __name__ == "__main__":
-    edge_computing = EdgeComputing(camera_index=0,server_ip='localhost',server_port=8000)
+    edge_computing = EdgeComputing(camera_index=0,server_ip='192.168.8.26',server_port=8000)
     edge_computing.stream_video()
