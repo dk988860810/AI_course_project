@@ -82,7 +82,7 @@ class Camera:
                         frame = self.detect_objects(frame, self.model)
                         #out.write(frame)
                         self.frame_queue.put(frame)
-
+            #-------------------
         t = Thread(target=detect_and_save)
         t.start()
 
@@ -105,22 +105,16 @@ def index():
 
 @app.route('/video_feed_1')
 def video_feed_route_1():
-    # t1 = Thread(target=camera_1.video_feed_and_save)
-    # t1.start()
     camera_1.video_feed_and_save(camera_id=1)
     return Response(camera_1.generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/video_feed_2')
 def video_feed_route_2():
-    # t2 = Thread(target=camera_2.video_feed_and_save)
-    # t2.start()
     camera_2.video_feed_and_save(camera_id=2)
     return Response(camera_2.generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/video_feed_3')
 def video_feed_route_3():
-    # t3 = Thread(target=camera_3.video_feed_and_save)
-    # t3.start()
     camera_3.video_feed_and_save(camera_id=3)
     return Response(camera_3.generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
