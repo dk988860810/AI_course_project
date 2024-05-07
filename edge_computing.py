@@ -41,10 +41,11 @@ class EdgeComputing:
             if success:
                 frame_with_detections = self.detect_objects(frame)
                 # 將檢測到的影像資料流傳送到伺服器端
-                data_tuple=(cv2.imencode('.jpg',frame_with_detections)[1].tobytes(),pickle.dumps(self.class_label_set))
-                data=pickle.dumps(data_tuple)
+                frame_encoded = cv2.imencode('.jpg', frame_with_detections)[1].tobytes()
+                data_to_send = pickle.dumps((frame_encoded, self.class_label_set))
+                
+                self.server_socket.sendall(data_to_send)
 
-                self.server_socket.sendall(data)
             else:
                 break
 
