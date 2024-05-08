@@ -8,6 +8,7 @@ pip install ultralytics
 執行後可以在本機端的網頁輸入127.0.0.1:5000 就可以開啟鏡頭 實時監測(前提是你的電腦要有鏡頭囉)
 網頁架構在 template 跟 static資料夾內
 
+暫時不要的都放在abandon資料夾了 如果還有要可以去裡面翻
 
 給你們測試有沒有成功 clone pull push之類的
 
