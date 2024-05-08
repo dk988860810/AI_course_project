@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>火災預警系統</title>
+    <link rel="stylesheet" href="../static/CSS/login.css">
+    <link rel="icon" href="../static/image/cat-1.jpg">
+</head>
+<body>
+    <div class="container">
+        <div class="left-section">
+            <img src="../static/image/cat-1.jpg" alt="logo image" width="408" height="305">
+        </div>
+        <div class="right-section">
+            <div class="logo">LOGO</div>
+            <div class="welcome-back">welcome back</div>
+            <form id="loginForm">
+                <label for="identity">身分別</label><br>
+                <br><select id="identity" name="identity" class="select">
+                    <option value="none">請選擇</option>
+                    <option value="hr">HR-人資部門</option>
+                    <option value="fire">消防勤務中心</option>
+                    <option value="police">警衛</option>
+                </select>
+                
+                <br><label for="username">帳號</label><br>
+                <br><input type="text" placeholder="帳號" class="input-field">
+
+                <br><label for="userpassword">密碼</label><br>
+                <br><input type="password" placeholder="密碼" class="input-field">
+
+                <p style="text-align: center"><button type="submit" class="login-btn">登入</button></p>
+                <p style="text-align: center"><button type="submit" class="login-btn">註冊</button></p>
+            </form>
+        </div>
+        
+    </div>
+    <script src="../static/JS/login.js"></script>
+</body>
+</html>
