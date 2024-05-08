@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>火災預警系統</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="HR.css">
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <img src="../image/logo3.png" alt="Logo" class="logo">
+      <nav>
+        <button class="status-btn">出缺勤狀況</button>
+        <button class="status-btn">員工資料</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="搜尋員工...">
+      <button id="searchBtn"><i class="material-icons">search</i></button>
+      <button id="addEmployeeBtn">新增員工</button>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>工號</th>
+            <th>姓名</th>
+            <th>職務名稱</th>
+            <th>所屬組別</th>
+            <th>辦公位置</th>
+            <th>聯絡電話</th>
+            <th>緊急聯絡人</th>
+            <th>個人資料</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="employeeList"></tbody>
+      </table>
+    </div>
+
+    <div class="pagination">
+      <button id="prevPage" disabled>上一頁</button>
+      <span id="currentPage">1</span>
+      <button id="nextPage">下一頁</button>
+    </div>
+  </main>
+
+  <!-- 新增員工彈出視窗 -->
+  <div id="addEmployeeModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>新增員工</h2>
+      <form id="addEmployeeForm">
+        <label for="name">姓名:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="jobTitle">職務:</label>
+        <input type="text" id="jobTitle" name="jobTitle" required>
+
+        <label for="department">部門:</label>
+        <input type="text" id="department" name="department" required>
+
+        <label for="location">辦公位置:</label>
+        <input type="text" id="location" name="location" required>
+
+        <label for="phone">聯絡電話:</label>
+        <input type="tel" id="phone" name="phone" required>
+
+        <label for="emergencyContact">緊急聯絡人:</label>
+        <input type="text" id="emergencyContact" name="emergencyContact" required>
+
+        <label for="personalFiles">個人資料檔案:</label>
+        <input type="file" id="personalFiles" name="personalFiles" multiple>
+
+        <button type="submit">新增</button>
+        <button type="button" id="cancelAddEmployee">取消</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <form id="editForm">
+        <!-- 員工資料編輯欄位 -->
+      </form>
+    </div>
+  </div>
+
+  <script src="HR.js"></script>
+</body>
+</html>
