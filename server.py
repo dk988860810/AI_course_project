@@ -1,9 +1,10 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, request , jsonify, Response
 from flask_socketio import SocketIO, emit
 import pickle
 from datetime import datetime
 from threading import Thread
 import mysql.connector
+import cv2
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -26,6 +27,8 @@ def handle_connect():
 def handle_disconnect():
     print(f'Client disconnected: {request.sid}')
 
+
+#-------proceed the data from edge side----
 def handle_connection(data):
     frame, class_label_bytes, addr = data
     try:
@@ -38,13 +41,21 @@ def handle_connection(data):
 
 def stream_video():
     while True:
-        socketio.sleep(0.1)  # Adjust sleep time as needed
         for addr, (frame, class_label_set) in connections.items():
-            emit('video_frame', {'frame': frame, 'labels': class_label_set}, room=addr)
+            ret, buffer = cv2.imencode('.jpg', frame)  # 编码为 JPEG 格式
+            frame_bytes = buffer.tobytes()  # 将帧转换为字节流
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')  # 作为流发送给客户端
+#----flask route----
 
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/video_feed_1')
+def video_feed_route_1():
+    return Response(stream_video(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
 
 @socketio.on('get_class_label')
 def get_class_label(camera_id):
@@ -81,6 +92,10 @@ def submit_data():
         conn.close()
         
         return 'Data successfully submitted to the database!'
+
+@app.route('/table')
+def table():
+    return render_template('table.html')
 
 @app.route('/get_data', methods=['GET'])
 def get_data():
