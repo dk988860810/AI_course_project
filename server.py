@@ -26,24 +26,34 @@ formatted_time = current_datetime.strftime("%H-%M-%S")
 connections = {}
 
 def handle_connection(conn, addr):
-    print(f'Got connection from {addr}')
+    print(f'Handling connection from {addr}')
     try:
         while True:
             data = conn.recv(1024 * 1024)  # 接收資料
             if not data:
                 break
 
-            # 解碼資料
-            data_tuple = pickle.loads(data)
-            frame = data_tuple[0]  # 影像資料
-            class_label_set = json.loads(data_tuple[1])  # class_label_set
+            print(f'Received data: {data}')
 
+            # 解碼資料
+            try:
+    # Your code that might raise the exception
+                frame, class_label_bytes = pickle.loads(data, encoding='latin1')
+            except pickle.UnpicklingError as e:
+    # Handle the exception
+                print("An error occurred while unpickling:", e)
+    # Optionally, you can provide default values or take alternative actions here
+            # 使用 Pickle 解碼 class_label_bytes
+            class_label_set = pickle.loads(class_label_bytes.encode('latin1'))
             # 在這裡處理接收到的影像資料流和 class_label_set
             # 例如，將影像資料流和 class_label_set 存儲在 connections 字典中
             connections[addr] = (frame, class_label_set)
+
     finally:
         conn.close()
         print(f'Connection from {addr} closed')
+
+
 
 def stream_video():
     while True:
@@ -173,9 +183,9 @@ def get_data():
         conn.close()
 if __name__ == "__main__":
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.bind(('192.168.8.26', 8000))
+    server_socket.bind(('127.0.0.1', 8000))
     server_socket.listen(5)
-    print('Server is listening on 192.168.8.26:8000')
+    print('Server is listening on 127.0.0.1:8000')
 
     while True:
         conn, addr = server_socket.accept()

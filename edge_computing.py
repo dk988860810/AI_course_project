@@ -45,9 +45,9 @@ class EdgeComputing:
                 frame_with_detections = self.detect_objects(frame,self.model)
                 # 將檢測到的影像資料流傳送到伺服器端
                 frame_encoded = cv2.imencode('.jpg', frame_with_detections)[1].tobytes()
-                # 將 class_label_set 轉換為字串
-                class_label_str = ', '.join(self.class_label_set)
-                data_to_send = pickle.dumps((frame_encoded, class_label_str))
+                # 使用 Pickle 序列化 class_label_set
+                class_label_bytes = pickle.dumps(self.class_label_set, protocol=2).decode('latin1')
+                data_to_send = pickle.dumps((frame_encoded, class_label_bytes), protocol=2)
                 
                 self.server_socket.sendall(data_to_send)
 
@@ -55,5 +55,5 @@ class EdgeComputing:
                 break
 
 if __name__ == "__main__":
-    edge_computing = EdgeComputing(camera_index=0,server_ip='192.168.8.26',server_port=8000)
+    edge_computing = EdgeComputing(camera_index=0,server_ip='127.0.0.1',server_port=8000)
     edge_computing.stream_video()

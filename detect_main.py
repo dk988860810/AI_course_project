@@ -95,8 +95,8 @@ class Camera:
                     b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 
-camera_1 = Camera(1)  # First camera
-camera_2 = Camera(3)  # Second camera
+camera_1 = Camera(0)  # First camera
+camera_2 = Camera('testvideo.mp4')  # Second camera
 camera_3 = Camera(2)  # Third camera
 
 @app.route('/')
