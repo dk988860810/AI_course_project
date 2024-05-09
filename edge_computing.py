@@ -1,20 +1,39 @@
-from flask import Flask, render_template
-from flask_socketio import SocketIO, emit
 import cv2
 from ultralytics import YOLO
+import socketio
 import pickle
 
-app = Flask(__name__)
-socketio = SocketIO(app)
+# 使用串流模式傳輸影像
+def encode_image(img):
+    _, encoded_img = cv2.imencode('.jpg', img)
+    return encoded_img.tobytes()
+
+# Replace <SERVER_IP> with the IP address of your server
+SERVER_IP = '127.0.0.1'
+SERVER_PORT = 5000
+
+# Initialize camera and YOLO model
+camera = cv2.VideoCapture(0)  # Replace 0 with the appropriate camera index
+model = YOLO("model/best.pt")
+
+# Create a SocketIO client instance
+sio = socketio.Client()
+
+# Connect to the server
+sio.connect(f'http://{SERVER_IP}:{SERVER_PORT}')
+
+@sio.event
+def connect():
+    print('Connected to the server')
 
 class EdgeComputing:
-    def __init__(self, camera_index, model_path):
-        self.cap = cv2.VideoCapture(camera_index)
+    def __init__(self, camera, model):
+        self.cap = camera
+        self.model = model
         self.class_label_set = []
-        self.model = YOLO("model/best.pt")
 
     def detect_objects(self, frame, model):
-        pre_result_cam = model.predict(frame,verbose=False)
+        pre_result_cam = model.predict(frame, verbose=False)
         self.class_label_set = []
         for data in pre_result_cam[0].boxes:
             x1, y1, x2, y2 = data.xyxy[0]
@@ -22,7 +41,6 @@ class EdgeComputing:
             class_label = pre_result_cam[0].names[class_id]
             class_conf = "{:.2f}".format(float(data.conf))
             if data.conf >= 0.5:
-                #self.class_label_set.append(f'{class_label} {class_conf}')
                 self.class_label_set.append(f'{class_label}')
                 org = (int(x1), int(y1))
                 font = cv2.FONT_HERSHEY_SIMPLEX
@@ -32,28 +50,23 @@ class EdgeComputing:
                 output_text = f'{class_label} {class_conf}'
                 cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (255, 0, 0), 3)
                 cv2.putText(frame, output_text, org, font, fontScale, color, thickness)
-        return frame  # Replace with your processed frame
+        return frame
 
-    def stream_video(self):
+    def stream_video(self,edge_id):
         while True:
             success, frame = self.cap.read()
             if success:
-                frame_with_detections = self.detect_objects(frame,self.model)
-                frame_encoded = cv2.imencode('.jpg', frame_with_detections)[1].tobytes()
-                class_label_bytes = pickle.dumps(self.class_label_set, protocol=2).decode('latin1')
-                data_to_send = pickle.dumps((frame_encoded, class_label_bytes), protocol=2)
-                socketio.emit('video_frame', data_to_send, namespace='/video_feed_1')
-                print('image_send')
+                frame_with_detections = self.detect_objects(frame, self.model)
+                encoded_frame = encode_image(frame_with_detections)
+                class_labels_bytes = pickle.dumps(self.class_label_set)
 
-@socketio.on('connect', namespace='/video_feed_1')
-def handle_connect():
-    print('Client connected')
+                # Serialize the data
+                data = pickle.dumps([edge_id,encoded_frame, class_labels_bytes], protocol=0)
 
-@socketio.on('disconnect', namespace='/video_feed_1')
-def handle_disconnect():
-    print('Client disconnected')
+                # Send the serialized data to the server
+                sio.emit('video_frame', data)
 
 if __name__ == "__main__":
-    edge_computing = EdgeComputing(camera_index=0, model_path="model/best.pt")
-    edge_computing.stream_video()
-    socketio.run(app)
+    edge_id=1
+    edge_computing = EdgeComputing(camera, model)
+    edge_computing.stream_video(edge_id)
