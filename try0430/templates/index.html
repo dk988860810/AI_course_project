@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" 
+  content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style1.css') }}">
+  
+
+</head>
+<body style="background-color:#ccc;">
+  <div class="container">
+    <div class="image-container">
+      <!-- 图片拉伸填满当前区域 -->
+      <img class="image-container1" src="{{ url_for('static', filename='content.png') }}" alt="Image">
+      <img class="overlay-image" src="{{ url_for('static', filename='content1.png') }}" alt="2">
+    </div>
+    <div class="login-container">
+      <div class="logo-container">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+      </div>
+      <div class="center-text">
+        <p>Welcome back</p>
+      </div>
+      <form class="login-form" action="{{ url_for('login') }}" method="post">
+        <label>Username</label>
+        <input type="text" class="form-control" name="username" placeholder="Username" id="username" required>
+        <label>Password</label>
+        <input type="password" class="form-control" name="password" placeholder="Password" id="password" required>
+        <input type="submit" value="Login" class="form-control btn btn-success" name="">
+      </form>
+      <div id="msg">{{ msg }}</div>
+      <p>No account <a href="{{ url_for('register') }}">Register</a></p>
+    </div>
+  </div>
+</body>
+</html>
