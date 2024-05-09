@@ -24,40 +24,67 @@ current_datetime = datetime.now()
 formatted_date = current_datetime.strftime("%Y-%m-%d")
 formatted_time = current_datetime.strftime("%H-%M-%S")
 
-# Create separate queues for each camera
-frame_queues = {
-    1: Queue(),
-    2: Queue(),
-    3: Queue()
-}
+# 創建一個字典來存儲每個邊緣設備的獨立佇列和線程
+frame_queues_and_threads = {}
 
-# Function to handle the received frames and labels
+# 函數來處理收到的影像框架和標籤
 @socketio.on('video_frame')
 def handle_video_frame(data):
     try:
         edge_id, frame_encoded, class_label_bytes = pickle.loads(data)
         class_label_set = pickle.loads(class_label_bytes)
-
-        # Decode the frame
+        print(f"Received data from edge {edge_id}")
+        # 解碼影像框架
         frame = cv2.imdecode(np.frombuffer(frame_encoded, np.uint8), cv2.IMREAD_COLOR)
+        # 為該邊緣設備創建一個獨立的佇列和線程(如果不存在)
+        if edge_id not in frame_queues_and_threads:
+            frame_queue = Queue()
+            frame_queues_and_threads[edge_id] = (frame_queue, None)
 
-        # Add the frame and labels to the respective queue
-        frame_queues[edge_id].put((frame, class_label_set))
+        # 獲取該設備的佇列
+        frame_queue, _ = frame_queues_and_threads[edge_id]
+
+        # 將影像框架和標籤添加到佇列
+        if frame_queue is not None:
+            frame_queue.put((frame, class_label_set))
     except Exception as e:
         print(f"Error handling video frame: {e}")
 
-# Function to generate frames for streaming
-def generate_frames(camera_id):
-    frame_queue = frame_queues[camera_id]
-
+# 生成影像框架的工作線程
+def worker(edge_id, frame_queue, frame_stream_queue):
     while True:
         if not frame_queue.empty():
             frame, class_label_set = frame_queue.get()
-            print(frame)
+            print(f"Dequeued frame from edge {edge_id}")
             ret, buffer = cv2.imencode('.jpg', frame)
-            frame = buffer.tobytes()
+            frame_bytes = buffer.tobytes()
+            frame_stream_queue.put(frame_bytes)
+            print(f"Added frame bytes to stream queue for edge {edge_id}")
+
+
+def generate_frames(edge_id):
+    frame_queue, thread = frame_queues_and_threads.get(edge_id, (None, None))
+    frame_stream_queue = Queue()
+
+    if frame_queue is None:
+        # 創建一個新的佇列
+        frame_queue = Queue()
+        frame_queues_and_threads[edge_id] = (frame_queue, None)
+
+    if thread is None:
+        # 創建一個新的線程來運行 worker 函數
+        thread = Thread(target=worker, args=(edge_id, frame_queue, frame_stream_queue))
+        thread.daemon = True
+        thread.start()
+        frame_queues_and_threads[edge_id] = (frame_queue, thread)
+
+    # 從 frame_stream_queue 獲取生成的影像框架
+    while True:
+        if not frame_stream_queue.empty():
+            frame_bytes = frame_stream_queue.get()
+            print(f"Yielding frame bytes for edge {edge_id}")
             yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
             
 @app.route('/')
 def index():
@@ -81,13 +108,16 @@ def get_class_label():
     camera_id = request.args.get('camera_id', type=int)
     class_label_set = []
 
-    if camera_id in frame_queues:
-        frame, labels = frame_queues[camera_id].get()
-        class_label_set = labels
+    if camera_id in frame_queues_and_threads:
+        frame_queue, labels = frame_queues_and_threads[camera_id]
+        if frame_queue is not None and not frame_queue.empty():
+            frame, labels = frame_queue.get()
+            class_label_set = labels
     else:
         return ''
 
     return ' '.join(class_label_set)
+
 
 @app.route('/submit_data',methods=['POST'])
 def submit():
@@ -163,4 +193,4 @@ def get_data():
         conn.close()
 
 if __name__ == "__main__":
-    socketio.run(app, host='localhost',port=5000, debug=True)
+    socketio.run(app, host='0.0.0.0',port=5000, debug=True)

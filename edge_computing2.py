@@ -2,7 +2,6 @@ import cv2
 from ultralytics import YOLO
 import socketio
 import pickle
-import time
 
 # 使用串流模式傳輸影像
 def encode_image(img):
@@ -14,7 +13,7 @@ SERVER_IP = '127.0.0.1'
 SERVER_PORT = 5000
 
 # Initialize camera and YOLO model
-camera = cv2.VideoCapture(0)  # Replace 0 with the appropriate camera index
+camera = cv2.VideoCapture('testvideo.mp4')  # Replace 0 with the appropriate camera index
 model = YOLO("model/best.pt")
 
 # Create a SocketIO client instance
@@ -32,9 +31,6 @@ class EdgeComputing:
         self.cap = camera
         self.model = model
         self.class_label_set = []
-        self.start_time=time.time()
-        self.frame_counter = 0
-    
 
     def detect_objects(self, frame, model):
         pre_result_cam = model.predict(frame, verbose=False)
@@ -61,7 +57,7 @@ class EdgeComputing:
             success, frame = self.cap.read()
             if success:
                 frame_with_detections = self.detect_objects(frame, self.model)
-            
+                print(frame)
                 encoded_frame = encode_image(frame_with_detections)
                 class_labels_bytes = pickle.dumps(self.class_label_set)
 
@@ -70,21 +66,9 @@ class EdgeComputing:
 
                 # Send the serialized data to the server
                 sio.emit('video_frame', data)
-
-                self.frame_counter += 1
-
-                current_time = time.time()
-                elapsed_time = current_time - self.start_time
-
-                if elapsed_time >= 1.0:  # 每秒執行一次
-                    fps = self.frame_counter / elapsed_time
-                    print(f"Frames per second: {fps}")
-                    self.frame_counter = 0
-                    self.start_time = time.time()
-                
+                print("image send success")
 
 if __name__ == "__main__":
-    
-    edge_id=1
+    edge_id=2
     edge_computing = EdgeComputing(camera, model)
     edge_computing.stream_video(edge_id)
