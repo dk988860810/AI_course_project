@@ -1,6 +1,8 @@
-from flask import Flask, request, session, redirect, url_for, render_template
+from flask import Flask, request, session, redirect, url_for, render_template ,flash
 import mysql.connector
 import re 
+import os
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = 'mmm'
@@ -61,7 +63,7 @@ def register():
         elif not username or not password or not email:
             msg = '請填寫表單！'
         else:
-            cursor.execute('INSERT INTO accounts VALUES (NULL, %s, %s, %s, %s)', (fullname, username, password, email)) 
+            cursor.execute('INSERT INTO accounts VALUES (NULL, %s, %s, %s, %s ,NULL)', (fullname, username, password, email)) 
             conn.commit()
             msg = '您已成功註冊！'
 
@@ -94,11 +96,62 @@ def profile():
         account = cursor.fetchone()
         cursor.close()
         if account:
-            return render_template('profile.html', account=account)
+            # 抓取用戶的頭像路徑
+            profile_picture_path = account.get('profile_picture_path', None)
+            if profile_picture_path:
+                profile_picture_path = profile_picture_path.replace('\\', '/')
+                profile_picture_url = url_for('static', filename='profile_pic/' + profile_picture_path)
+            else:
+                # 如果頭像路徑為None，可以返回一個默認的頭像URL或者一個錯誤消息
+                profile_picture_url = url_for('static', filename='profile_pic/none.jpg')
+            print(profile_picture_url)
+            return render_template('profile.html', account=account, profile_picture_url=profile_picture_url)
     return redirect(url_for('login'))
 
-# if __name__ == '__main__':
-#     app.run(debug=True)
+
+# 指定上傳照片的目錄
+UPLOAD_FOLDER = 'C:/report/try0508/static/profile_pic'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+@app.route('/update_profile', methods=['POST'])
+def update_profile():
+    if 'loggedin' in session:
+        # 獲取從表單提交的更新後的個人資料
+        fullname = request.form['fullname']
+        username = request.form['username']
+        password = request.form['password']
+        email = request.form['email']
+        
+        # 處理上傳的照片
+        if 'profile_pic' in request.files:
+            file = request.files['profile_pic']
+            if file.filename != '':
+                 # 將照片保存到指定目錄
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                # 只保存檔名到資料庫中
+                profile_picture_path = filename
+                
+        # 執行更新個人資料的 SQL 語句
+        cursor = conn.cursor()
+        cursor.execute('''
+            UPDATE accounts 
+            SET fullname = %s, username = %s, password = %s, email = %s , profile_picture_path= %s
+            WHERE id = %s
+        ''', (fullname, username, password, email, profile_picture_path, session['id']))
+        conn.commit()
+        cursor.close()
+        
+        flash('Update success', 'success')
+        # 重定向到用戶的個人資料頁面
+        return redirect(url_for('profile'))
+    else:
+        # 如果用戶未登錄，重定向到登錄頁面
+        return redirect(url_for('login'))
+
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+    app.run(debug=True)
+
+# if __name__ == '__main__':
+#     app.run(host='0.0.0.0', debug=True)
