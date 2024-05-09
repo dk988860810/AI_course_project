@@ -12,8 +12,10 @@ header {
   color: white;
   padding: 16px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.header-content {
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 
@@ -22,30 +24,32 @@ header {
   margin-right: 8px;
 }
 
-nav {
-  float: right;
+.system-name {
+  font-size: 24px;
+  font-weight: bold;
+  margin-right: 20px;
 }
 
-nav button {
+nav {
+  margin-left: auto;
+}
+
+.status-btn {
   background-color: transparent;
   color: white;
   border: none;
-  padding: 8px 16px; /* 修改了原先的 padding 属性 */
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 14px;
-  margin: 4px 2px;
+  padding: 8px 16px;
+  margin-left: 10px;
   cursor: pointer;
   border-radius: 4px;
   transition: background-color 0.3s ease;
+  font-size: medium;
 }
 
-
-
-nav button:hover {
+.status-btn:hover {
   background-color: rgba(255, 255, 255, 0.2);
 }
+
 
 /* Search container styles */
 .search-container {
@@ -54,23 +58,38 @@ nav button:hover {
   margin: 16px 0;
 }
 
-#searchInput {
+.search-input {
+  /* 搜索输入框的样式 */
+  /* 例如： */
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px 0 0 4px;
   width: 300px;
 }
 
-#searchBtn, #addEmployeeBtn {
+.search-btn {
+  /* 搜索按钮的样式 */
+  /* 例如： */
   background-color: #ACB6E5;
   color: white;
   border: none;
   cursor: pointer;
   padding: 8px 16px;
   transition: background-color 0.3s ease;
-  display: flex;
-  justify-content: flex-end;
 }
+
+.add-employee-btn {
+  /* 新增员工按钮的样式 */
+  /* 例如： */
+  background-color: #ACB6E5;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 8px 16px;
+  transition: background-color 0.3s ease;
+  margin-left: 20px;
+}
+
 
 #searchBtn:hover, #addEmployeeBtn:hover {
   background-color: #ACB6E5;
@@ -226,4 +245,15 @@ tr:hover {
 
 #addEmployeeForm button#cancelAddEmployee:hover, #editForm button.cancel-btn:hover {
   background-color: #b3b3b3;
+}
+
+footer {
+  background-color: #ACB6E5;
+  padding: 20px;
+  text-align: center;
+  color: white;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
 }

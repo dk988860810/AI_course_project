@@ -9,7 +9,7 @@ def encode_image(img):
     return encoded_img.tobytes()
 
 # Replace <SERVER_IP> with the IP address of your server
-SERVER_IP = '127.0.0.1'
+SERVER_IP = '192.168.209.207'
 SERVER_PORT = 5000
 
 # Initialize camera and YOLO model
@@ -67,6 +67,6 @@ class EdgeComputing:
                 sio.emit('video_frame', data)
 
 if __name__ == "__main__":
-    edge_id=1
+    edge_id=2
     edge_computing = EdgeComputing(camera, model)
     edge_computing.stream_video(edge_id)
