@@ -54,7 +54,7 @@ def handle_video_frame(data):
 def worker(edge_id, frame_queue, frame_stream_queue):
     # 构建 GStreamer 管道命令
     server_ip = "192.168.8.150"
-    gst_pipeline = f"gst-launch-1.0 tcpserversrc host={server_ip} port=8554 ! gdpdepay ! rtph264depay ! avdec_h264 ! videoconvert ! appsink"
+    gst_pipeline = f"gst-launch-1.0 tcpserversrc host=192.168.8.150 port=8554 ! gdpdepay ! rtph264depay ! avdec_h264 ! videoconvert ! appsink"
 
     # 启动 GStreamer 管道
     gst_process = subprocess.Popen(gst_pipeline, shell=True, stdout=subprocess.PIPE, bufsize=-1)

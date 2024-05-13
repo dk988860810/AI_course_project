@@ -49,31 +49,37 @@ class EdgeComputing:
         return frame
 
     def stream_video(self, edge_id):
-        while True:
-            success, frame = self.cap.read()
-            if success:
-                frame_with_detections = self.detect_objects(frame, self.model)
+        # 构建 GStreamer 管道命令
+        gst_pipeline = f"gst-launch-1.0 appsrc ! videoconvert ! x264enc tune=zerolatency ! rtph264pay ! gdppay ! tcpserversink host=192.168.8.150 port=8554"
+    
+        # 启动 GStreamer 管道
+        gst_process = subprocess.Popen(gst_pipeline, shell=True, stdin=subprocess.PIPE)
 
-                # 构建 GStreamer 管道命令
-                gst_pipeline = f"gst-launch-1.0 appsrc ! videoconvert ! x264enc tune=zerolatency ! rtph264pay ! gdppay ! tcpserversink host={SERVER_IP} port=8554"
+        try:
+            while True:
+                success, frame = self.cap.read()
+                if success:
+                    frame_with_detections = self.detect_objects(frame, self.model)
 
-                # 启动 GStreamer 管道
-                gst_process = subprocess.Popen(gst_pipeline, shell=True, stdin=subprocess.PIPE)
+                    # 将帧写入 GStreamer 管道
+                    gst_process.stdin.write(cv2.imencode('.jpg', frame_with_detections)[1].tobytes())
 
-                # 将帧写入 GStreamer 管道
-                gst_process.stdin.write(cv2.imencode('.jpg', frame_with_detections)[1].tobytes())
+                    # Serialize the class labels
+                    class_labels_bytes = pickle.dumps(self.class_label_set)
 
-                # Serialize the class labels
-                class_labels_bytes = pickle.dumps(self.class_label_set)
+                    # Send the serialized class labels to the server
+                    data = pickle.dumps([edge_id, class_labels_bytes], protocol=0)
+                    sio.emit('video_frame', data)
 
-                # Send the serialized class labels to the server
-                data = pickle.dumps([edge_id, class_labels_bytes], protocol=0)
-                sio.emit('video_frame', data)
+        except KeyboardInterrupt:
+            # Handle keyboard interrupt
+            pass
 
-        # Clean up the GStreamer pipeline
-        gst_process.stdin.close()
-        gst_process.terminate()
-        gst_process.wait()
+        finally:
+            # Clean up resources
+            gst_process.stdin.close()
+            gst_process.terminate()
+            gst_process.wait()
 
 if __name__ == "__main__":
     edge_id = 1
