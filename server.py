@@ -2,6 +2,7 @@ from flask import Flask, render_template, Response, request, jsonify
 from flask_socketio import SocketIO, emit
 import cv2
 import numpy as np
+import threading
 from threading import Thread
 from queue import Queue
 from datetime import datetime
@@ -23,6 +24,8 @@ mysql_config = {
 current_datetime = datetime.now()
 formatted_date = current_datetime.strftime("%Y-%m-%d")
 formatted_time = current_datetime.strftime("%H-%M-%S")
+
+
 
 # 創建一個字典來存儲每個邊緣設備的獨立佇列和線程
 frame_queues_and_threads = {}
@@ -56,11 +59,21 @@ def worker(edge_id, frame_queue, frame_stream_queue):
         if not frame_queue.empty():
             frame, class_label_set = frame_queue.get()
             print(f"Dequeued frame from edge {edge_id}")
-            ret, buffer = cv2.imencode('.jpg', frame)
+            ret, buffer = cv2.imencode('.png', frame)
             frame_bytes = buffer.tobytes()
             frame_stream_queue.put(frame_bytes)
             print(f"Added frame bytes to stream queue for edge {edge_id}")
 
+            decode_thread = threading.Thread(target=decode_and_process, args=(edge_id, frame, class_label_set, frame_stream_queue))
+            decode_thread.start()
+
+def decode_and_process(edge_id, frame, class_label_set, frame_stream_queue):
+    # 在這裡進行任何需要的影像處理操作
+    
+    ret, buffer = cv2.imencode('.jpg', frame)
+    frame_bytes = buffer.tobytes()
+    frame_stream_queue.put(frame_bytes)
+    print(f"Added frame bytes to stream queue for edge {edge_id}")
 
 def generate_frames(edge_id):
     frame_queue, thread = frame_queues_and_threads.get(edge_id, (None, None))
