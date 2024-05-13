@@ -1,6 +1,14 @@
+body {
+  min-width: 800px;
+  max-width: 1200px;
+  min-height: 600px;
+  max-height: 800px;
+  margin: 0 auto; /* 居中页面 */
+}
+
 header {
   z-index: 999;
-  background-color: #CCCCCC;
+  background: linear-gradient(135deg, #74ebd5, #ACB6E5);
   color: white;
   padding: 0px;
   margin: 0px;
@@ -8,29 +16,46 @@ header {
   position: fixed;
   top: 0;
   width: 100%;
+  height: 55px;
   display: flex;
-  /* 使用 flexbox 布局 */
   justify-content: space-between;
-  /* 将标题和导航栏分开 */
-  align-items: center;
-  /* 垂直居中 */
+  align-items: center; /* 垂直居中标题和导航栏 */
+  box-shadow: #555 0 0 10px;
 }
 
+.login-container {
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  max-width: 30px;
+  width: 50%;
+  text-align: center;
+  animation: fade-in 0.5s ease-in-out;
+}
 header h1 {
   margin-left: 20px;
+  font-size: 25px;
 }
 
 nav ul {
+  display: flex;
+  justify-content: center; /* 将子元素水平居中 */
   list-style-type: none;
-  margin-right: 50px;
+  margin: 0;
   padding: 0;
+  top:70%;
+  justify-content: space-between; /* 子元素之间均匀分布 */
+  padding-right: 20px;
 }
 
 nav ul li {
-  display: inline-block;
-  margin-left: 20px;
+
   border-radius: 25px;
   padding: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 nav ul li:hover {
@@ -40,56 +65,72 @@ nav ul li:hover {
 nav ul li a{
   color: inherit;
   text-decoration: none;
-  font-size: 25px;
+  font-size: 20px;
 }
 
 ul li ul li:hover {
-  background: #868585;
+  display: flex;
+  border-color: #868585;
+  justify-content: center;
+  align-items: center;
+
 }
 
 
 nav ul li:hover > ul{
-  display: block;
+  display: flex;
+  align-items: center;
 }
 
 nav ul li ul {
-  color: white; /* 设置链接颜色为白色 */
+  color: white;
   background-color: #555;
   padding: 5px;
   border: none;
   border-radius: 3px;
   font-size: 20px;
-  text-decoration: none; /* 去除链接下划线 */
+  text-decoration: none;
   display: none;
-  position: absolute; /* 添加注释：设置子菜单的绝对定位 */
-  top: 72%; /* 添加注释：设置子菜单相对于父菜单的位置 */
+  position: absolute;
+  top: 95%; /* 調整這個值來控制與導覽列的距離 */
+  text-align: center; /* 将子菜单中的文本水平居中 */
+  display: flex; /* 使用 flex 布局 */
+  flex-direction: column; /* 将子菜单选项垂直排列 */
+  align-items: center; /* 将子菜单选项垂直居中 */
+  display: none;
+  opacity: 0; /* 初始设置为透明 */
+  transition: opacity 0.3s ease; /* 添加过渡效果 */
+  
 }
 
 nav ul li ul li { 
   background: #555; 
   display: block; 
+  text-align: center; /* 将子菜单中的文本水平居中 */
+  display: flex; /* 使用 flex 布局 */
+  flex-direction: column; /* 将子菜单选项垂直排列 */
+  align-items: center; /* 将子菜单选项垂直居中 */
 }
 
 nav ul li ul li a {
   display:block !important;
   text-decoration: none;
   color: inherit;
+  text-align: center; /* 将子菜单中的文本水平居中 */
+  display: flex; /* 使用 flex 布局 */
+  flex-direction: column; /* 将子菜单选项垂直排列 */
+  align-items: center; /* 将子菜单选项垂直居中 */
 } 
-
-
 
 .flex-container {
   display: flex;
-  /* 使用 Flexbox 布局 */
   justify-content: space-between;
-  /* 让容器内的项目分散对齐 */
 }
 
 .container {
   top: 100px;
   height: 540px;
   flex: 1;
-  /* 让容器平均分配父容器的宽度 */
   position: relative;
 }
 
@@ -112,11 +153,8 @@ nav ul li ul li a {
 img {
   border-radius: 8px;
   margin-top: 20px;
-  /* 添加顶部间距 */
   margin-bottom: 20px;
-  /* 添加底部间距 */
   margin-left: auto;
-  /* 将左右边距设为自动以实现水平居中 */
   margin-right: auto;
   cursor: pointer;
 }
@@ -129,7 +167,7 @@ body {
 .checking {
   width: 300px;
   font-size: 30px;
-  margin-left: 80px; 
+  margin-left: 80px;
 }
 
 .modal-body {
@@ -142,67 +180,72 @@ body {
 .reporting {
   width: 500px;
   font-size: 30px;
-  margin-left: 80px; 
+  margin-left: 80px;
   margin: auto;
 }
-
 
 .button {
   border: none;
   border-radius: 5px;
   background-color: red;
-  background: linear-gradient(180deg,#eb3329 0%,#9b2617 100%);
+  background: linear-gradient(180deg, #eb3329 0%, #9b2617 100%);
   text-align: center;
   text-decoration: none;
   box-shadow: 5px 5px 5px gray;
   font-size: 35px;
-  top: 200px;
   cursor: pointer;
   display: block;
-  /* 将按钮的 display 属性设置为 block */
   margin: 20px auto 0;
-  /* 使用 margin: 0 auto; 让按钮水平居中 */
 }
 
-.button1{
+.button1 {
   border: none;
   border-radius: 5px;
   background-color: red;
   text-align: center;
   text-decoration: none;
   box-shadow: 5px 5px 5px gray;
-  background: linear-gradient(180deg,#eb3329 0%,#9b2617 100%);
+  background: linear-gradient(180deg, #eb3329 0%, #9b2617 100%);
   font-size: 35px;
-  top: 200px;
   cursor: pointer;
-  display: block; /* 将按钮的 display 属性设置为 block */
-  margin: 20px 30px 0px 100px; /* 使用 margin: 0 auto; 让按钮水平居中 */
+  display: block;
+  margin: 20px 30px 0px 100px;
   float: left;
-
 }
 
-.button2{
+.button2 {
   border: none;
   border-radius: 5px;
   background-color: rgb(59, 59, 253);
-  background: linear-gradient(180deg,#68bc1e 0%,#549b17 100%);
+  background: linear-gradient(180deg, #68bc1e 0%, #549b17 100%);
   text-align: center;
   text-decoration: none;
   box-shadow: 5px 5px 5px gray;
   font-size: 35px;
-  top: 200px;
   cursor: pointer;
-  display: block; /* 将按钮的 display 属性设置为 block */
-  margin: 20px 100px 0px 30px; /* 使用 margin: 0 auto; 让按钮水平居中 */
+  display: block;
+  margin: 20px 100px 0px 30px;
   float: right;
 }
 
 #multilineInput {
-  width: 300px; /* 宽度 */
-  height: 150px; /* 高度 */
-  border: 1px solid #ccc; /* 边框 */
-  border-radius: 5px; /* 边框圆角 */
-  padding: 5px; /* 内边距 */
-  font-size: 16px; /* 字体大小 */
-  resize: vertical; /* 允许垂直调整大小 */
+  width: 300px;
+  height: 150px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 16px;
+  resize: vertical;
+}
+footer {
+  background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+  color: #fff; /* 设置文字颜色 */
+  padding: 25px; /* 设置内边距 */
+  text-align: left; /* 设置文本居中 */
+  position: fixed; /* 将页脚固定在底部 */
+  width: 100%; /* 设置宽度为100% */
+  bottom: 0; /* 设置距离底部的距离为0 */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
