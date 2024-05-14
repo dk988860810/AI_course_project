@@ -41,9 +41,11 @@ def handle_video_frame(data):
             thread.start()
             frame_queues_and_threads[edge_id] = (frame_queue, thread)
             frame_stream_queues[edge_id] = frame_stream_queue
+            print(f"Started worker thread for edge {edge_id}")
 
         frame_queue, _ = frame_queues_and_threads[edge_id]
         frame_queue.put((frame, class_label_set), timeout=1)
+        print(f"Added frame to queue for edge {edge_id}")
     except Full:
         print(f"Queue for edge {edge_id} is full, skipping frame")
     except Exception as e:
@@ -55,13 +57,11 @@ def worker(edge_id, frame_queue, frame_stream_queue):
             frame, class_label_set = frame_queue.get(timeout=1)
             print(f"Dequeued frame from edge {edge_id}")
 
-            # 在這裡進行任何需要的影像處理操作
-            ret, buffer = cv2.imencode('.jpg', frame)
+            ret, buffer = cv2.imencode('.jpg', frame,[int(cv2.IMWRITE_JPEG_QUALITY), 30])
             frame_bytes = buffer.tobytes()
             frame_stream_queue.put(frame_bytes, timeout=1)
             print(f"Added frame bytes to stream queue for edge {edge_id}")
 
-            # 模拟处理时间，避免CPU过度占用
             time.sleep(0.01)
         except Empty:
             continue
@@ -70,15 +70,21 @@ def worker(edge_id, frame_queue, frame_stream_queue):
             continue
 
 def generate_frames(edge_id):
-    frame_stream_queue = frame_stream_queues.get(edge_id, Queue(maxsize=10))
-
     while True:
+        frame_stream_queue = frame_stream_queues.get(edge_id, None)
+        if not frame_stream_queue:
+            print(f"No stream queue found for edge {edge_id}")
+            time.sleep(1)
+            continue
+
         try:
             frame_bytes = frame_stream_queue.get(timeout=1)
             print(f"Yielding frame bytes for edge {edge_id}")
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
         except Empty:
+            print(f"Stream queue for edge {edge_id} is empty, waiting for frames")
+            time.sleep(0.1)
             continue
 
 @app.route('/')
@@ -89,13 +95,13 @@ def index():
 def video_feed_route_1():
     return Response(generate_frames(1), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-@app.route('/video_feed_2')
-def video_feed_route_2():
-    return Response(generate_frames(2), mimetype='multipart/x-mixed-replace; boundary=frame')
+# @app.route('/video_feed_2')
+# def video_feed_route_2():
+#     return Response(generate_frames(2), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-@app.route('/video_feed_3')
-def video_feed_route_3():
-    return Response(generate_frames(3), mimetype='multipart/x-mixed-replace; boundary=frame')
+# @app.route('/video_feed_3')
+# def video_feed_route_3():
+#     return Response(generate_frames(3), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/get_class_label')
 def get_class_label():

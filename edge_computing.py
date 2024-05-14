@@ -8,7 +8,7 @@ from queue import Queue, Full, Empty
 
 # 使用串流模式傳輸影像
 def encode_image(img):
-    _, encoded_img = cv2.imencode('.png', img)
+    _, encoded_img = cv2.imencode('.jpg', img,[int(cv2.IMWRITE_JPEG_QUALITY), 30])
     return encoded_img.tobytes()
 
 # Replace <SERVER_IP> with the IP address of your server
