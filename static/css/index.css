@@ -5,6 +5,13 @@ body {
   max-height: 800px;
   margin: 0 auto; /* 居中页面 */
 }
+.logo {
+  width: 35px; /* 设置图片宽度 */
+  height: auto; /* 让高度自适应保持比例 */
+  float: left;
+  margin-left: 10px;
+  margin-right:0%;
+}
 
 header {
   z-index: 999;
@@ -168,6 +175,7 @@ body {
   width: 300px;
   font-size: 30px;
   margin-left: 80px;
+  color: #555;
 }
 
 .modal-body {
@@ -188,7 +196,6 @@ body {
   border: none;
   border-radius: 5px;
   background-color: red;
-  background: linear-gradient(180deg, #eb3329 0%, #9b2617 100%);
   text-align: center;
   text-decoration: none;
   box-shadow: 5px 5px 5px gray;
@@ -196,37 +203,65 @@ body {
   cursor: pointer;
   display: block;
   margin: 20px auto 0;
+  color: #fff;
+}
+.button:hover {
+  background-color:#9b1a1a ;
+  cursor: pointer;
+}
+
+.button-container {
+  text-align: center; /* 讓容器內的按鈕水平居中對齊 */
+  display: flex; /* 使用 Flexbox 佈局 */
+  justify-content: center; /* 將內容水平置中 */
+  
 }
 
 .button1 {
+  /* 設置 Button 1 的樣式 */
   border: none;
   border-radius: 5px;
-  background-color: red;
+  background-color: #ff3636e8; /* 設置不同的背景顏色 */
   text-align: center;
   text-decoration: none;
   box-shadow: 5px 5px 5px gray;
-  background: linear-gradient(180deg, #eb3329 0%, #9b2617 100%);
   font-size: 35px;
   cursor: pointer;
-  display: block;
-  margin: 20px 30px 0px 100px;
-  float: left;
+  display: inline-block; /* 設置按鈕為內聯塊元素 */
+  margin: 20px 10px; /* 調整按鈕的外邊距 */
+  padding: 5px 10px;
+  border-radius: 10px;
+  margin-left:30px ;
+  color: #fff;
+}
+.button1:hover {
+  background-color:#cc2a2acb ;
+  cursor: pointer;
 }
 
 .button2 {
+  /* 設置 Button 2 的樣式 */
   border: none;
   border-radius: 5px;
-  background-color: rgb(59, 59, 253);
-  background: linear-gradient(180deg, #68bc1e 0%, #549b17 100%);
+  background-color: #54e763d5; /* 設置不同的背景顏色 */
   text-align: center;
   text-decoration: none;
   box-shadow: 5px 5px 5px gray;
   font-size: 35px;
   cursor: pointer;
-  display: block;
-  margin: 20px 100px 0px 30px;
-  float: right;
+  display: inline-block; /* 設置按鈕為內聯塊元素 */
+  margin: 20px 10px; /* 調整按鈕的外邊距 */
+  padding: 5px 10px;
+  border-radius: 10px;
+  margin-left: 160px;
+  color: #fff;
 }
+.button2:hover {
+  background-color: #34923ed5;
+  cursor: pointer;
+}
+
+
 
 #multilineInput {
   width: 300px;
@@ -249,3 +284,5 @@ footer {
   align-items: center;
   justify-content: space-between;
 }
+
+
