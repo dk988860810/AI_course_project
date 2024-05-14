@@ -3,9 +3,10 @@ from ultralytics import YOLO
 import socketio
 import pickle
 import subprocess
+import queue
 
 # Replace <SERVER_IP> with the IP address of your server
-SERVER_IP = '192.168.8.150'
+SERVER_IP = '127.0.0.1'
 SERVER_PORT = 5000
 
 # Initialize camera and YOLO model
@@ -27,6 +28,7 @@ class EdgeComputing:
         self.cap = camera
         self.model = model
         self.class_label_set = []
+        self.frame_queue = queue.Queue()
 
     def detect_objects(self, frame, model):
         pre_result_cam = model.predict(frame, verbose=False)
@@ -50,7 +52,7 @@ class EdgeComputing:
 
     def stream_video(self, edge_id):
         # 构建 GStreamer 管道命令
-        gst_pipeline = f"gst-launch-1.0 appsrc ! videoconvert ! x264enc tune=zerolatency ! rtph264pay ! gdppay ! tcpserversink host=192.168.8.150 port=8554"
+        gst_pipeline = f"gst-launch-1.0 appsrc ! videoconvert ! x264enc tune=zerolatency ! rtph264pay ! gdppay ! tcpserversink host=172.17.244.4 port=8554"
     
         # 启动 GStreamer 管道
         gst_process = subprocess.Popen(gst_pipeline, shell=True, stdin=subprocess.PIPE)
@@ -61,8 +63,13 @@ class EdgeComputing:
                 if success:
                     frame_with_detections = self.detect_objects(frame, self.model)
 
-                    # 将帧写入 GStreamer 管道
-                    gst_process.stdin.write(cv2.imencode('.jpg', frame_with_detections)[1].tobytes())
+                    # 将帧写入队列
+                    self.frame_queue.put(cv2.imencode('.jpg', frame_with_detections)[1].tobytes())
+
+                    # 检查队列是否已满
+                    while not self.frame_queue.empty():
+                        # 从队列中获取帧并写入 GStreamer 管道
+                        gst_process.stdin.write(self.frame_queue.get())
 
                     # Serialize the class labels
                     class_labels_bytes = pickle.dumps(self.class_label_set)

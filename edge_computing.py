@@ -10,11 +10,11 @@ def encode_image(img):
     return encoded_img.tobytes()
 
 # Replace <SERVER_IP> with the IP address of your server
-SERVER_IP = '192.168.209.207'
+SERVER_IP = '172.17.244.4'
 SERVER_PORT = 5000
 
 # Initialize camera and YOLO model
-camera = cv2.VideoCapture(0)  # Replace 0 with the appropriate camera index
+camera = cv2.VideoCapture('testvideo.mp4')  # Replace 0 with the appropriate camera index
 model = YOLO("model/best.pt")
 
 # Create a SocketIO client instance
