@@ -8,6 +8,8 @@ from datetime import datetime
 import mysql.connector
 import pickle
 import time
+from PIL import Image
+import io
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
@@ -31,43 +33,19 @@ def handle_video_frame(data):
         class_label_set = pickle.loads(class_label_bytes)
         print(f"Received data from edge {edge_id}")
 
-        frame = cv2.imdecode(np.frombuffer(frame_encoded, np.uint8), cv2.IMREAD_COLOR)
-
         if edge_id not in frame_queues_and_threads:
-            frame_queue = Queue(maxsize=10)
             frame_stream_queue = Queue(maxsize=10)
-            thread = threading.Thread(target=worker, args=(edge_id, frame_queue, frame_stream_queue))
-            thread.daemon = True
-            thread.start()
-            frame_queues_and_threads[edge_id] = (frame_queue, thread)
+            frame_queues_and_threads[edge_id] = frame_stream_queue
             frame_stream_queues[edge_id] = frame_stream_queue
-            print(f"Started worker thread for edge {edge_id}")
+            print(f"Created stream queue for edge {edge_id}")
 
-        frame_queue, _ = frame_queues_and_threads[edge_id]
-        frame_queue.put((frame, class_label_set), timeout=1)
-        print(f"Added frame to queue for edge {edge_id}")
+        frame_stream_queue = frame_queues_and_threads[edge_id]
+        frame_stream_queue.put((frame_encoded, class_label_set), timeout=1)
+        print(f"Added frame to stream queue for edge {edge_id}")
     except Full:
-        print(f"Queue for edge {edge_id} is full, skipping frame")
+        print(f"Stream queue for edge {edge_id} is full, skipping frame")
     except Exception as e:
         print(f"Error handling video frame: {e}")
-
-def worker(edge_id, frame_queue, frame_stream_queue):
-    while True:
-        try:
-            frame, class_label_set = frame_queue.get(timeout=1)
-            print(f"Dequeued frame from edge {edge_id}")
-
-            ret, buffer = cv2.imencode('.jpg', frame,[int(cv2.IMWRITE_JPEG_QUALITY), 30])
-            frame_bytes = buffer.tobytes()
-            frame_stream_queue.put(frame_bytes, timeout=1)
-            print(f"Added frame bytes to stream queue for edge {edge_id}")
-
-            time.sleep(0.01)
-        except Empty:
-            continue
-        except Full:
-            print(f"Stream queue for edge {edge_id} is full, skipping frame")
-            continue
 
 def generate_frames(edge_id):
     while True:
@@ -78,10 +56,10 @@ def generate_frames(edge_id):
             continue
 
         try:
-            frame_bytes = frame_stream_queue.get(timeout=1)
+            frame_encoded, class_label_set = frame_stream_queue.get(timeout=1)
             print(f"Yielding frame bytes for edge {edge_id}")
             yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame_encoded + b'\r\n')
         except Empty:
             print(f"Stream queue for edge {edge_id} is empty, waiting for frames")
             time.sleep(0.1)

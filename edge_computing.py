@@ -16,7 +16,7 @@ SERVER_IP = '172.17.244.7'
 SERVER_PORT = 5000
 
 # Initialize camera and YOLO model
-camera = cv2.VideoCapture('testvideo.mp4')  # Replace 0 with the appropriate camera index
+camera = cv2.VideoCapture("testvideo.mp4")  # Replace 0 with the appropriate camera index
 model = YOLO("model/best.pt")
 
 # Create a SocketIO client instance
