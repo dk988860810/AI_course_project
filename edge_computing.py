@@ -4,23 +4,19 @@ import socketio
 import pickle
 import time
 import threading
-from queue import Queue
+from queue import Queue, Full, Empty
 
 # 使用串流模式傳輸影像
 def encode_image(img):
-    _, encoded_img = cv2.imencode('.jpg', img)
+    _, encoded_img = cv2.imencode('.jpg', img,[int(cv2.IMWRITE_JPEG_QUALITY), 30])
     return encoded_img.tobytes()
 
 # Replace <SERVER_IP> with the IP address of your server
-<<<<<<< HEAD
-SERVER_IP = '172.17.244.4'
-=======
-SERVER_IP = '192.168.8.150'
->>>>>>> 04301db27345072d1e9e3a259829ce3563ec4d79
+SERVER_IP = '172.17.244.7'
 SERVER_PORT = 5000
 
 # Initialize camera and YOLO model
-camera = cv2.VideoCapture('testvideo.mp4')  # Replace 0 with the appropriate camera index
+camera = cv2.VideoCapture(0)  # Replace 0 with the appropriate camera index
 model = YOLO("model/best.pt")
 
 # Create a SocketIO client instance
@@ -44,25 +40,26 @@ class EdgeComputing:
         self.class_label_set = []
         self.start_time = time.time()
         self.frame_counter = 0
-        self.encode_queue = Queue()
+        self.encode_queue = Queue(maxsize=10)  # 限制 Queue 大小
         self.stop_event = threading.Event()  # 創建一個事件對象
         self.encode_thread = threading.Thread(target=self.encode_frames)
         self.encode_thread.start()
+        self.edge_id=edge_id
 
     def encode_frames(self):
         while not self.stop_event.is_set():  # 檢查事件是否設置
-            print('encoding')
-
             success, frame = self.cap.read()
             if success:
-                frame_with_detections = self.detect_objects(frame, self.model)
-                encoded_frame = encode_image(frame_with_detections)
+                #frame_with_detections = self.detect_objects(frame, self.model)
+                encoded_frame = encode_image(frame)
                 class_labels_bytes = pickle.dumps(self.class_label_set)
-                data = pickle.dumps([1, encoded_frame, class_labels_bytes], protocol=0)
-                self.encode_queue.put(data)
+                data = pickle.dumps([self.edge_id, encoded_frame, class_labels_bytes], protocol=0)
+                try:
+                    self.encode_queue.put(data, timeout=1)
+                except Full:
+                    print("Queue is full, skipping frame")
 
     def detect_objects(self, frame, model):
-        print("detecting")
         pre_result_cam = model.predict(frame, verbose=False)
         self.class_label_set = []
         for data in pre_result_cam[0].boxes:
@@ -84,10 +81,9 @@ class EdgeComputing:
 
     def stream_video(self, edge_id):
         try:
-            while True:
-                print("streaming")
-                if not self.encode_queue.empty():
-                    data = self.encode_queue.get()
+            while not self.stop_event.is_set():
+                try:
+                    data = self.encode_queue.get(timeout=1)
                     sio.emit('video_frame', data)
 
                     self.frame_counter += 1
@@ -100,6 +96,8 @@ class EdgeComputing:
                         print(f"Frames per second: {fps}")
                         self.frame_counter = 0
                         self.start_time = time.time()
+                except Empty:
+                    print("Queue is empty, no frame to send")
         except KeyboardInterrupt:
             print("Keyboard Interrupt received, stopping...")
             self.stop_event.set()  # 設置事件對象以通知線程終止
@@ -108,8 +106,17 @@ class EdgeComputing:
 if __name__ == "__main__":
     edge_id = 1
     edge_computing = EdgeComputing(camera, model)
-    edge_computing.stream_video(edge_id)
+    stream_thread = threading.Thread(target=edge_computing.stream_video, args=(edge_id,))
+    stream_thread.start()
 
-    # 添加無限迴圈以保持主線程運行
-    while True:
-        pass
+    # 保持主線程運行，同時允許處理其他事件
+    try:
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print("Main thread Keyboard Interrupt received, stopping...")
+        edge_computing.stop_event.set()  # 設置事件對象以通知線程終止
+        edge_computing.encode_thread.join()  # 等待編碼線程完成
+        stream_thread.join()  # 等待串流線程完成
+        camera.release()
+        sio.disconnect()
