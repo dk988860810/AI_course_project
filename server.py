@@ -26,6 +26,23 @@ mysql_config = {
 frame_queues_and_threads = {}
 frame_stream_queues = {}
 
+def frame_processing_thread(edge_id):
+    while True:
+        frame_stream_queue = frame_stream_queues.get(edge_id, None)
+        if not frame_stream_queue:
+            print(f"No stream queue found for edge {edge_id}")
+            time.sleep(1)
+            continue
+
+        try:
+            frame_encoded, class_label_set = frame_stream_queue.get(timeout=1)
+            print(f"Processing frame for edge {edge_id}")
+            # Process frame here if needed
+        except Empty:
+            print(f"Stream queue for edge {edge_id} is empty, waiting for frames")
+            time.sleep(0.1)
+            continue
+
 @socketio.on('video_frame')
 def handle_video_frame(data):
     try:
@@ -35,11 +52,16 @@ def handle_video_frame(data):
 
         if edge_id not in frame_queues_and_threads:
             frame_stream_queue = Queue(maxsize=30)
-            frame_queues_and_threads[edge_id] = frame_stream_queue
             frame_stream_queues[edge_id] = frame_stream_queue
             print(f"Created stream queue for edge {edge_id}")
 
-        frame_stream_queue = frame_queues_and_threads[edge_id]
+            thread = threading.Thread(target=frame_processing_thread, args=(edge_id,))
+            thread.daemon = True
+            thread.start()
+            frame_queues_and_threads[edge_id] = (frame_stream_queue, thread)
+            print(f"Started processing thread for edge {edge_id}")
+
+        frame_stream_queue = frame_queues_and_threads[edge_id][0]
         frame_stream_queue.put((frame_encoded, class_label_set), timeout=1)
         print(f"Added frame to stream queue for edge {edge_id}")
     except Full:
@@ -65,6 +87,7 @@ def generate_frames(edge_id):
             time.sleep(0.1)
             continue
 
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -87,9 +110,9 @@ def get_class_label():
     class_label_set = []
 
     if camera_id in frame_queues_and_threads:
-        frame_queue, _ = frame_queues_and_threads[camera_id]
+        frame_queue = frame_queues_and_threads[camera_id][0]
         if frame_queue is not None and not frame_queue.empty():
-            frame, labels = frame_queue.get()
+            _, labels = frame_queue.get()
             class_label_set = labels
 
     return ' '.join(class_label_set)

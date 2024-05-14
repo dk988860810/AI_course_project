@@ -12,7 +12,7 @@ def encode_image(img):
     return encoded_img.tobytes()
 
 # Replace <SERVER_IP> with the IP address of your server
-SERVER_IP = '172.17.244.36'
+SERVER_IP = '172.17.244.7'
 SERVER_PORT = 5000
 
 # Initialize camera and YOLO model
@@ -44,6 +44,7 @@ class EdgeComputing:
         self.stop_event = threading.Event()  # 創建一個事件對象
         self.encode_thread = threading.Thread(target=self.encode_frames)
         self.encode_thread.start()
+        self.edge_id=edge_id
 
     def encode_frames(self):
         while not self.stop_event.is_set():  # 檢查事件是否設置
@@ -52,7 +53,7 @@ class EdgeComputing:
                 #frame_with_detections = self.detect_objects(frame, self.model)
                 encoded_frame = encode_image(frame)
                 class_labels_bytes = pickle.dumps(self.class_label_set)
-                data = pickle.dumps([1, encoded_frame, class_labels_bytes], protocol=0)
+                data = pickle.dumps([self.edge_id, encoded_frame, class_labels_bytes], protocol=0)
                 try:
                     self.encode_queue.put(data, timeout=1)
                 except Full:
