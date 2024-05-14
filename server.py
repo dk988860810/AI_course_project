@@ -34,7 +34,7 @@ def handle_video_frame(data):
         print(f"Received data from edge {edge_id}")
 
         if edge_id not in frame_queues_and_threads:
-            frame_stream_queue = Queue(maxsize=10)
+            frame_stream_queue = Queue(maxsize=30)
             frame_queues_and_threads[edge_id] = frame_stream_queue
             frame_stream_queues[edge_id] = frame_stream_queue
             print(f"Created stream queue for edge {edge_id}")
@@ -73,9 +73,9 @@ def index():
 def video_feed_route_1():
     return Response(generate_frames(1), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-# @app.route('/video_feed_2')
-# def video_feed_route_2():
-#     return Response(generate_frames(2), mimetype='multipart/x-mixed-replace; boundary=frame')
+@app.route('/video_feed_2')
+def video_feed_route_2():
+    return Response(generate_frames(2), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 # @app.route('/video_feed_3')
 # def video_feed_route_3():
