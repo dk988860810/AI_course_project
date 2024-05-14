@@ -1,15 +1,12 @@
 from flask import Flask, render_template, Response, request, jsonify
 from flask_socketio import SocketIO, emit
-import cv2
-import numpy as np
 import threading
 from queue import Queue, Empty, Full
 from datetime import datetime
 import mysql.connector
 import pickle
 import time
-from PIL import Image
-import io
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
