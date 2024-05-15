@@ -1,6 +1,6 @@
 header {
   z-index: 999;
-  background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+  background: #df4949;
   color: white;
   padding: 0px;
   margin: 0px;
@@ -77,7 +77,7 @@ header {
 
 
 footer {
-  background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+  background:#df4949;
   color: #fff; /* 设置文字颜色 */
   padding: 25px; /* 设置内边距 */
   text-align: left; /* 设置文本居中 */

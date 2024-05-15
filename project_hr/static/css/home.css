@@ -1,0 +1,148 @@
+/* 通用样式 */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* 导航栏样式 */
+header {
+  background-color: #86A8E7;
+  color: #fff;
+  padding: 20px;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #fff;
+}
+
+.logo img {
+  height: 50px;
+  margin-right: 10px;
+}
+
+/* 导航链接样式 */
+.nav-links a {
+  color: #fff;
+  text-decoration: none;
+  margin-left: 20px;
+}
+
+
+
+/* 主体内容样式 */
+main {
+  padding: 20px;
+}
+
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  background-color: #ffffff;
+  color: #000000;
+  padding: 100px 20px;
+  text-align: center;
+}
+
+.hero-content h1 {
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+.hero-content p {
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+
+.btn {
+  display: inline-block;
+  background-color: #F9A826;
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+.fire_prevention {
+  max-width: 400px;
+  margin-left: 20px;
+  margin-right: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.fire_prevention video { 
+  width: 100%; 
+  height: auto; 
+}
+
+
+/* 特点卡片样式 */
+.features {
+  margin-bottom: 40px;
+}
+
+.feature-cards {
+  display: flex;
+  justify-content: space-around;
+}
+
+.feature-card {
+  max-width: 300px;
+  text-align: center;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.feature-card img {
+  max-width: 100px;
+  margin-bottom: 20px;
+}
+
+/* 使命和优势样式 */
+.mission, .benefits {
+  margin-bottom: 40px;
+}
+
+.mission blockquote {
+  font-style: italic;
+  margin: 20px 0;
+}
+
+.benefit-cards {
+  display: flex;
+  justify-content: space-around;
+}
+
+.benefit-card {
+  max-width: 300px;
+  padding: 20px;
+  border: 1px solid #86A8E7;
+  border-radius: 5px;
+}
+
+.benefit-card ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+/* 页脚样式 */
+footer {
+  background-color: #86A8E7;
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+}
