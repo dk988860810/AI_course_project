@@ -3,18 +3,18 @@ import mysql.connector
 
 app = Flask(__name__, static_url_path='/static')
 
-@app.route('/test.py')
-def test():
-    return render_template('HR.html')
+# @app.route('/test.py')
+# def test():
+#     return render_template('home.html')
 
 @app.route('/')
 def index():
     # 创建连接
     mydb = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="zzymx.1219",
-        database="test_schema",
+        host="54.162.189.102",
+        user="test_user",
+        password="testpassword",
+        database="aws_test",
         auth_plugin='mysql_native_password'
     )
 
