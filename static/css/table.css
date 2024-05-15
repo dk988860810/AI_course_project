@@ -10,9 +10,15 @@ header {
   width: 100%;
   height: 55px;
   display: flex;
-  justify-content: space-between;
   align-items: center; /* 垂直居中标题和导航栏 */
   box-shadow: #555 0 0 10px;
+}
+.logo {
+  width: 35px; /* 设置图片宽度 */
+  height: auto; /* 让高度自适应保持比例 */
+  float: left;
+  margin-left: 10px;
+  margin-right:0%;
 }
   header h1 {
     margin-left: 20px;
