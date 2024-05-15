@@ -1,12 +1,12 @@
 const loginLink = document.getElementById('login-link');
 
-// 添加单击事件监听器
+// 添加點擊事件監聽器
 loginLink.addEventListener('click', function(event) {
-    event.preventDefault(); // 阻止默认链接行为
-    window.location.href = '/templates/login.html'; // 跳转到登录页面
+    event.preventDefault(); // 阻止默認連結行為
+    window.location.href = '/templates/login.html'; // 跳轉到登錄頁面
 });
 ​
-// 初始化动画
+// 初始化動畫
 const rotateTL = new TimelineMax({ paused: true })
   .to(".play-circle-01", .7, {
     opacity: .1,
@@ -62,3 +62,37 @@ close.addEventListener("click", e => {
   e.stopPropagation()
   openTL.reverse()
 })
+
+
+
+// 添加平滑滾動效果
+$('a[href*="#"]').on('click', function (e) {
+  e.preventDefault();
+  $('html, body').animate(
+    {
+      scrollTop: $($(this).attr('href')).offset().top,
+    },
+    500,
+    'linear'
+  );
+});
+
+// 添加視差效果
+$(window).on('scroll', function () {
+  const scrollPos = $(this).scrollTop();
+  $('.hero').css('background-position', `center ${-(scrollPos * 0.5)}px`);
+});
+
+// 添加動畫效果
+$(window).on('load', function () {
+  $('.fade-in').addClass('animate__animated animate__fadeIn');
+});
+
+// 添加懸停效果
+$('.feature-card').on('mouseenter', function () {
+  $(this).addClass('animate__animated animate__pulse');
+});
+
+$('.feature-card').on('mouseleave', function () {
+  $(this).removeClass('animate__animated animate__pulse');
+});

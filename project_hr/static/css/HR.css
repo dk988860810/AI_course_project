@@ -59,7 +59,7 @@ nav {
 }
 
 .search-input {
-  /* 搜索输入框的样式 */
+  /* 搜索輸入框的樣式 */
   /* 例如： */
   padding: 8px;
   border: 1px solid #ccc;
@@ -68,7 +68,7 @@ nav {
 }
 
 .search-btn {
-  /* 搜索按钮的样式 */
+  /* 搜尋按鈕的樣式 */
   /* 例如： */
   background-color: #86A8E7;
   color: white;
@@ -79,7 +79,7 @@ nav {
 }
 
 .add-employee-btn {
-  /* 新增员工按钮的样式 */
+  /* 新增員工按鈕的樣式 */
   /* 例如： */
   background-color: #86A8E7;
   color: white;
