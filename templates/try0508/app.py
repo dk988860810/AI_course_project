@@ -11,12 +11,12 @@ app.secret_key = 'mmm'
 conn = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="0418",
+    password="s22525439",
     database="test"
 )
 
 # 用於登錄頁面的路由
-@app.route('/pythonlogin/', methods=['GET', 'POST'])
+@app.route('/login/', methods=['GET', 'POST'])
 def login():
     msg = ''
 
@@ -37,7 +37,7 @@ def login():
         else:
             msg = '用戶名/密碼不正確！'
 
-    return render_template('index.html', msg=msg)
+    return render_template('login.html', msg=msg)
 
 # 用於註冊頁面的路由
 @app.route('/register', methods=['GET', 'POST'])
