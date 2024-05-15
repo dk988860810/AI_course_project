@@ -6,13 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>資料庫資料</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}">
+    <link rel="stylesheet" href="css/table.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="icon" href="./img/logo.png">
+
 </head>
 
 <body>
     <header>
+        <img src="./img/logo.png" alt="Logo" class="logo">
         <h1>Data</h1>
     </header>
 
@@ -27,6 +30,7 @@
                     <th>區域</th>
                     <th>情況</th>
                     <th>取消原因</th>
+                    <th>平面圖</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -39,9 +43,31 @@
         <button id="next-page">下一頁</button>
     </div>
 
+    <div class="modal fade" id="check" role="dialog" tabindex="-1" aria-labelledby="videoModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="videoModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                        
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="video_container">
+                        <img id="image" src="" width="640" height="480">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
     <script>
         var currentPage = 1;
         var totalPages = 1;
+
+        var modalTitle = document.getElementById('videoModalLabel');
+        var floorImagesouce=document.querySelector('#image');
 
         function loadData(page) {
             $.ajax({
@@ -74,6 +100,33 @@
                         row.append($('<td>').text(item.area));
                         row.append($('<td>').text(item.cancel_reason));
                         row.append($('<td>').text(item.situation));
+                        // 添加按钮
+                        var button = $('<button>').text('查看');
+                        var buttonTd = $('<td>').append(button);
+                        row.append(buttonTd);
+
+                        if (item.floor === '1樓') {
+                            button.click(function () {
+                            modalTitle.innerText="1樓平面圖";
+                            floorImagesouce.src="img/floor_plan1.png";
+
+                            $('#check').modal('show');
+                        });
+                        } else if (item.floor === '2樓') {
+                            button.click(function () {
+                            modalTitle.innerText="2樓平面圖";
+                            floorImagesouce.src="img/floor_plan2.png";
+
+                            $('#check').modal('show');
+                        });
+                        } else if (item.floor === '3樓'){
+                            button.click(function () {
+                            modalTitle.innerText="3樓平面圖";
+                            floorImagesouce.src="img/floor_plan3.png";
+
+                            $('#check').modal('show');
+                        });
+                        }
                         tableBody.append(row);
                     });
                 }
@@ -99,10 +152,10 @@
         });
     </script>
     <footer>
-    <p>XXX公司</p>
-    <p>幫助</p>
-    <p>電話：0800-000-000</p>
-</footer>
+        <p>XXX公司</p>
+        <p>幫助</p>
+        <p>電話：0800-000-000</p>
+    </footer>
 </body>
 
 </html>

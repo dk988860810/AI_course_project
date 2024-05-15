@@ -13,11 +13,11 @@ app.config['SECRET_KEY'] = 'your_secret_key'
 socketio = SocketIO(app)
 
 mysql_config = {
-    'host': '127.0.0.1',
+    'host': '54.162.189.102',
     'port': '3306',
-    'user': 'root',
-    'password': 'ccps971304',
-    'database': 'AI_course'
+    'user': 'test_user',
+    'password': 'testpassword',
+    'database': 'aws_test'
 }
 
 frame_queues_and_threads = {}
