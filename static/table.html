@@ -31,6 +31,7 @@
                     <th>情況</th>
                     <th>取消原因</th>
                     <th>平面圖</th>
+                    <th>下載資料</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -101,26 +102,29 @@
                         row.append($('<td>').text(item.cancel_reason));
                         row.append($('<td>').text(item.situation));
                         // 添加按钮
-                        var button = $('<button>').text('查看');
-                        var buttonTd = $('<td>').append(button);
-                        row.append(buttonTd);
+                        var button_check = $('<button>').text('查看');
+                        var button_download = $('<button>').text('Download');
+                        var button_check_Td = $('<td>').append(button_check);
+                        var button_download_Td = $('<td>').append(button_download);
+                        row.append(button_check_Td);
+                        row.append(button_download_Td);
 
                         if (item.floor === '1樓') {
-                            button.click(function () {
+                            button_check.click(function () {
                             modalTitle.innerText="1樓平面圖";
                             floorImagesouce.src="img/floor_plan1.png";
 
                             $('#check').modal('show');
                         });
                         } else if (item.floor === '2樓') {
-                            button.click(function () {
+                            button_check.click(function () {
                             modalTitle.innerText="2樓平面圖";
                             floorImagesouce.src="img/floor_plan2.png";
 
                             $('#check').modal('show');
                         });
                         } else if (item.floor === '3樓'){
-                            button.click(function () {
+                            button_check.click(function () {
                             modalTitle.innerText="3樓平面圖";
                             floorImagesouce.src="img/floor_plan3.png";
 
