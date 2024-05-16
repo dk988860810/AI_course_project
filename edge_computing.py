@@ -12,11 +12,11 @@ def encode_image(img):
     return encoded_img.tobytes()
 
 # Replace <SERVER_IP> with the IP address of your server
-SERVER_IP = '54.162.189.102'
-SERVER_PORT = 80
+SERVER_IP = '172.17.244.11'
+SERVER_PORT = 5000
 
 # Initialize camera and YOLO model
-camera = cv2.VideoCapture(0)  # Replace 0 with the appropriate camera index
+camera = cv2.VideoCapture("testvideo.mp4")  # Replace 0 with the appropriate camera index
 model = YOLO("model/best.pt")
 
 # Create a SocketIO client instance
@@ -50,9 +50,11 @@ class EdgeComputing:
         while not self.stop_event.is_set():  # 檢查事件是否設置
             success, frame = self.cap.read()
             if success:
-                #frame_with_detections = self.detect_objects(frame, self.model)
-                encoded_frame = encode_image(frame)
+                frame_with_detections = self.detect_objects(frame, self.model)
+                encoded_frame = encode_image(frame_with_detections)
+                print(self.class_label_set)
                 class_labels_bytes = pickle.dumps(self.class_label_set)
+                print("encode",class_labels_bytes)
                 data = pickle.dumps([self.edge_id, encoded_frame, class_labels_bytes], protocol=0)
                 try:
                     self.encode_queue.put(data, timeout=1)

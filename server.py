@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Response, request, jsonify,make_response,url_for
+from flask import Flask, render_template, Response, request, jsonify,make_response,url_for,redirect
 from flask_socketio import SocketIO, emit
 import threading
 from queue import Queue, Empty, Full
@@ -78,6 +78,7 @@ def generate_frames(edge_id):
         try:
             frame_encoded, class_label_set = frame_stream_queue.get(timeout=1)
             # print(f"Yielding frame bytes for edge {edge_id}")
+            print(class_label_set)
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame_encoded + b'\r\n')
         except Empty:
@@ -112,6 +113,8 @@ def get_class_label():
         if frame_queue is not None and not frame_queue.empty():
             _, labels = frame_queue.get()
             class_label_set = labels
+            print(class_label_set)
+        
 
     return ' '.join(class_label_set)
 
@@ -141,15 +144,14 @@ def submit():
 
 @app.route('/table')
 def table():
-    return render_template('table.html')
+    result = get_data(page=1)
+    return render_template('table.html',result=result)
 
-@app.route('/get_data', methods=['GET'])
-def get_data():
+def get_data(page=1):
     conn = mysql.connector.connect(**mysql_config)
     cursor = conn.cursor()
 
     try:
-        page = request.args.get('page', 1, type=int)
         offset = (page - 1) * 20
 
         count_query = "SELECT COUNT(*) FROM test"
@@ -175,7 +177,7 @@ def get_data():
         if result:
             result[0]['total_count'] = total_count
 
-        return jsonify(result)
+        return result
     finally:
         cursor.close()
         conn.close()
@@ -259,6 +261,10 @@ def download():
         print("wkhtmltopdf reported an error:", e)
         return str(e), 500
 
+@app.route('/redirect')
+def reset_clock_status():
+    return redirect(url_for('table'))
+    
 
 
 if __name__ == "__main__":
