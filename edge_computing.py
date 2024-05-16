@@ -12,8 +12,8 @@ def encode_image(img):
     return encoded_img.tobytes()
 
 # Replace <SERVER_IP> with the IP address of your server
-SERVER_IP = '172.17.244.36'
-SERVER_PORT = 5000
+SERVER_IP = '54.162.189.102'
+SERVER_PORT = 80
 
 # Initialize camera and YOLO model
 camera = cv2.VideoCapture(0)  # Replace 0 with the appropriate camera index
