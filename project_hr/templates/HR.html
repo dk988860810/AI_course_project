@@ -46,16 +46,12 @@
           </tr>
         </thead>
         <tbody id="employeeList">
-          {% for employee in employees %}
+          {% for employee in rows %}
           <tr>
-            <td>{{ employee.employee_id }}</td>
-            <td>{{ employee.name }}</td>
-            <td>{{ employee.job_title }}</td>
-            <td>{{ employee.department }}</td>
-            <td>{{ employee.location }}</td>
-            <td>{{ employee.phone }}</td>
-            <td>{{ employee.emergency_contact }}</td>
-            <td><a href="/employee/{{ employee.employee_id }}" target="_blank">查看</a></td>
+            {% for item in employee %}
+            <td> {{ item }}</td>
+            {% endfor %}
+            <td> 查看</td>
             <td>
               <button class="edit-btn" data-employee-id="{{ employee.employee_id }}">編輯</button>
               <button class="delete-btn" data-employee-id="{{ employee.employee_id }}">刪除</button>
@@ -76,7 +72,7 @@
   <!-- 新增員工彈出視窗 -->
   <div id="addEmployeeModal" class="modal">
     <div class="modal-content">
-      <span id="closeBtn" class="close">&times;</span>
+      <span id="cancelAddEmployee_2" class="close">&times;</span>
       <h2>新增員工</h2>
       <form id="addEmployeeForm" enctype="multipart/form-data">
         <label for="name">姓名:</label>
@@ -106,35 +102,6 @@
     </div>
   </div>
 
-  <div id="editModal" class="modal">
-    <div class="modal-content">
-      <span id="closeBtn" class="close">&times;</span>
-      <form id="editForm">
-        <!-- 添加隐藏的员工 ID 字段 -->
-        <input type="hidden" id="employeeId" name="employeeId">
-        <label for="name">姓名:</label>
-        <input type="text" id="name" name="name" required>
-
-        <label for="jobTitle">職務:</label>
-        <input type="text" id="jobTitle" name="jobTitle" required>
-
-        <label for="department">部門:</label>
-        <input type="text" id="department" name="department" required>
-
-        <label for="location">辦公位置:</label>
-        <input type="text" id="location" name="location" required>
-
-        <label for="phone">聯絡電話:</label>
-        <input type="tel" id="phone" name="phone" required>
-
-        <label for="emergencyContact">緊急聯絡人:</label>
-        <input type="text" id="emergencyContact" name="emergencyContact" required>
-
-        <button type="submit">儲存</button>
-        <button type="button" id="cancelEditEmployee">取消</button>
-      </form>
-    </div>
-  </div>
 
   <footer>
     © 2024 火災預警系統

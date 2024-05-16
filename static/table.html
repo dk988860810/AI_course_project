@@ -30,6 +30,8 @@
                     <th>區域</th>
                     <th>情況</th>
                     <th>取消原因</th>
+                    <th>平面圖</th>
+                    <th>下載資料</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -42,9 +44,31 @@
         <button id="next-page">下一頁</button>
     </div>
 
+    <div class="modal fade" id="check" role="dialog" tabindex="-1" aria-labelledby="videoModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="videoModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                        
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="video_container">
+                        <img id="image" src="" width="640" height="480">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
     <script>
         var currentPage = 1;
         var totalPages = 1;
+
+        var modalTitle = document.getElementById('videoModalLabel');
+        var floorImagesouce=document.querySelector('#image');
 
         function loadData(page) {
             $.ajax({
@@ -77,6 +101,36 @@
                         row.append($('<td>').text(item.area));
                         row.append($('<td>').text(item.cancel_reason));
                         row.append($('<td>').text(item.situation));
+                        // 添加按钮
+                        var button_check = $('<button>').text('查看');
+                        var button_download = $('<button>').text('Download');
+                        var button_check_Td = $('<td>').append(button_check);
+                        var button_download_Td = $('<td>').append(button_download);
+                        row.append(button_check_Td);
+                        row.append(button_download_Td);
+
+                        if (item.floor === '1樓') {
+                            button_check.click(function () {
+                            modalTitle.innerText="1樓平面圖";
+                            floorImagesouce.src="img/floor_plan1.png";
+
+                            $('#check').modal('show');
+                        });
+                        } else if (item.floor === '2樓') {
+                            button_check.click(function () {
+                            modalTitle.innerText="2樓平面圖";
+                            floorImagesouce.src="img/floor_plan2.png";
+
+                            $('#check').modal('show');
+                        });
+                        } else if (item.floor === '3樓'){
+                            button_check.click(function () {
+                            modalTitle.innerText="3樓平面圖";
+                            floorImagesouce.src="img/floor_plan3.png";
+
+                            $('#check').modal('show');
+                        });
+                        }
                         tableBody.append(row);
                     });
                 }
@@ -102,10 +156,10 @@
         });
     </script>
     <footer>
-    <p>XXX公司</p>
-    <p>幫助</p>
-    <p>電話：0800-000-000</p>
-</footer>
+        <p>XXX公司</p>
+        <p>幫助</p>
+        <p>電話：0800-000-000</p>
+    </footer>
 </body>
 
 </html>

@@ -1,15 +1,24 @@
-/* 通用样式 */
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700);
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css');
+
+/* 通用樣式 */
 body {
-  font-family: Arial, sans-serif;
+  font-family: Arial, "Open Sans", sans-serif;
   margin: 0;
   padding: 0;
+  background: #E8CBC0;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #636FA4, #E8CBC0);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #636FA4, #E8CBC0); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  
 }
 
-/* 导航栏样式 */
+/* 導航欄樣式 */
 header {
-  background-color: #86A8E7;
-  color: #fff;
+  background-color: #ffffff18;
+  color: #000000;
   padding: 20px;
+  font-size: 22px;
 }
 
 nav {
@@ -22,60 +31,146 @@ nav {
   display: flex;
   align-items: center;
   text-decoration: none;
-  color: #fff;
+  color: #000000;
 }
 
 .logo img {
-  height: 50px;
-  margin-right: 10px;
+  height: 60px;
+  margin-right: 20px;
+
 }
 
-/* 导航链接样式 */
-.nav-links a {
+.login-button {
+  text-align: center;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-size: 20px;
+  letter-spacing: 2px;
+  position: relative;
+  background-color: #8aa0c9;
+  border: none;
   color: #fff;
-  text-decoration: none;
-  margin-left: 20px;
+  padding: 15px;
+  width: 150px;
+  text-align: center;
+  transition-duration: 0.4s;
+  overflow: hidden;
+  box-shadow: 0 5px 15px #193047;
+  border-radius: 25px;
 }
 
+.login-button:hover {
+  background: #fff;
+  box-shadow: 0px 2px 10px 5px #858585;
+  color: #000;
+}
+
+.login-button:after {
+  content: "";
+  background: #858585;
+  display: block;
+  position: absolute;
+  padding-top: 300%;
+  padding-left: 350%;
+  margin-left: -20px !important;
+  margin-top: -120%;
+  opacity: 0;
+  transition: all 0.8s
+}
+
+.login-button:active:after {
+  padding: 0;
+  margin: 0;
+  opacity: 1;
+  transition: 0s
+}
+
+.login-button:focus { outline:0; }
 
 
-/* 主体内容样式 */
+
+/* 主體內容樣式 */
 main {
   padding: 20px;
 }
 
 .hero {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   margin-bottom: 40px;
-  background-color: #ffffff;
+  background-color: #ffffff18;
   color: #000000;
   padding: 100px 20px;
   text-align: center;
 }
 
 .hero-content h1 {
-  font-size: 36px;
+  font-size: 60px;
   margin-bottom: 20px;
 }
 
 .hero-content p {
-  font-size: 18px;
-  margin-bottom: 30px;
+  font-size: 25px;
+  margin-bottom: 40px;
 }
 
 .btn {
-  display: inline-block;
+  /* display: inline-block;
   background-color: #F9A826;
   color: #fff;
   text-decoration: none;
-  padding: 10px 20px;
-  border-radius: 5px;
+  padding: 15px 28px;
+  border-radius: 22px; */
+  width: 120px;
+  height: 25px;
+  padding: 10px 25px;
+  margin: 0 12px 12px 0;
+  text-align: center;
+  color: white;
+  display: inline-block;
+  border-radius: 4px;
+  text-decoration: none;
+  overflow: hidden;
+  position: relative;
+  transition: all .2s ease-out 0s;
+}
+.btn:hover > span {
+  top: -20px;
+  opacity: 0;
+}
+.btn:hover > i {
+  opacity: 1;
+  font-size: 22px;
+  top: 50%;
+}
+
+.btn-name,
+.btn-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  transition: all .3s ease-out;
+  position: absolute;
+}
+
+.btn-name {
+  font-size: 15px;
+  font-weight: 600;
+  opacity: 1;
+}
+
+.btn-icon {
+  opacity: 0;
+}
+.btn-color {
+  background-color: #3b5998;
 }
 
 .fire_prevention {
-  max-width: 400px;
+  max-width: 800px;
   margin-left: 20px;
   margin-right: 20px;
   border: 1px solid #ccc;
@@ -84,12 +179,12 @@ main {
 }
 
 .fire_prevention video { 
-  width: 100%; 
+  width: 120%; 
   height: auto; 
 }
 
 
-/* 特点卡片样式 */
+/* 特點卡片樣式 */
 .features {
   margin-bottom: 40px;
 }
@@ -112,12 +207,186 @@ main {
   margin-bottom: 20px;
 }
 
-/* 使命和优势样式 */
-.mission, .benefits {
+/* 使命樣式 */
+.mission {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.btn1 {		
+	position: relative;	
+	padding: 1.4rem 4.2rem;
+	padding-right: 3.1rem;
+	font-size: 1.4rem;
+	color: var(--inv);
+	letter-spacing: 1.1rem;
+	text-transform: uppercase;
+	transition: all 500ms cubic-bezier(0.77, 0, 0.175, 1);	
+	cursor: pointer;
+	user-select: none;
+}
+
+.btn1:before, .btn:after {
+	content: '';
+	position: absolute;	
+	transition: inherit;
+	z-index: -1;
+}
+
+.btn1:hover {
+	color: var(--def);
+	transition-delay: .5s;
+}
+
+.btn1:hover:before {
+	transition-delay: 0s;
+}
+
+.btn1:hover:after {
+	background: var(--inv);
+	transition-delay: .35s;
+}
+
+
+/* From Top */
+
+.from-top:before, 
+.from-top:after {
+	left: 0;
+	height: 0;
+	width: 100%;
+}
+
+.from-top:before {
+	bottom: 0;	
+	border: 1px solid var(--inv);
+	border-top: 0;
+	border-bottom: 0;
+}
+
+.from-top:after {
+	top: 0;
+	height: 0;
+}
+
+.from-top:hover:before,
+.from-top:hover:after {
+	height: 100%;
+}
+
+/* From Left */
+
+.from-left:before, 
+.from-left:after {
+	top: 0;
+	width: 0;
+	height: 100%;
+}
+
+.from-left:before {
+	right: 0;
+	border: 1px solid var(--inv);
+	border-left: 0;
+	border-right: 0;	
+}
+
+.from-left:after {
+	left: 0;
+}
+
+.from-left:hover:before,
+.from-left:hover:after {
+	width: 100%;
+}
+
+/* From Right */
+
+.from-right:before, 
+.from-right:after {
+	top: 0;
+	width: 0;
+	height: 100%;
+}
+
+.from-right:before {
+	left: 0;
+	border: 1px solid var(--inv);
+	border-left: 0;
+	border-right: 0;	
+}
+
+.from-right:after {
+	right: 0;
+}
+
+.from-right:hover:before,
+.from-right:hover:after {
+	width: 100%;
+}
+
+/* From center */
+
+.from-center:before {
+	top: 0;
+	left: 50%;
+	height: 100%;
+	width: 0;
+	border: 1px solid var(--inv);
+	border-left: 0;
+	border-right: 0;
+}
+
+.from-center:after {
+	bottom: 0;
+	left: 0;
+	height: 0;
+	width: 100%;
+	background: var(--inv);
+}
+
+.from-center:hover:before {
+	left: 0;
+	width: 100%;
+}
+
+.from-center:hover:after {
+	top: 0;
+	height: 100%;
+}
+
+*, *:before, *:after {
+	box-sizing: border-box;
+}
+
+/* .mission {
+	--def: #96B7C4; 	
+	--inv: #fff;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	height: 100vh;
+	width: 100%;
+	background-image: linear-gradient(-25deg, #616161 0%, #96B7C4 100%);
+} */
+
+html {
+	font-size: 12px;
+	font-family: 'Playfair Display', serif;
+}
+
+div {margin-bottom: 3rem;}
+div:last-child {margin-bottom: 0;}
+
+
+/* 優勢樣式 */
+ .benefits {
   margin-bottom: 40px;
 }
 
-.mission blockquote {
+ .blockquote {
   font-style: italic;
   margin: 20px 0;
 }
@@ -130,8 +399,14 @@ main {
 .benefit-card {
   max-width: 300px;
   padding: 20px;
-  border: 1px solid #86A8E7;
+  border: 1px solid #2ac7fabd;
   border-radius: 5px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.benefit-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .benefit-card ul {
@@ -139,10 +414,64 @@ main {
   padding-left: 20px;
 }
 
-/* 页脚样式 */
+/* 頁腳樣式 */
 footer {
-  background-color: #86A8E7;
+  background-color: #ffffff18;
   color: #fff;
   text-align: center;
   padding: 10px;
 }
+
+
+
+
+
+/* 添加動畫效果 */
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.fade-in {
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* 添加轉場效果
+.nav-links a {
+  position: relative;
+  text-decoration: none;
+  color: #000000;
+  transition: color 0.3s ease-in-out;
+  margin-left: 30px;
+}
+
+.nav-links a::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #333;
+  transform: scaleX(0);
+  transition: transform 0.3s ease-in-out;
+}
+
+.nav-links a:hover {
+  color: #666;
+}
+
+.nav-links a:hover::before {
+  transform: scaleX(1);
+} */
+
+/* 添加懸停效果 */
+.feature-card {
+  transition: transform 0.3s ease-in-out;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
