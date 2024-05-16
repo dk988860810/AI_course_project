@@ -44,7 +44,7 @@
         <button id="next-page">下一頁</button>
     </div>
 
-    <div class="modal fade" id="check" role="dialog" tabindex="-1" aria-labelledby="videoModalLabel">
+    <!-- <div class="modal fade" id="check" role="dialog" tabindex="-1" aria-labelledby="videoModalLabel">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -61,13 +61,20 @@
                 </div>
             </div>
         </div>
+    </div> -->
 
+    <div id="check" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="image" src="" width="640" height="480">
+        <div id="imgText"></div>
     </div>
+
     <script>
         var currentPage = 1;
         var totalPages = 1;
 
-        var modalTitle = document.getElementById('videoModalLabel');
+        var modal=document.getElementById("check")
+        var modalTitle = document.getElementById('imgText');
         var floorImagesouce = document.querySelector('#image');
 
         function loadData(page) {
@@ -141,7 +148,7 @@
                         })
                         if (item.floor === '1樓') {
                             button_check.click(function () {
-                                modalTitle.innerText = "1樓平面圖";
+                                modalTitle.innerHTML = "1樓平面圖";
                                 floorImagesouce.src = "img/floorplan/floor_plan1.png";
 
                                 $('#check').modal('show');
@@ -184,6 +191,11 @@
                 }
             });
         });
+
+        var span = document.getElementsByClassName("close")[0];
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
     </script>
     <footer>
         <p>XXX公司</p>
