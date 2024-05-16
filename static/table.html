@@ -50,7 +50,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="videoModalLabel">Modal title</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal">
-                        
+
                     </button>
                 </div>
                 <div class="modal-body">
@@ -68,7 +68,7 @@
         var totalPages = 1;
 
         var modalTitle = document.getElementById('videoModalLabel');
-        var floorImagesouce=document.querySelector('#image');
+        var floorImagesouce = document.querySelector('#image');
 
         function loadData(page) {
             $.ajax({
@@ -108,28 +108,58 @@
                         var button_download_Td = $('<td>').append(button_download);
                         row.append(button_check_Td);
                         row.append(button_download_Td);
+                        button_download_Td.click(function () {
+                            fetch('/download_data', {
+                                method: 'GET',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                                .then(response => response.blob()) // 獲取二進制資料流
+                                .then(blob => {
+                                    // 創建一個臨時的 URL 指向該資料流
+                                    const url = window.URL.createObjectURL(new Blob([blob]));
+                                    // 創建一個 <a> 元素
+                                    const a = document.createElement('a');
+                                    // 获取当前日期
+                                    const today = new Date();
+                                    const dateStr = today.toISOString().split('T')[0]; // 例如 "2024-05-16"
 
+                                    // 动态生成文件名
+                                    const fileName = `data_${dateStr}.pdf`;
+                                    // 設置 <a> 元素的屬性
+                                    a.href = url;
+                                    a.download = fileName; // 設置下載檔案名稱
+                                    // 模擬點擊 <a> 元素,觸發下載
+                                    a.click();
+                                    // 釋放臨時 URL
+                                    window.URL.revokeObjectURL(url);
+                                })
+                                .catch(error => {
+                                    console.error('Error downloading PDF:', error);
+                                });
+                        })
                         if (item.floor === '1樓') {
                             button_check.click(function () {
-                            modalTitle.innerText="1樓平面圖";
-                            floorImagesouce.src="img/floor_plan1.png";
+                                modalTitle.innerText = "1樓平面圖";
+                                floorImagesouce.src = "img/floorplan/floor_plan1.png";
 
-                            $('#check').modal('show');
-                        });
+                                $('#check').modal('show');
+                            });
                         } else if (item.floor === '2樓') {
                             button_check.click(function () {
-                            modalTitle.innerText="2樓平面圖";
-                            floorImagesouce.src="img/floor_plan2.png";
+                                modalTitle.innerText = "2樓平面圖";
+                                floorImagesouce.src = "img/floorplan/floor_plan2.png";
 
-                            $('#check').modal('show');
-                        });
-                        } else if (item.floor === '3樓'){
+                                $('#check').modal('show');
+                            });
+                        } else if (item.floor === '3樓') {
                             button_check.click(function () {
-                            modalTitle.innerText="3樓平面圖";
-                            floorImagesouce.src="img/floor_plan3.png";
+                                modalTitle.innerText = "3樓平面圖";
+                                floorImagesouce.src = "img/floorplan/floor_plan3.png";
 
-                            $('#check').modal('show');
-                        });
+                                $('#check').modal('show');
+                            });
                         }
                         tableBody.append(row);
                     });

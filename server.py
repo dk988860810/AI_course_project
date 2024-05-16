@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Response, request, jsonify
+from flask import Flask, render_template, Response, request, jsonify,make_response,url_for
 from flask_socketio import SocketIO, emit
 import threading
 from queue import Queue, Empty, Full
@@ -6,7 +6,8 @@ from datetime import datetime
 import mysql.connector
 import pickle
 import time
-
+import pdfkit
+import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
@@ -27,16 +28,16 @@ def frame_processing_thread(edge_id):
     while True:
         frame_stream_queue = frame_stream_queues.get(edge_id, None)
         if not frame_stream_queue:
-            print(f"No stream queue found for edge {edge_id}")
+            # print(f"No stream queue found for edge {edge_id}")
             time.sleep(1)
             continue
 
         try:
             frame_encoded, class_label_set = frame_stream_queue.get(timeout=1)
-            print(f"Processing frame for edge {edge_id}")
+            # print(f"Processing frame for edge {edge_id}")
             # Process frame here if needed
         except Empty:
-            print(f"Stream queue for edge {edge_id} is empty, waiting for frames")
+            # print(f"Stream queue for edge {edge_id} is empty, waiting for frames")
             time.sleep(0.1)
             continue
 
@@ -45,42 +46,42 @@ def handle_video_frame(data):
     try:
         edge_id, frame_encoded, class_label_bytes = pickle.loads(data)
         class_label_set = pickle.loads(class_label_bytes)
-        print(f"Received data from edge {edge_id}")
+        # print(f"Received data from edge {edge_id}")
 
         if edge_id not in frame_queues_and_threads:
             frame_stream_queue = Queue(maxsize=30)
             frame_stream_queues[edge_id] = frame_stream_queue
-            print(f"Created stream queue for edge {edge_id}")
+            # print(f"Created stream queue for edge {edge_id}")
 
             thread = threading.Thread(target=frame_processing_thread, args=(edge_id,))
             thread.daemon = True
             thread.start()
             frame_queues_and_threads[edge_id] = (frame_stream_queue, thread)
-            print(f"Started processing thread for edge {edge_id}")
+            # print(f"Started processing thread for edge {edge_id}")
 
         frame_stream_queue = frame_queues_and_threads[edge_id][0]
         frame_stream_queue.put((frame_encoded, class_label_set), timeout=1)
-        print(f"Added frame to stream queue for edge {edge_id}")
+        # print(f"Added frame to stream queue for edge {edge_id}")
     except Full:
-        print(f"Stream queue for edge {edge_id} is full, skipping frame")
+         print(f"Stream queue for edge {edge_id} is full, skipping frame")
     except Exception as e:
-        print(f"Error handling video frame: {e}")
+         print(f"Error handling video frame: {e}")
 
 def generate_frames(edge_id):
     while True:
         frame_stream_queue = frame_stream_queues.get(edge_id, None)
         if not frame_stream_queue:
-            print(f"No stream queue found for edge {edge_id}")
+            # print(f"No stream queue found for edge {edge_id}")
             time.sleep(1)
             continue
 
         try:
             frame_encoded, class_label_set = frame_stream_queue.get(timeout=1)
-            print(f"Yielding frame bytes for edge {edge_id}")
+            # print(f"Yielding frame bytes for edge {edge_id}")
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame_encoded + b'\r\n')
         except Empty:
-            print(f"Stream queue for edge {edge_id} is empty, waiting for frames")
+            # print(f"Stream queue for edge {edge_id} is empty, waiting for frames")
             time.sleep(0.1)
             continue
 
@@ -178,6 +179,87 @@ def get_data():
     finally:
         cursor.close()
         conn.close()
+
+@app.route('/download_data')
+def download():
+    path_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
+    config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
+    conn = mysql.connector.connect(**mysql_config)
+    cursor = conn.cursor()
+    query = "SELECT * FROM employees"
+    cursor.execute(query)
+    result = cursor.fetchall()
+    cursor.close()
+    conn.close()
+
+    img_folder_path = os.path.join("static", "img","floorplan")
+    imgs = os.listdir(img_folder_path)
+    
+    # 创建表格头部
+    html = """
+    <html>
+    <head>
+        <style>
+            table, th, td {
+                border: 1px solid black;
+                border-collapse: collapse;
+                padding: 5px;
+            }
+            th {
+                background-color: #f2f2f2;
+            }
+        </style>
+    </head>
+    <body>
+    <h1>Employee Data</h1>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Job Title</th>
+            <th>Department</th>
+            <th>Office Location</th>
+            <th>Phone Number</th>
+            <th>Emergency Contact</th>
+        </tr>
+    """
+    
+    # 填充表格数据
+    for row in result:
+        html += f"""
+        <tr>
+            <td>{row[0]}</td>
+            <td>{row[1]}</td>
+            <td>{row[2]}</td>
+            <td>{row[3]}</td>
+            <td>{row[4]}</td>
+            <td>{row[5]}</td>
+            <td>{row[6]}</td>
+        </tr>
+        """
+
+    html += "</table><br><h1>Floor Plan</h1>"
+    count=1
+    # 添加图片
+    for img in imgs:
+        html+=f"<br><h2>{count} Floor</h2>"
+        img_url = url_for('static', filename=f'img/floorplan/{img}', _external=True)
+        html += f"<img src='{img_url}' style='max-width:100%;height:auto;'><br>"
+        count+=1
+        
+    html += "</body></html>"
+    
+    try:
+        pdf = pdfkit.from_string(html, False, configuration=config)
+        response = make_response(pdf)
+        response.headers["Content-Type"] = "application/pdf"
+        response.headers["Content-Disposition"] = "attachment; filename=data.pdf"
+        return response
+    except IOError as e:
+        print("wkhtmltopdf reported an error:", e)
+        return str(e), 500
+
+
 
 if __name__ == "__main__":
     socketio.run(app, host='0.0.0.0', port=5000, debug=True)
