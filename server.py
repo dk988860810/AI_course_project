@@ -47,7 +47,7 @@ def handle_video_frame(data):
     try:
         edge_id, frame_encoded, class_label_bytes = pickle.loads(data)
         class_label_set = pickle.loads(class_label_bytes)
-        print(f"Received data from edge {edge_id}: {class_label_set}")
+        #print(f"Received data from edge {edge_id}: {class_label_set}")
         # print(f"Received data from edge {edge_id}")
 
         edge_labels[edge_id] = class_label_set
@@ -68,9 +68,9 @@ def handle_video_frame(data):
         frame_stream_queue.put((frame_encoded, class_label_set), timeout=1)
         # print(f"Added frame to stream queue for edge {edge_id}")
     except Full:
-         print(f"Stream queue for edge {edge_id} is full, skipping frame")
+        print(f"Stream queue for edge {edge_id} is full, skipping frame")
     except Exception as e:
-         print(f"Error handling video frame: {e}")
+        print(f"Error handling video frame: {e}")
 
 def generate_frames(edge_id):
     while True:
@@ -111,14 +111,14 @@ def video_feed_route_2():
 @app.route('/get_class_label')
 def get_class_label():
     camera_id = request.args.get('camera_id', type=int)
-    print(f"Received request for camera_id: {camera_id}")
+    #print(f"Received request for camera_id: {camera_id}")
 
     if camera_id in edge_labels:
         class_label_set = edge_labels[camera_id]
-        print(f"Retrieved class labels: {class_label_set}")
+        #print(f"Retrieved class labels: {class_label_set}")
     else:
         class_label_set = []
-        print(f"No class labels found for camera_id {camera_id}")
+        #print(f"No class labels found for camera_id {camera_id}")
 
     return jsonify(class_label_set)
 
