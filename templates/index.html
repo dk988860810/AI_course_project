@@ -13,11 +13,11 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <link rel="icon" href="../static/img/logo.png">
 
-<style>
-    a:hover{
-        color: white !important;
-           }
-</style>   
+    <style>
+        a:hover {
+            color: white !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -33,19 +33,19 @@
                         <li><a href=" http://127.0.0.1:5000/" target="_blank">Second Floor</a></li>
                         <li><a href=" http://127.0.0.1:5000/" target="_blank">Third Floor</a> </li>
                         <li><a href=" http://127.0.0.1:5000/" target="_blank">Fourth Floor</a></li>
-                        <li><a href=" http://127.0.0.1:5000/" target="_blank">Fifth Floor</a> </li> 
+                        <li><a href=" http://127.0.0.1:5000/" target="_blank">Fifth Floor</a> </li>
                     </ul>
-                </li>    
+                </li>
                 <li>
                     <a href="#">樓層平面圖</a>
-                            <ul>
-                                <li><a href="static/floor1.html" target="_blank">一樓平面圖</a></li>
-                                <li><a href="static/floor2.html" target="_blank">二樓平面圖</a></li>
-                                <li><a href="static/floor3.html" target="_blank">三樓平面圖</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="/redirect">DATA</a></li>
+                    <ul>
+                        <li><a href="static/floor1.html" target="_blank">一樓平面圖</a></li>
+                        <li><a href="static/floor2.html" target="_blank">二樓平面圖</a></li>
+                        <li><a href="static/floor3.html" target="_blank">三樓平面圖</a></li>
                     </ul>
+                </li>
+                <li><a href="/redirect">DATA</a></li>
+            </ul>
         </nav>
 
     </header>
@@ -54,10 +54,10 @@
     <div class="flex-container">
         <div class="container" id="first_container">
             <a href="#" data-bs-toggle="modal" data-bs-target="#check">
-               <img src="/video_feed_1" width="500" height="375">
+                <img src="/video_feed_1" width="500" height="375">
             </a>
             <div class="topleft">1樓A區</div>
-            
+
         </div>
 
         <div class="container" id="second_container">
@@ -65,7 +65,7 @@
                 <img src="/video_feed_2" width="500" height="375">
             </a>
             <div class="topleft">1樓B區</div>
-            
+
         </div>
 
         <div class="container" id="third_container">
@@ -73,10 +73,10 @@
                 <img src="/video_feed_3" width="500" height="375">
             </a>
             <div class="topleft">1樓C區</div>
-            
+
         </div>
     </div>
-    
+
 
 
     <div class="modal fade" id="check" role="dialog" tabindex="-1" aria-labelledby="videoModalLabel">
@@ -211,9 +211,10 @@
             // 监听单个路由的返回值
             function listenRoute(route, containerId) {
                 $.get(route, function (data) {
-                    if (data === "Fire" || data === "Smoke") {
-                        console.log(route + ":", data);
-                        var containerLink = $('#' + containerId + ' a')[0]; // 獲取容器中的 <a> 元素
+                    var classLabelSet = data;
+                    if (classLabelSet.includes("Fire") || classLabelSet.includes("Smoke")) {
+                        console.log(route + ":", classLabelSet);
+                        var containerLink = $('#' + containerId + ' a')[0];; // 獲取容器中的 <a> 元素
 
                         // 檢查是否在冷卻時間內
                         var now = new Date().getTime();
@@ -224,6 +225,7 @@
 
                         if (containerLink) {
                             containerLink.click(); // 模擬點擊容器中的 <a> 元素
+                            console.log("click")
                             cooldownTimers[containerId] = new Date().getTime() + 10 * 60 * 1000; // 設置10分鐘的冷卻時間
                         }
                     }
@@ -327,7 +329,7 @@
 
 
     </script>
-        <script src="../static/js/bar.js"></script>
+    <script src="../static/js/bar.js"></script>
 
 </body>
 <footer>

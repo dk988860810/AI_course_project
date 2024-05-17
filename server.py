@@ -109,14 +109,12 @@ def get_class_label():
     class_label_set = []
 
     if camera_id in frame_queues_and_threads:
-        frame_queue = frame_queues_and_threads[camera_id][0]
+        frame_queue, _ = frame_queues_and_threads[camera_id]
         if frame_queue is not None and not frame_queue.empty():
             _, labels = frame_queue.get()
             class_label_set = labels
-            print(class_label_set)
-        
 
-    return ' '.join(class_label_set)
+    return jsonify(class_label_set)
 
 @app.route('/submit_data', methods=['POST'])
 def submit():
