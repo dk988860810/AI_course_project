@@ -142,12 +142,13 @@ def submit():
 
         return '資料已成功提交到資料庫！'
 
-@app.route('/table')
+@app.route('/table', methods=['GET'])
 def table():
-    result = get_data(page=1)
-    return render_template('table.html',result=result)
+    page = request.args.get('page', 1, type=int)
+    result = get_data(page=page)
+    return render_template('table.html', result=result)
 
-def get_data(page=1):
+def get_data(page):
     conn = mysql.connector.connect(**mysql_config)
     cursor = conn.cursor()
 
@@ -157,6 +158,8 @@ def get_data(page=1):
         count_query = "SELECT COUNT(*) FROM test"
         cursor.execute(count_query)
         total_count = cursor.fetchone()[0]
+        total_pages = (total_count + 19) // 20  # Calculate total number of pages
+
 
         query = "SELECT * FROM test ORDER BY id DESC LIMIT 20 OFFSET %s"
         cursor.execute(query, (offset,))
@@ -176,6 +179,8 @@ def get_data(page=1):
 
         if result:
             result[0]['total_count'] = total_count
+            result[0]['total_pages'] = total_pages
+            result[0]['current_page'] = page
 
         return result
     finally:
