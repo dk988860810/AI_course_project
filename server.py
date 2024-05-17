@@ -23,6 +23,7 @@ mysql_config = {
 
 frame_queues_and_threads = {}
 frame_stream_queues = {}
+edge_labels = {}
 
 def frame_processing_thread(edge_id):
     while True:
@@ -46,7 +47,10 @@ def handle_video_frame(data):
     try:
         edge_id, frame_encoded, class_label_bytes = pickle.loads(data)
         class_label_set = pickle.loads(class_label_bytes)
+        print(f"Received data from edge {edge_id}: {class_label_set}")
         # print(f"Received data from edge {edge_id}")
+
+        edge_labels[edge_id] = class_label_set
 
         if edge_id not in frame_queues_and_threads:
             frame_stream_queue = Queue(maxsize=30)
@@ -60,6 +64,7 @@ def handle_video_frame(data):
             # print(f"Started processing thread for edge {edge_id}")
 
         frame_stream_queue = frame_queues_and_threads[edge_id][0]
+        
         frame_stream_queue.put((frame_encoded, class_label_set), timeout=1)
         # print(f"Added frame to stream queue for edge {edge_id}")
     except Full:
@@ -78,7 +83,7 @@ def generate_frames(edge_id):
         try:
             frame_encoded, class_label_set = frame_stream_queue.get(timeout=1)
             # print(f"Yielding frame bytes for edge {edge_id}")
-            print(class_label_set)
+           
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame_encoded + b'\r\n')
         except Empty:
@@ -106,13 +111,14 @@ def video_feed_route_2():
 @app.route('/get_class_label')
 def get_class_label():
     camera_id = request.args.get('camera_id', type=int)
-    class_label_set = []
+    print(f"Received request for camera_id: {camera_id}")
 
-    if camera_id in frame_queues_and_threads:
-        frame_queue, _ = frame_queues_and_threads[camera_id]
-        if frame_queue is not None and not frame_queue.empty():
-            _, labels = frame_queue.get()
-            class_label_set = labels
+    if camera_id in edge_labels:
+        class_label_set = edge_labels[camera_id]
+        print(f"Retrieved class labels: {class_label_set}")
+    else:
+        class_label_set = []
+        print(f"No class labels found for camera_id {camera_id}")
 
     return jsonify(class_label_set)
 

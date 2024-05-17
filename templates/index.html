@@ -200,43 +200,49 @@
 
 
     <script>
-        // 定义一个函数，用于更新类标签值
         var containerMap = {
             '1': 'first_container',
             '2': 'second_container',
             '3': 'third_container'
-        }
+        };
         var cooldownTimers = {};
+
         $(document).ready(function () {
-            // 监听单个路由的返回值
-            function listenRoute(route, containerId) {
-                $.get(route, function (data) {
-                    var classLabelSet = data;
-                    if (classLabelSet.includes("Fire") || classLabelSet.includes("Smoke")) {
-                        console.log(route + ":", classLabelSet);
-                        var containerLink = $('#' + containerId + ' a')[0];; // 獲取容器中的 <a> 元素
+            // 定義一個函數來獲取指定攝影機ID的類別標籤
+            function fetchClassLabels(cameraId, containerId) {
+                $.ajax({
+                    url: `/get_class_label?camera_id=${cameraId}`,
+                    type: 'GET',
+                    success: function (data) {
+                        var classLabelSet = data;
+                        if (classLabelSet.includes("Fire") || classLabelSet.includes("Smoke")) {
+                            console.log(`Camera ${cameraId}:`, classLabelSet);
+                            var containerLink = $(`#${containerId} a`);
 
-                        // 檢查是否在冷卻時間內
-                        var now = new Date().getTime();
-                        if (cooldownTimers[containerId] && now < cooldownTimers[containerId]) {
-                            console.log('Container', containerId, 'is in cooldown');
-                            return; // 在冷卻時間內,不觸發modal
-                        }
+                            // 檢查是否在冷卻時間內
+                            var now = new Date().getTime();
+                            if (cooldownTimers[containerId] && now < cooldownTimers[containerId]) {
+                                console.log('Container', containerId, 'is in cooldown');
+                                return; // 在冷卻時間內,不觸發modal
+                            }
 
-                        if (containerLink) {
-                            containerLink.click(); // 模擬點擊容器中的 <a> 元素
-                            console.log("click")
-                            cooldownTimers[containerId] = new Date().getTime() + 10 * 60 * 1000; // 設置10分鐘的冷卻時間
+                            if (containerLink.length > 0) {
+                                containerLink[0].click(); // 觸發容器中的 <a> 元素的點擊事件
+                                console.log("click")
+                                cooldownTimers[containerId] = new Date().getTime() + 10 * 60 * 1000; // 設置10分鐘的冷卻時間
+                            }
                         }
+                    },
+                    error: function () {
+                        console.error(`Error fetching class labels for camera ${cameraId}`);
                     }
                 });
             }
 
-            // 循环监听每个摄像头的路由
+            // 循環監聽每個攝影機ID
             for (var i = 1; i <= 3; i++) {
-                var route = "/get_class_label?camera_id=" + i;
                 var containerId = containerMap[String(i)];
-                setInterval(listenRoute.bind(null, route, containerId), 1000);
+                setInterval(fetchClassLabels.bind(null, i, containerId), 1000);
             }
         });
 
