@@ -49,90 +49,60 @@ header {
 
 
 nav ul {
-  display: flex;
-  justify-content: center; /* 将子元素水平居中 */
   list-style-type: none;
-  top:70%;
-  justify-content: space-between; /* 子元素之间均匀分布 */
-  margin:0;
-  padding-right: 20px;
-  padding-left:20px;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: flex-end;
 }
 
-nav ul li {
-  border-radius: 25px;
-  padding: 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+nav li {
+  float: left;
+  color: black;
+}
+
+nav li a {
+  display: block;
+  color: white; /* 將顏色改為黑色 */
   text-align: center;
-  min-width: 100px;
-}
-
-nav ul li:hover {
-  background: #908f8f;
-}
-
-nav ul li a{
-  color: inherit;
+  padding: 14px 16px;
   text-decoration: none;
-  font-size: 20px;
-  min-width: 100px;
 }
 
-ul li ul li:hover {
-  display: flex;
-  border-color: #868585;
-  justify-content: center;
-  align-items: center;
-
+nav li a:hover {
+  background-color: #ddd; /* 保留懸停效果 */
+  color: black;
 }
 
-
-nav ul li:hover > ul{
-  display: flex;
-  align-items: center;
-}
-
-nav ul li ul {
-  color: white;
-  background-color: #555;
-  padding: 5px;
-  border: none;
-  border-radius: 3px;
-  font-size: 20px;
-  text-decoration: none;
+nav ul ul {
   display: none;
   position: absolute;
-  top: 95%; /* 調整這個值來控制與導覽列的距離 */
-  text-align: center; /* 将子菜单中的文本水平居中 */
-  display: flex; /* 使用 flex 布局 */
-  flex-direction: column; /* 将子菜单选项垂直排列 */
-  align-items: center; /* 将子菜单选项垂直居中 */
-  display: none;
-  opacity: 0; /* 初始设置为透明 */
-  transition: opacity 0.3s ease; /* 添加过渡效果 */
-  
+  background-color: white; /* 將背景色改為白色 */
+  min-width: 160px;
+  box-shadow: 0px 9px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
 }
 
-nav ul li ul li { 
-  background: #555; 
-  display: block; 
-  text-align: center; /* 将子菜单中的文本水平居中 */
-  display: flex; /* 使用 flex 布局 */
-  flex-direction: column; /* 将子菜单选项垂直排列 */
-  align-items: center; /* 将子菜单选项垂直居中 */
+nav ul ul li {
+  float: none;
 }
 
-nav ul li ul li a {
-  display:block !important;
+nav ul ul li a {
+  color: black; /* 將選項文字顏色改為黑色 */
+  padding: 12px 16px;
   text-decoration: none;
-  color: inherit;
-  text-align: center; /* 将子菜单中的文本水平居中 */
-  display: flex; /* 使用 flex 布局 */
-  flex-direction: column; /* 将子菜单选项垂直排列 */
-  align-items: center; /* 将子菜单选项垂直居中 */
-} 
+  display: block;
+  text-align: left; /* 確保選項內容左對齊 */
+}
+
+nav ul ul li a:hover {
+  background-color: #5c5757; /* 保留選項懸停效果 */
+}
+
+nav ul li:hover > ul {
+  display: inherit;
+}
 
 .flex-container {
   display: flex;
