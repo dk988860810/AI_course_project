@@ -7,8 +7,8 @@ body {
   margin: 0;
   padding: 0;
   background: #E8CBC0;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #636FA4, #E8CBC0);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #636FA4, #E8CBC0); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  /* background: -webkit-linear-gradient(to right, #636FA4, #E8CBC0);  Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to bottom, #a6b5f4, #E8CBC0); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
   
 }
@@ -87,6 +87,13 @@ nav {
 }
 
 .login-button:focus { outline:0; }
+
+
+/* “系統”樣式 */
+
+
+
+
 
 
 
@@ -189,6 +196,15 @@ main {
 /* 特點卡片樣式 */
 .features {
   margin-bottom: 40px;
+  background-color: #ffffff18;
+  padding: 120px 30px;
+}
+
+.features h2 {
+  text-align: center;
+  margin-bottom: 80px;
+  padding: 100px;
+  font-size: 40px;
 }
 
 .feature-cards {
@@ -200,7 +216,7 @@ main {
   max-width: 300px;
   text-align: center;
   padding: 20px;
-  border: 1px solid #ccc;
+  border: 1px solid #c43131;
   border-radius: 5px;
 }
 
@@ -211,10 +227,13 @@ main {
 
 /* 使命樣式 */
 .mission {
-  margin: auto;
+  margin: 1px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 120px 30px;
+  background-color: #ffffff18;
+  margin-bottom: 40px
 }
 
 .btn1 {		
@@ -266,7 +285,7 @@ main {
 	border: 1px solid #fff;
 	border-top: 0;
 	border-bottom: 0;
-  background-color: #ffffff18;
+  background-color: #ffffff63;
 }
 
 .btn1.from-top:after {
@@ -293,7 +312,7 @@ main {
 	border: 1px solid #fff;
 	border-left: 0;
 	border-right: 0;
-  background-color: #ffffff18;
+  background-color: #ffffff63;
 }
 
 .btn1.from-left:after {
@@ -319,7 +338,7 @@ main {
 	border: 1px solid #fff;
 	border-left: 0;
 	border-right: 0;
-  background-color: #ffffff18;
+  background-color: #ffffff63;
 }
 
 .btn1.from-right:after {
@@ -341,7 +360,7 @@ main {
 	border: 1px solid #fff;
 	border-left: 0;
 	border-right: 0;
-  background-color: #ffffff18;
+  background-color: #ffffff63;
 }
 
 .btn1.from-center:after {
@@ -383,7 +402,16 @@ main {
 
 /* 優勢樣式 */
  .benefits {
-  margin-bottom: 40px;
+  margin-bottom: 80px;
+  background-color: #ffffff18;
+  padding: 120px 30px;
+}
+
+.benefits h2 {
+  text-align: center;
+  margin-bottom: 80px;
+  padding: 100px;
+  font-size: 40px;
 }
 
  .blockquote {
@@ -404,6 +432,7 @@ main {
   border-radius: 5px;
   transition: transform 0.3s ease-in-out;
   font-size: 1.4rem;
+  background-color: #ffffff63;
 }
 
 .benefit-card:hover {
@@ -443,6 +472,7 @@ footer {
 .feature-card {
   transition: transform 0.3s ease-in-out;
   font-size: 1.4rem;
+  background-color: #ffffff63;
 }
 
 .feature-card:hover {
@@ -450,3 +480,100 @@ footer {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
+
+
+
+/* body {
+  margin: 0;
+  padding: 0;
+} */
+
+.btn-draw {
+  position: relative;
+  display: inline-block;
+  color: #ffffff;
+  border-bottom: 2px solid #ffffff;
+  cursor: pointer;
+  overflow: hidden;
+  transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+.btn-draw:after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  width: 2px;
+  background: #ffffff63;
+  transform: translateY(100%);
+  transition: transform 0.2s ease-in-out;
+  transition-delay: 0.6s;
+}
+.btn-draw > span {
+  position: relative;
+  display: block;
+  padding: 1px;
+  color: inherit;
+}
+.btn-draw > span:before,
+.btn-draw > span:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: #ffffff;
+  transition: transform 0.2s ease-in-out;
+}
+.btn-draw > span:before {
+  height: 2px;
+  width: 100%;
+  transform: translateX(100%);
+  transition-delay: 0.4s;
+}
+.btn-draw > span:after {
+  height: 100%;
+  width: 2px;
+  transform: translateY(-100%);
+  transition-delay: 0.2s;
+}
+.btn-draw:hover:after,
+.btn-draw:hover > span:before,
+.btn-draw:hover > span:after {
+  transform: translate(0, 0);
+}
+.btn-draw:hover:after {
+  transition-delay: 0s;
+}
+.btn-draw:hover > span:before {
+  transition-delay: 0.2s;
+}
+.btn-draw:hover > span:after {
+  transition-delay: 0.4s;
+}
+.btn-draw:hover {
+  color: #e4e4e2;
+  background-color: #ffffff;
+  transition-delay: 0.6s;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+  font-family: Doko-Book, serif;
+  -webkit-font-smoothing: antialiased;
+  background-color: #e4e4e2;
+} */
+
+a {
+  font-size: 25px;
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: 0.1em;
+}

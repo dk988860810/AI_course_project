@@ -16,15 +16,15 @@
                 <img src="../static/image/logo.png" alt="Logo">
                 <span>火災預警系統</span>
             </a>
+            <a class="btn-draw" href="#"><span>系統特點</span></a>
+            <a class="btn-draw" href="#"><span>系統優勢</span></a>
             <!-- <div class="nav-links">
                 <a href="#">首頁</a>
                 <a href="/templates/login.html" id="login-link">登入</a>
             </div> -->
             <!-- <div class="nav-links">
                 <a href="/templates/login.html" id="login-link" class="login-button">登入</a> -->
-                <form action="{{ url_for('login') }}" method="post">
-                    <button class="login-button">Log in</button>  
-                </form>
+                <button class="login-button" onclick="location.href='/templates/login.html';">Log in</button>
             </div>
             
         </nav>
@@ -32,7 +32,7 @@
     <main>
         <section class="hero">
             <div class="hero-content">
-                <h1>保護您的安全</h1>
+                <h1>Protect Your Safety</h1>
                 <p>我們的火災預警系統可以及時監控並響應任何潛在的火災危險。</p>
                 <a class="btn btn-color" href="#"><span class="btn-name" >了解更多</span>
                 <i class="btn-icon fa fa-arrow-right"></i></a>
@@ -70,7 +70,7 @@
                     <p>一旦發現火災危險,我們的系統會立即啟動應急程序,確保您的安全。</p>
                 </div>
                 <div class="feature-card">
-                    <img src="/static/image/快速響應.png" alt="快速響應">
+                    <img src="/static/image/易於使用.png" alt="易於使用">
                     <h3>易於使用</h3>
                     <p>我們的系統採用了人性化的設計,操作簡單,即使是非專業人員也能輕鬆上手。</p>
                 </div>
@@ -113,7 +113,7 @@
         </section>
     </main>
     <footer>
-        <p>© 2024 火災預警系統</p>
+        <p>© 2024 火災預警系統 Copyright All Rights Reserved. 隱私權聲明</p>
     </footer>
     <script src="../static/js/home.js"></script>
 
