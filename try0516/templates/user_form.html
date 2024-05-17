@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Users Data</title>
+</head>
+<body>
+    <form action="/reset_clock_status" method="get">
+        <button type="submit">Reset Clock Status</button>
+    </form>
+    <h1>Users Data</h1>
+    <table id="users_table" border="1">
+        <tbody>
+    {% for user in users %}
+    <tr>
+        {% for item in user %}
+        <td>{{ item }}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,66 @@
+{% extends 'layout.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1 class="mt-4 mb-4">Profile Page</h1>
+  <div class="row">
+    <div class="col-md-6">
+      <form action="/update_profile" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="fullname">Name:</label>
+          <input type="text" class="form-control" id="fullname" name="fullname" value="{{ account['fullname'] }}">
+        </div>
+        <div class="form-group">
+          <label for="username">Username:</label>
+          <input type="text" class="form-control" id="username" name="username" value="{{ account['username'] }}">
+        </div>
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input type="password" class="form-control" id="password" name="password" value="{{ account['password'] }}">
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" class="form-control" id="email" name="email" value="{{ account['email'] }}">
+        </div>
+        <div class="form-group">
+          <label for="profilePic">Profile Picture:</label>
+          <div class="input-group">
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" id="profilePic" name="profile_pic" aria-describedby="profilePicAddon">
+              <label class="custom-file-label" for="profilePic">Choose file</label>
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Profile</button>
+      </form>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Profile Picture Preview</h5>
+          <img src="{{ profile_picture_url }}" class="card-img-top" alt="Profile Picture">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- 顯示用戶頭像 -->
+<!-- <div>
+  <img src="{{ url_for('static', filename='profile_pic/images.jpg') }}" alt="Profile Picture">
+</div> -->
+
+
+<!-- 顯示 Flask 消息 -->
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div class="alert alert-success">
+  {{ messages[0] }}
+</div>
+{% endif %}
+{% endwith %}
+{% endblock %}

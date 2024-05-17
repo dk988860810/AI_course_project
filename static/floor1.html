@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>火災預警系統</title>
+    <link rel="icon" href="../static/img/logo.png">
+    <link rel="stylesheet" href="../static/CSS/floor.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <img src="../static/img/logo.png" alt="logo" class="logo">
+            <h2>火災預警系統</h2>
+        </div>
+        <nav>
+            <ul class="container nav-links">
+                <li><a href="#">監視影像</a></li>
+                <li>
+                    <a href="#">樓層平面圖</a>
+                </li>
+                <li><a href="#"><img src="../static/img/logo.png" alt="people" class="img">DATA</a></li>
+            </ul>
+        </nav>
+    </header>
+    <select id="floorSelect">
+        <option selected>請選擇樓層</option>
+        <option value="floor_plan1.png">一樓</option>
+        <option value="floor_plan2.png">二樓</option>
+        <option value="floor_plan3.png">三樓</option>
+    </select>
+    <img id="floorImage" src="img/logo.png" alt="請選擇樓層" class="img_floor" width="640" height="480">
+    <footer>
+        <p>XXX公司</p>
+        <p>幫助</p>
+        <p>電話：0800-000-000</p>
+    </footer>
+
+    <script>
+        const floorSelect = document.getElementById('floorSelect');
+        const floorImage = document.getElementById('floorImage');
+
+        floorSelect.addEventListener('change', function() {
+            const selectedValue = floorSelect.value;
+            floorImage.src = `img/floorplan/${selectedValue}`;
+        });
+    </script>
+</body>
+</html>
