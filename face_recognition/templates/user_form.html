@@ -2,22 +2,46 @@
 <html>
 <head>
     <title>Users Data</title>
+    <link rel="stylesheet" href="../static/css/face_userdata.css">
 </head>
 <body>
-    <form action="/reset_clock_status" method="get">
-        <button type="submit">Reset Clock Status</button>
-    </form>
-    <h1>Users Data</h1>
-    <table id="users_table" border="1">
-        <tbody>
-    {% for user in users %}
-    <tr>
-        {% for item in user %}
-        <td>{{ item }}</td>
-        {% endfor %}
-    </tr>
-    {% endfor %}
-        </tbody>
-    </table>
+    <header>
+        <h1>Users Data</h1>
+    </header>
+    
+    <div class="container">
+        <form action="/reset_clock_status" method="get">
+            <button type="submit">Reset Clock Status</button>
+        </form>
+        <table id="users_table" border="1">
+            <thead>
+                <tr>
+                    <th>1</th>
+                    <th>2</th>
+                    <th>3</th>
+                    <th>4</th>
+                    <th>5</th>
+                    <th>6</th>
+                    <th>7</th>
+                    <th>8</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    {% for item in user %}
+                    <td>{{ item }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <footer>
+        <p>XXX公司</p>
+        <p>幫助</p>
+        <p>電話：0800-000-000</p>
+    </footer>
 </body>
 </html>
