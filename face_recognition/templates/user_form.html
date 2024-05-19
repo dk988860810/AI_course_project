@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>出缺勤狀況</title>
+    <title>火災預警系統</title>
     <link rel="stylesheet" href="../static/css/face_userdata.css">
     <link rel="icon" href="../static/image/logo.png">
 </head>
@@ -9,13 +9,13 @@
     <header>
         <div class="header-content">
         <img src="../static/image/logo.png" alt="Logo" class="logo">
-        <h2>火災預警系統-出缺勤狀況</h2>
+        <h2>出缺勤狀況</h2>
         </div>
         <nav>
         <ul class="container nav-links">
             <li><a href="#">出缺勤狀況</a></li>
             <li><a href="#">員工資料</a></li>
-            <li><a href="./logo.html">登出</a></li>
+            <li><a href="{{ url_for('login') }}">登出</a></li>
         </ul>
         </nav>
     </header>
@@ -47,6 +47,17 @@
             {% endfor %}
             </tbody>
         </table>
+        <div class="pagination-container">
+            <div class="pagination">
+                {% if page > 1 %}
+                    <a href="{{ url_for('user_form', page=page - 1) }}">上一頁</a>
+                {% endif %}
+                <span class="page-info">{{ page }} / {{ total_pages }}</span>
+                {% if page < total_pages %}
+                    <a href="{{ url_for('user_form', page=page + 1) }}">下一頁</a>
+                {% endif %}
+            </div>
+        </div>
     </div>
     
     <footer>

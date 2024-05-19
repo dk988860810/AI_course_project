@@ -102,3 +102,30 @@ button {
 button:hover {
     background-color: #45a049;
 }
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .pagination a {
+    text-decoration: none;
+    padding: 10px 20px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #86A8E7;
+    color: #ffffff;
+  }
+  .pagination a:hover {
+    background-color: #b8d1ff;
+  }
+  .pagination p {
+    text-align: center;
+  }
