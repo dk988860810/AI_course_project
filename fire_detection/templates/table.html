@@ -78,10 +78,15 @@
     <div>
 
     </div>
-    <div class="pagination">
-        <button id="prev-page" disabled>上一頁</button>
-        <span id="page-info">第 <span id="current-page">{{ result[0].current_page }}</span> 頁</span>
-        <button id="next-page">下一頁</button>
+    <br><div class="pagination">
+        {% if result[0].current_page > 1 %}
+            <a href="{{ url_for('table', page=result[0].current_page - 1) }}">上一頁</a>
+        {% endif %}
+        <p>頁數 {{ result[0].current_page }} / {{ result[0].total_pages }}</p>
+        {% if result[0].current_page < result[0].total_pages %}
+            <a href="{{ url_for('table', page=result[0].current_page + 1) }}">下一頁</a>
+        {% endif %}
+        
     </div>
 
 
