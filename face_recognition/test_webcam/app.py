@@ -3,31 +3,29 @@ import cv2
 
 app = Flask(__name__)
 
-# Initialize the camera
-camera = cv2.VideoCapture(0)  # Use 0 for web camera
+# OpenCV video capture
+camera = cv2.VideoCapture(0)
+
+def process_frame(frame):
+    # Example: Drawing a rectangle around detected face
+    # This part can be modified for your specific processing needs
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+    faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+    for (x, y, w, h) in faces:
+        cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
+    return frame
 
 def generate_frames():
     while True:
-        # Capture frame-by-frame
         success, frame = camera.read()
         if not success:
             break
-        else:
-            # Draw a rectangle on the frame
-            start_point = (50, 50)
-            end_point = (300, 300)
-            color = (255, 0, 0)  # Blue color in BGR
-            thickness = 2
-
-            frame = cv2.rectangle(frame, start_point, end_point, color, thickness)
-
-            # Encode the frame in JPEG format
-            ret, buffer = cv2.imencode('.jpg', frame)
-            frame = buffer.tobytes()
-
-            # Concatenate frame one by one and show result
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        processed_frame = process_frame(frame)
+        ret, buffer = cv2.imencode('.jpg', processed_frame)
+        frame_bytes = buffer.tobytes()
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
 
 @app.route('/')
 def index():
@@ -38,4 +36,4 @@ def video_feed():
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', debug=True)

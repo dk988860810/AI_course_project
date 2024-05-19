@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Stream</title>
+    <title>Video Streaming with Flask</title>
 </head>
 <body>
-    <h1>Video Stream with Rectangle</h1>
-    <img src="{{ url_for('video_feed') }}" width="640" height="480">
+    <h1>Video Streaming with OpenCV and Flask</h1>
+    <img id="video_feed" src="{{ url_for('video_feed') }}" style="width:100%">
 </body>
 </html>
