@@ -2,20 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Camera Stream</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Stream</title>
 </head>
 <body>
-    <h1>Camera Stream</h1>
-    <video id="video" width="640" height="480" autoplay></video>
-    <script>
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(stream => {
-                const video = document.getElementById('video');
-                video.srcObject = stream;
-            })
-            .catch(error => {
-                console.error('Error accessing camera:', error);
-            });
-    </script>
+    <h1>Video Stream with Rectangle</h1>
+    <img src="{{ url_for('video_feed') }}" width="640" height="480">
 </body>
 </html>
