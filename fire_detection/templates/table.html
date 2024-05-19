@@ -82,7 +82,7 @@
         {% if result[0].current_page > 1 %}
             <a href="{{ url_for('table', page=result[0].current_page - 1) }}">上一頁</a>
         {% endif %}
-        <p>頁數 {{ result[0].current_page }} / {{ result[0].total_pages }}</p>
+        <p>{{ result[0].current_page }} / {{ result[0].total_pages }}</p>
         {% if result[0].current_page < result[0].total_pages %}
             <a href="{{ url_for('table', page=result[0].current_page + 1) }}">下一頁</a>
         {% endif %}
