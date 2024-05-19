@@ -1,31 +1,28 @@
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, request, Response
 import cv2
+import numpy as np
+import base64
 
 app = Flask(__name__)
 
-# OpenCV video capture
-camera = cv2.VideoCapture(0)
-
-def process_frame(frame):
-    # Example: Drawing a rectangle around detected face
-    # This part can be modified for your specific processing needs
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-    faces = face_cascade.detectMultiScale(gray, 1.3, 5)
-    for (x, y, w, h) in faces:
-        cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
+def process_image(frame):
+    # 在图像上添加一个矩形框
+    # 这里只是简单地在图像中心添加一个红色的矩形框
+    height, width, _ = frame.shape
+    cv2.rectangle(frame, (width // 4, height // 4), (3 * width // 4, 3 * height // 4), (0, 0, 255), 3)
     return frame
 
-def generate_frames():
+def gen(camera):
     while True:
         success, frame = camera.read()
         if not success:
             break
-        processed_frame = process_frame(frame)
-        ret, buffer = cv2.imencode('.jpg', processed_frame)
-        frame_bytes = buffer.tobytes()
+        frame = process_image(frame)
+        # 将图像编码为base64字符串
+        ret, buffer = cv2.imencode('.jpg', frame)
+        frame = buffer.tobytes()
         yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 @app.route('/')
 def index():
@@ -33,7 +30,10 @@ def index():
 
 @app.route('/video_feed')
 def video_feed():
-    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    # 使用摄像头0，你也可以更改为其他摄像头
+    camera = cv2.VideoCapture(0)
+    return Response(gen(camera),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
