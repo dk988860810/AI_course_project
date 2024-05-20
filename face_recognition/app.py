@@ -11,6 +11,7 @@ import csv
 import numpy as np
 import logging
 import cv2
+import threading
 
 # Dlib 正向人脸检测器 / Use frontal face detector of Dlib
 detector = dlib.get_frontal_face_detector()
@@ -304,19 +305,7 @@ class Face_Recognizer:
 
                 logging.debug("Frame ends\n\n")
 
-    def run(self):
-        cap = cv2.VideoCapture('rtmp://54.162.189.102/live/aws')  # Get video stream from camera
-        self.process(cap)
 
-        cap.release()
-        cv2.destroyAllWindows()
-
-
-def main():
-    # logging.basicConfig(level=logging.DEBUG) # Set log level to 'logging.DEBUG' to print debug info of every frame
-    logging.basicConfig(level=logging.INFO)
-    Face_Recognizer_con = Face_Recognizer()
-    Face_Recognizer_con.run()
 
 
 ff_flag = False
@@ -324,9 +313,8 @@ name_list = ['unknown']
 
 
 def generate_frames():
-    global ff_flag, name_list
+    global ff_flag, name_list, cap
     face_recognizer = Face_Recognizer()
-    cap = cv2.VideoCapture('rtmp://54.162.189.102/live/aws')
     for frame, face_found, name_list in face_recognizer.process(cap):
         ff_flag = False
         # print('face_found = ',face_found)
@@ -603,7 +591,6 @@ def video_feed():
 
 @app.route('/get_face')
 def get_face():
-    # cap = cv2.VideoCapture('rtmp://54.162.189.102/live/aws')  # Get video stream from camera
     return render_template('get_face.html')
 
 
@@ -695,9 +682,8 @@ def save_face():
 
 
 def gen():
-    global frame_start_time, label_warning
+    global frame_start_time, label_warning,cap
     frame_start_time = time.time()
-    cap = cv2.VideoCapture('rtmp://54.162.189.102/live/aws')  # Get video stream from camera
     while True:
         frame, label_warning = process(cap)
         # frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)  # 转换图像颜色为RGB
@@ -897,10 +883,20 @@ def logout():
     session.pop('username', None)
     return redirect(url_for('firsthome'))
 
+# 定义一个函数来捕获视频流
+def capture_video():
+    global cap
+    cap = cv2.VideoCapture('rtmp://13.214.171.73/live/aws')  # 获取视频流
 
 # 用戶資料頁面路由（只有已登錄的用戶可以訪問）
 @app.route('/profile')
 def profile():
+    # global cap
+    # cap = cv2.VideoCapture('rtmp://13.214.171.73/live/aws')  # Get video stream from camera
+    # 在应用程序启动时启动视频捕获线程
+    video_thread = threading.Thread(target=capture_video)
+    video_thread.start()
+
     page = request.args.get('page', 1, type=int)
     per_page = 10
 

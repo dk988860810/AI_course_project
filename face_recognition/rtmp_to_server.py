@@ -1,7 +1,8 @@
 import subprocess
 
+
 def start_stream(camera_name, rtmp_server, stream_key):
-    # Define FFmpeg command
+    # Define FFmpeg command with reduced quality for faster streaming
     ffmpeg_command = [
         'ffmpeg',
         '-f', 'dshow',
@@ -15,23 +16,33 @@ def start_stream(camera_name, rtmp_server, stream_key):
         '-f', 'flv',
         f'rtmp://{rtmp_server}/live/{stream_key}'
     ]
-     
-    # Run FFmpeg command in a subprocess
-    process = subprocess.Popen(ffmpeg_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-    # Wait for process to finish (which should be never in this case, as it's streaming indefinitely)
-    process.communicate()
+    try:
+        # Run FFmpeg command in a subprocess
+        process = subprocess.Popen(ffmpeg_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-    # Check if process exited with an error
-    if process.returncode != 0:
-        print("Error occurred while streaming.")
-    else:
-        print("Streaming finished.")
+        # Continuously read from stderr to get error messages in real-time
+        while True:
+            output = process.stderr.readline()
+            if output == b'' and process.poll() is not None:
+                break
+            if output:
+                print(output.strip().decode('utf-8'))
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+    finally:
+        # Check if process exited with an error
+        if process.returncode != 0:
+            print("Error occurred while streaming.")
+        else:
+            print("Streaming finished.")
+
 
 # Example usage
 if __name__ == "__main__":
-    camera_name = "Lenovo EasyCamera"
+    camera_name = "Integrated Webcam"
     rtmp_server = "13.214.171.73"
-    stream_key = "stream_1"
-    
+    stream_key = "aws"
+
     start_stream(camera_name, rtmp_server, stream_key)
