@@ -6,7 +6,7 @@ body {
   width: 35px;
   height: auto;
   float: left;
-  margin-left: 10px;
+  margin-left: 20px;
   margin-right: 0%;
 }
 header {
@@ -15,11 +15,15 @@ header {
   align-items: center;
   padding: 10px;
   background-color: #89deff;
+  height: 55px;
 }
 .img_floor {
+  width: 30%;
   display: block;
+  margin-top: 50px;
   margin-left: auto;
   margin-right: auto;
+  height: auto; 
 }
 table {
   width: 100%;
@@ -77,6 +81,8 @@ nav li a {
 nav li a:hover {
   background-color: #ddd; /* 保留懸停效果 */
   color: black;
+  height: 55px;
+
 }
 
 nav ul ul {

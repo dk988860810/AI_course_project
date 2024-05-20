@@ -13,8 +13,8 @@ body {
 }
 .logo {
   width: 35px; /* 设置图片宽度 */
-  height: 50px; /* 让高度自适应保持比例 */
-  margin: 10px; /* 清除外边距 */
+  height: auto; /* 让高度自适应保持比例 */
+  margin: 20px; /* 清除外边距 */
 }
 
 header {
@@ -79,6 +79,7 @@ nav li a {
 nav li a:hover {
   background-color: #ddd; /* 保留懸停效果 */
   color: black;
+  height: 55px;
 }
 
 nav ul ul {
@@ -111,7 +112,7 @@ nav ul li:hover > ul {
 }
 
 .flex-container {
-  width: 100%;
+  width: 70%;
   display: flex;
   justify-content: space-between;
   margin: auto;
