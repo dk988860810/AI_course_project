@@ -11,6 +11,11 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/HR.css') }}">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    a:hover {
+        color: white !important;
+    }
+</style>
 </head>
 <body>
 <header>
@@ -35,7 +40,7 @@
       <button id="searchBtn" class="search-btn"><i class="material-icons">search</i></button>
       <button id="addEmployeeBtn" class="add-employee-btn">新增員工</button>
 
-    <a href="/get_face"><button>Get Faces</button></a>
+    <a href="/get_face"><button class="status-btn face">臉部註冊</button></a>
 
     <!-- 在這裡加入 Bootstrap 彈窗的按鈕 -->
 <!--    <a href="/features_extraction"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Features Extraction</button></a>-->
@@ -72,9 +77,9 @@
         </div>
     </div>
 
-    <a href="/face_recognition"><button>Face recognizer</button></a>
+    <a href="/face_recognition"><button class="status-btn face" >Face recognizer</button></a>
 
-    <a href="/user_form"><button>User Form</button></a>
+    <a href="/user_form"><button class="status-btn face">User Form</button></a>
 
     </div>    
 
