@@ -3,35 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ url_for('static', filename='image/logo.png') }}">
     <script src="{{ url_for('static', filename='js/get_face.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/face_register.css') }}">
     <title>Face Register</title>
 </head>
 <body>
-    <h1>Face Register</h1>
-    <div>
-        <form action="/clear_data" method="post">
-            <input type="submit" value="Clear Data">
-        </form>
+    <header class="header">
+        <img src="{{ url_for('static', filename='image/logo.png') }}" alt="Logo" class="logo">
+        <span class="header-text">Face Register</span>
+        <img src="{{ url_for('static', filename='image/home.png') }}" class="home-icon" onclick="goToIndex()">
+    </header>
+    
+    <div class="wrapper">
+        <div class="form-group">
+            <form action="/clear_data" method="post">
+                <input type="submit" value="Clear Data" class="status-btn">
+            </form>
+        </div>
+        <div class="video-container">
+            <img src="/video_feed_gf" class="camera">
+        </div>
+        <div class="form-group">
+            <form id="nameForm" onsubmit="handleSubmit(event)">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" class="underline-input">
+                <div class="form-row">
+                    <input type="submit" value="Input Name" class="status-btn">
+                    <input type="submit" value="Save Face" class="status-btn">
+                </div>
+            </form>
+        </div>
+        <p id="label_warning_content"></p>
     </div>
-    <div>
-        <form id="nameForm" onsubmit="handleSubmit(event)">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name">
-        <input type="submit" value="Input Name">
-        </form>
-    </div>
-    <div>
-        <form id="saveFaceForm" onsubmit="handleSaveFace(event)">
-        <input type="submit" value="Save Face">
-        </form>
-    </div>
-    <button type="button" id="stop_button" onclick="goToIndex()">Previous page</button>
-    <p id="label_warning_content"></p>
-    <div>
-        <img src="/video_feed_gf">
-    </div>
-<script>
 
-</script>
+    <script>
+        function handleSubmit(event) {
+            event.preventDefault();
+            alert('Form submitted!');
+        }
+
+        function handleSaveFace(event) {
+            event.preventDefault();
+            alert('Face saved!');
+        }
+
+        function goToIndex() {
+            window.history.back();
+        }
+    </script>
 </body>
 </html>

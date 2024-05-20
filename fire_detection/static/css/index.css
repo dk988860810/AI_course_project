@@ -13,7 +13,7 @@ body {
 }
 .logo {
   width: 35px; /* 设置图片宽度 */
-  height: auto; /* 让高度自适应保持比例 */
+  height: 50px; /* 让高度自适应保持比例 */
   margin: 10px; /* 清除外边距 */
 }
 

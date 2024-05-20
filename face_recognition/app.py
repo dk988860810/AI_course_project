@@ -1,6 +1,6 @@
 import pandas as pd
 import mysql.connector
-from flask import request, Response,  jsonify, url_for
+from flask import request, Response, jsonify, url_for
 import shutil
 import time
 from flask import redirect
@@ -304,28 +304,29 @@ class Face_Recognizer:
 
                 logging.debug("Frame ends\n\n")
 
-    def run(self):
-        # cap = cv2.VideoCapture("video.mp4")  # Get video stream from video file
-        cap = cv2.VideoCapture(0)  # Get video stream from camera
-        self.process(cap)
+    # def run(self):
+    #     cap = cv2.VideoCapture('rtmp://54.162.189.102/live/aws')  # Get video stream from camera
+    #     self.process(cap)
+    #
+    #     cap.release()
+    #     cv2.destroyAllWindows()
 
-        cap.release()
-        cv2.destroyAllWindows()
 
-
-def main():
-    # logging.basicConfig(level=logging.DEBUG) # Set log level to 'logging.DEBUG' to print debug info of every frame
-    logging.basicConfig(level=logging.INFO)
-    Face_Recognizer_con = Face_Recognizer()
-    Face_Recognizer_con.run()
+# def main():
+#     # logging.basicConfig(level=logging.DEBUG) # Set log level to 'logging.DEBUG' to print debug info of every frame
+#     logging.basicConfig(level=logging.INFO)
+#     Face_Recognizer_con = Face_Recognizer()
+#     Face_Recognizer_con.run()
 
 
 ff_flag = False
-name_list=['unknown']
+name_list = ['unknown']
+
+
 def generate_frames():
     global ff_flag, name_list
     face_recognizer = Face_Recognizer()
-    cap = cv2.VideoCapture(0)
+    # cap = cv2.VideoCapture('rtmp://54.162.189.102/live/aws')
     for frame, face_found, name_list in face_recognizer.process(cap):
         ff_flag = False
         # print('face_found = ',face_found)
@@ -336,7 +337,7 @@ def generate_frames():
         # else:
         #     ff_flag = False
         yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 
 # Dlib 正向人脸检测器 / Use frontal face detector of Dlib
@@ -371,7 +372,7 @@ fps = 0
 fps_show = 0
 start_time = time.time()
 
-cap = cv2.VideoCapture(0)  # Get video stream from camera
+
 
 # 删除之前存的人脸数据文件夹 / Delete old face folders
 def clear_data():
@@ -436,11 +437,11 @@ def create_face_folder(name):
     print('创建')
     if name:
         current_face_dir = path_photos_from_camera + \
-                            "person_" + str(existing_faces_cnt) + "_" + \
-                            name
+                           "person_" + str(existing_faces_cnt) + "_" + \
+                           name
     else:
         current_face_dir = path_photos_from_camera + \
-                            "person_" + str(existing_faces_cnt)
+                           "person_" + str(existing_faces_cnt)
     os.makedirs(current_face_dir)
     ss_cnt = 0  # 将人脸计数器清零 / Clear the cnt of screen shots
     face_folder_created_flag = True  # Face folder already created
@@ -473,7 +474,10 @@ def save_current_face():
     else:
         return "Please run step 2!"
 
+
 label_warning = ''
+
+
 # 获取人脸 / Main process of face detection and saving
 def process(cap):
     global current_frame, current_frame_faces_cnt, face_ROI_height, face_ROI_width, \
@@ -515,6 +519,7 @@ def process(cap):
 
     return current_frame, label_warning
 
+
 # 要读取人脸图像文件的路径 / Path of cropped faces
 path_images_from_camera = "data/data_faces_from_camera/"
 
@@ -523,6 +528,7 @@ predictor = dlib.shape_predictor('data/data_dlib/shape_predictor_68_face_landmar
 
 # Dlib Resnet 人脸识别模型，提取 128D 的特征矢量 / Use Dlib resnet50 model to get 128D face descriptor
 face_reco_model = dlib.face_recognition_model_v1("data/data_dlib/dlib_face_recognition_resnet_model_v1.dat")
+
 
 # 返回单张图像的 128D 特征 / Return 128D features for single image
 # Input:    path_img           <class 'str'>
@@ -542,6 +548,7 @@ def return_128d_features(path_img):
         face_descriptor = 0
         logging.warning("no face")
     return face_descriptor
+
 
 # 返回 personX 的 128D 特征均值 / Return the mean value of 128D face descriptor for person X
 # Input:    path_face_personX        <class 'str'>
@@ -570,8 +577,10 @@ def return_features_mean_personX(path_face_personX):
         features_mean_personX = np.zeros(128, dtype=object, order='C')
     return features_mean_personX
 
+
 app = Flask(__name__)
 app.secret_key = 'mmm'
+
 
 @app.route('/get_ff_flag')
 def get_ff_flag():
@@ -591,10 +600,11 @@ def video_feed():
     stream_fr = generate_frames()
     return Response(stream_fr, mimetype='multipart/x-mixed-replace; boundary=frame')
 
+
 @app.route('/get_face')
 def get_face():
-    cap = cv2.VideoCapture(0)  # Get video stream from camera
     return render_template('get_face.html')
+
 
 @app.route('/face_recognition')
 def start_video():
@@ -604,6 +614,7 @@ def start_video():
 @app.route('/face_reco_suc')
 def face_reco_suc():
     return render_template('face_reco_suc.html')
+
 
 @app.route('/test_mysql')
 def test_mysql():
@@ -618,6 +629,7 @@ db_config = {
     'database': 'aws_test',
     'auth_plugin': 'mysql_native_password'
 }
+
 
 # 读写mysql
 # 处理打卡请求
@@ -662,6 +674,7 @@ def clock_in():
     except Exception as e:
         return jsonify({'message': str(e)})
 
+
 @app.route('/clear_data', methods=['POST'])
 def clear_data_route():
     return clear_data()
@@ -679,11 +692,11 @@ def input_name():
 def save_face():
     return save_current_face()
 
-
+cap = cv2.VideoCapture('rtmp://54.162.189.102/live/aws')
 def gen():
     global frame_start_time, label_warning
     frame_start_time = time.time()
-    cap = cv2.VideoCapture(0)  # Get video stream from camera
+    # cap = cv2.VideoCapture('rtmp://54.162.189.102/live/aws')  # Get video stream from camera
     while True:
         frame, label_warning = process(cap)
         # frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)  # 转换图像颜色为RGB
@@ -691,6 +704,7 @@ def gen():
         update_fps()
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + cv2.imencode('.jpg', frame)[1].tobytes() + b'\r\n')
+
 
 @app.route('/video_feed_gf')
 def video_feed_gf():
@@ -701,6 +715,7 @@ def video_feed_gf():
 def get_label_warning():
     global label_warning
     return jsonify({'label_warning': label_warning})
+
 
 @app.route('/stop_video_capture')
 def stop_video_capture():
@@ -737,6 +752,7 @@ def features_extraction():
 
     return "Features extracted and saved into 'data/features_all.csv' successfully!"
 
+
 # 打卡名单 表格
 @app.route('/user_form')
 def user_form():
@@ -764,6 +780,7 @@ def user_form():
     except Exception as e:
         return jsonify({'message': str(e)})
 
+
 @app.route('/reset_clock_status')
 def reset_clock_status():
     try:
@@ -783,16 +800,11 @@ def reset_clock_status():
         return jsonify({'message': str(e)})
 
 
-
-
-
-from flask import Flask, request, session, redirect, url_for, render_template ,flash
+from flask import Flask, request, session, redirect, url_for, render_template, flash
 import mysql.connector
-import re 
+import re
 import os
 from werkzeug.utils import secure_filename
-
-
 
 # 连接到 MySQL 数据库
 conn = mysql.connector.connect(
@@ -802,10 +814,12 @@ conn = mysql.connector.connect(
     database="aws_test"
 )
 
+
 # 首頁路由
 @app.route('/')
 def firsthome():
     return render_template('firsthome.html')
+
 
 # 用於登錄頁面的路由
 @app.route('/login/', methods=['GET', 'POST'])
@@ -831,6 +845,7 @@ def login():
 
     return render_template('login.html', msg=msg)
 
+
 # 用於註冊頁面的路由
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -855,7 +870,8 @@ def register():
         elif not username or not password or not email:
             msg = '請填寫表單！'
         else:
-            cursor.execute('INSERT INTO accounts VALUES (NULL, %s, %s, %s, %s ,NULL)', (fullname, username, password, email)) 
+            cursor.execute('INSERT INTO accounts VALUES (NULL, %s, %s, %s, %s ,NULL)',
+                           (fullname, username, password, email))
             conn.commit()
             msg = '您已成功註冊！'
 
@@ -863,6 +879,7 @@ def register():
         msg = '請填寫表單！'
 
     return render_template('register.html', msg=msg)
+
 
 # 首頁路由（只有已登錄的用戶可以訪問）
 # @app.route('/')
@@ -878,6 +895,7 @@ def logout():
     session.pop('id', None)
     session.pop('username', None)
     return redirect(url_for('firsthome'))
+
 
 # 用戶資料頁面路由（只有已登錄的用戶可以訪問）
 @app.route('/profile')
@@ -905,6 +923,7 @@ def profile():
     except Exception as e:
         return jsonify({'message': str(e)})
 
+
 @app.route('/update_profile', methods=['POST'])
 def update_profile():
     if 'loggedin' in session:
@@ -913,17 +932,17 @@ def update_profile():
         username = request.form['username']
         password = request.form['password']
         email = request.form['email']
-        
+
         # 處理上傳的照片
         if 'profile_pic' in request.files:
             file = request.files['profile_pic']
             if file.filename != '':
-                 # 將照片保存到指定目錄
+                # 將照片保存到指定目錄
                 filename = secure_filename(file.filename)
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 # 只保存檔名到資料庫中
                 profile_picture_path = filename
-                
+
         # 執行更新個人資料的 SQL 語句
         cursor = conn.cursor()
         cursor.execute('''
@@ -933,7 +952,7 @@ def update_profile():
         ''', (fullname, username, password, email, profile_picture_path, session['id']))
         conn.commit()
         cursor.close()
-        
+
         flash('Update success', 'success')
         # 重定向到用戶的個人資料頁面
         return redirect(url_for('profile'))
