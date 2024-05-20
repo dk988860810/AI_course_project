@@ -1,4 +1,3 @@
-/* Reset and general styles */
 body {
   font-family: 'Roboto', sans-serif;
   margin: 0;
@@ -6,9 +5,10 @@ body {
   background-color: #f5f5f5;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 100vh; /* 保持最小高度，讓footer在頁面底部 */
 }
 
+/* Header styles */
 header {
   background-color: #86A8E7;
   color: #fff;
@@ -33,6 +33,7 @@ header {
   font-weight: bold;
 }
 
+/* Navigation styles */
 nav {
   display: flex;
   align-items: center;
@@ -44,6 +45,7 @@ nav {
   align-items: center;
 }
 
+/* Button styles */
 .status-btn {
   color: #fff;
   text-decoration: none;
@@ -54,10 +56,26 @@ nav {
   transition: background-color 0.3s;
 }
 
-.status-btn:hover {
-  background-color: #ffffff28;
+.status-btn.face {
+  background-color: #86A8E7;
+  text-decoration: none;
+  margin-right: 20px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  margin-left: 10px;
 }
 
+.status-btn.face:hover {
+  background-color: #536992; /* 更深的浅蓝色背景 */
+  color: #fff; /* 白色文字 */
+}
+
+.status-btn:hover {
+  background-color: #536992;
+}
+
+/* Logout button styles */
 .logout-button {
   background-color: #ff6b6b;
   color: #fff;
@@ -72,11 +90,13 @@ nav {
   background-color: #ff4d4d;
 }
 
+/* Main content styles */
 main {
   flex: 1;
   padding: 20px;
 }
 
+/* Search container styles */
 .search-container {
   display: flex;
   justify-content: center;
@@ -103,14 +123,15 @@ main {
   margin-left: 20px;
 }
 
-#searchBtn:hover, #addEmployeeBtn:hover {
+.search-btn:hover, .add-employee-btn:hover {
   background-color: #86A8E7;
 }
 
-#searchBtn i {
+.search-btn i {
   font-size: 20px;
 }
 
+/* Table styles */
 .table-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -154,6 +175,7 @@ tr:hover {
   background-color: #cccccc;
 }
 
+/* Pagination styles */
 .pagination-container {
   display: flex;
   justify-content: center;
@@ -224,6 +246,7 @@ body .modal-content {
   cursor: pointer;
 }
 
+/* Form styles */
 #addEmployeeForm, #editForm {
   display: flex;
   flex-direction: column;
@@ -266,6 +289,7 @@ body .modal-content {
   background-color: #b3b3b3;
 }
 
+/* Footer styles */
 footer {
   background-color: #86A8E7;
   padding: 20px;
@@ -276,6 +300,7 @@ footer {
   width: 100%;
 }
 
+/* Reset button and link styles */
 button, .status-btn, .pagination a {
   text-decoration: none;
 }
