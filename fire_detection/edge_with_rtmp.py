@@ -5,46 +5,45 @@ import pickle
 import time
 import threading
 import subprocess
-from queue import Queue
-import queue
 
-# Replace <SERVER_IP> with the IP address of your server
-SERVER_IP = '172.17.244.11'
+# 将 <SERVER_IP> 替换为服务器的IP地址
+SERVER_IP = '192.168.8.150'
 SERVER_PORT = 5000
 
-# Initialize camera and YOLO model
-camera = cv2.VideoCapture(0)  # Replace 0 with the appropriate camera index
+# 初始化摄像头和YOLO模型
+camera = cv2.VideoCapture(0)  # 替换0为适当的摄像头索引
 model = YOLO("model/best.pt")
 
-# Create a SocketIO client instance
+# 创建一个SocketIO客户端实例
 sio = socketio.Client()
 
-# Connect to the server
+# 连接到服务器
 sio.connect(f'http://{SERVER_IP}:{SERVER_PORT}')
 
 @sio.event
 def connect():
-    print('Connected to the server')
+    print('已连接到服务器')
 
 @sio.event
 def disconnect():
-    print('Disconnected from the server')
+    print('已从服务器断开连接')
 
 class EdgeComputing:
-    def __init__(self, camera, model):
+    def __init__(self, camera, model, edge_id):
         self.cap = camera
         self.model = model
         self.class_label_set = []
         self.start_time = time.time()
         self.frame_counter = 0
         self.stop_event = threading.Event()
-        self.frame_queue = Queue(maxsize=10)  # 限制隊列大小
-        self.rtmp_thread = threading.Thread(target=self.run_rtmp)
-        self.rtmp_thread.start()
         self.edge_id = edge_id
 
+        # 启动RTMP线程
+        self.rtmp_thread = threading.Thread(target=self.run_rtmp)
+        self.rtmp_thread.start()
+
     def run_rtmp(self):
-        rtmp_url = "rtmp://13.214.171.73/live/stream_1"
+        rtmp_url = "rtmp://13.214.171.73/live/stream_2"
         rtmp_command = [
             "ffmpeg",
             "-f", "rawvideo",
@@ -61,20 +60,8 @@ class EdgeComputing:
         ]
         self.rtmp_process = subprocess.Popen(rtmp_command, stdin=subprocess.PIPE)
 
-        while not self.stop_event.is_set():
-            try:
-                frame = self.frame_queue.get(timeout=1)
-            except queue.Empty:
-                continue
-            else:
-                print("Writing frame to FFmpeg process")
-                self.rtmp_process.stdin.write(frame.tobytes())
-
-        self.rtmp_process.stdin.close()
-        self.rtmp_process.wait()
-
-    def detect_objects(self, frame, model):
-        pre_result_cam = model.predict(frame, verbose=False)
+    def detect_objects(self, frame):
+        pre_result_cam = self.model.predict(frame, verbose=False)
         self.class_label_set = []
         for data in pre_result_cam[0].boxes:
             x1, y1, x2, y2 = data.xyxy[0]
@@ -93,13 +80,13 @@ class EdgeComputing:
                 cv2.putText(frame, output_text, org, font, fontScale, color, thickness)
         return frame
 
-    def stream_video(self, edge_id):
+    def stream_video(self):
         try:
             while not self.stop_event.is_set():
                 success, frame = self.cap.read()
                 if success:
-                    #frame_with_detections = self.detect_objects(frame, self.model)
-                    self.frame_queue.put(frame)
+                    frame_with_detections = self.detect_objects(frame)
+                    self.rtmp_process.stdin.write(frame_with_detections.tobytes())
 
                     class_labels_bytes = pickle.dumps(self.class_label_set)
                     data = pickle.dumps([self.edge_id, class_labels_bytes], protocol=0)
@@ -112,28 +99,30 @@ class EdgeComputing:
 
                     if elapsed_time >= 1.0:
                         fps = self.frame_counter / elapsed_time
-                        print(f"Frames per second: {fps}")
+                        print(f"每秒帧数: {fps}")
                         self.frame_counter = 0
                         self.start_time = time.time()
         except KeyboardInterrupt:
-            print("Keyboard Interrupt received, stopping...")
+            print("收到键盘中断信号，正在停止...")
             self.stop_event.set()
-            self.rtmp_thread.join()
+            self.rtmp_process.stdin.close()
+            self.rtmp_process.wait()
 
 if __name__ == "__main__":
-    edge_id = 1
-    edge_computing = EdgeComputing(camera, model)
-    stream_thread = threading.Thread(target=edge_computing.stream_video, args=(edge_id,))
+    edge_id = 2
+    edge_computing = EdgeComputing(camera, model, edge_id)
+    stream_thread = threading.Thread(target=edge_computing.stream_video)
     stream_thread.start()
 
-    # 保持主線程運行，同時允許處理其他事件
+    # 保持主线程运行，同时允许处理其他事件
     try:
         while True:
             time.sleep(1)
     except KeyboardInterrupt:
-        print("Main thread Keyboard Interrupt received, stopping...")
-        edge_computing.stop_event.set()  # 設置事件對象以通知線程終止
-        edge_computing.rtmp_thread.join()  # 等待RTMP線程完成
-        stream_thread.join()  # 等待串流線程完成
+        print("主线程收到键盘中断信号，正在停止...")
+        edge_computing.stop_event.set()  # 设置事件对象以通知线程终止
+        edge_computing.rtmp_process.stdin.close()  # 关闭FFmpeg stdin
+        edge_computing.rtmp_process.wait()  # 等待RTMP进程完成
+        stream_thread.join()  # 等待流线程完成
         camera.release()
         sio.disconnect()

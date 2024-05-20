@@ -59,28 +59,43 @@ def handle_video_frame(data):
     except Exception as e:
         print(f"Error handling video frame: {e}")
 
+# def generate_frames(edge_id):
+#     rtmp_url = f"rtmp://13.214.171.73/live/stream_{edge_id}"
+#     print(rtmp_url)
+#     cap = cv2.VideoCapture(rtmp_url)
+#     print(cap)
+#     while True:
+#         ret, frame = cap.read()
+#         if not ret:
+#             break
+
+#         frame_stream_queue = frame_stream_queues.get(edge_id, None)
+#         if not frame_stream_queue:
+#             continue
+
+#         try:
+#             _, class_label_set = frame_stream_queue.get(timeout=1)
+#             yield (b'--frame\r\n'
+#                    b'Content-Type: image/jpeg\r\n\r\n' + cv2.imencode('.jpg', frame)[1].tobytes() + b'\r\n')
+#         except Empty:
+#             continue
+
+#     cap.release()
 def generate_frames(edge_id):
     rtmp_url = f"rtmp://13.214.171.73/live/stream_{edge_id}"
-    print(rtmp_url)
     cap = cv2.VideoCapture(rtmp_url)
-    print(cap)
-    while True:
+
+    while cap.isOpened():
         ret, frame = cap.read()
         if not ret:
             break
 
-        frame_stream_queue = frame_stream_queues.get(edge_id, None)
-        if not frame_stream_queue:
-            continue
-
-        try:
-            _, class_label_set = frame_stream_queue.get(timeout=1)
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + cv2.imencode('.jpg', frame)[1].tobytes() + b'\r\n')
-        except Empty:
-            continue
+        # Directly yield the frame as a JPEG-encoded byte stream
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + cv2.imencode('.jpg', frame)[1].tobytes() + b'\r\n')
 
     cap.release()
+
 
 @app.route('/')
 def index():

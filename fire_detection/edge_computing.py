@@ -50,8 +50,8 @@ class EdgeComputing:
         while not self.stop_event.is_set():  # 檢查事件是否設置
             success, frame = self.cap.read()
             if success:
-                #frame_with_detections = self.detect_objects(frame, self.model)
-                encoded_frame = encode_image(frame)
+                frame_with_detections = self.detect_objects(frame, self.model)
+                encoded_frame = encode_image(frame_with_detections)
                 #print(self.class_label_set)
                 class_labels_bytes = pickle.dumps(self.class_label_set)
                 #print("encode",class_labels_bytes)
