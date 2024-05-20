@@ -603,7 +603,6 @@ def video_feed():
 
 @app.route('/get_face')
 def get_face():
-    cap = cv2.VideoCapture('rtmp://54.162.189.102/live/aws')  # Get video stream from camera
     return render_template('get_face.html')
 
 
