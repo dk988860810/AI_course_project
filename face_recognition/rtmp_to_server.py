@@ -6,13 +6,16 @@ def start_stream(camera_name, rtmp_server, stream_key):
         'ffmpeg',
         '-f', 'dshow',
         '-i', f'video={camera_name}',
+        '-s', '640x360',  # Set resolution to 640x360
+        '-r', '10',  # Set frame rate to 15 fps
         '-c:v', 'libx264',
+        '-b:v', '300k',  # Set video bitrate to 500 kbps
         '-preset', 'ultrafast',
         '-tune', 'zerolatency',
         '-f', 'flv',
         f'rtmp://{rtmp_server}/live/{stream_key}'
     ]
-
+     
     # Run FFmpeg command in a subprocess
     process = subprocess.Popen(ffmpeg_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
@@ -28,7 +31,7 @@ def start_stream(camera_name, rtmp_server, stream_key):
 # Example usage
 if __name__ == "__main__":
     camera_name = "Lenovo EasyCamera"
-    rtmp_server = "54.162.189.102"
-    stream_key = "aws"
+    rtmp_server = "13.214.171.73"
+    stream_key = "stream_1"
     
     start_stream(camera_name, rtmp_server, stream_key)

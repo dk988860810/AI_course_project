@@ -8,6 +8,7 @@ import pickle
 import time
 import pdfkit
 import os
+import cv2
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
@@ -29,67 +30,71 @@ def frame_processing_thread(edge_id):
     while True:
         frame_stream_queue = frame_stream_queues.get(edge_id, None)
         if not frame_stream_queue:
-            # print(f"No stream queue found for edge {edge_id}")
             time.sleep(1)
             continue
 
         try:
-            frame_encoded, class_label_set = frame_stream_queue.get(timeout=1)
-            # print(f"Processing frame for edge {edge_id}")
-            # Process frame here if needed
+            frame, class_label_set = frame_stream_queue.get(timeout=1)
+            edge_labels[edge_id] = class_label_set
         except Empty:
-            # print(f"Stream queue for edge {edge_id} is empty, waiting for frames")
-            time.sleep(0.1)
             continue
 
 @socketio.on('video_frame')
 def handle_video_frame(data):
     try:
-        edge_id, frame_encoded, class_label_bytes = pickle.loads(data)
+        edge_id, class_label_bytes = pickle.loads(data)
         class_label_set = pickle.loads(class_label_bytes)
-        #print(f"Received data from edge {edge_id}: {class_label_set}")
-        # print(f"Received data from edge {edge_id}")
-
-        edge_labels[edge_id] = class_label_set
 
         if edge_id not in frame_queues_and_threads:
-            frame_stream_queue = Queue(maxsize=60)
+            frame_stream_queue = Queue(maxsize=30)
             frame_stream_queues[edge_id] = frame_stream_queue
-            # print(f"Created stream queue for edge {edge_id}")
 
             thread = threading.Thread(target=frame_processing_thread, args=(edge_id,))
             thread.daemon = True
             thread.start()
             frame_queues_and_threads[edge_id] = (frame_stream_queue, thread)
-            # print(f"Started processing thread for edge {edge_id}")
 
         frame_stream_queue = frame_queues_and_threads[edge_id][0]
-        
-        frame_stream_queue.put((frame_encoded, class_label_set), timeout=1)
-        # print(f"Added frame to stream queue for edge {edge_id}")
-    except Full:
-        print(f"Stream queue for edge {edge_id} is full, skipping frame")
+        frame_stream_queue.put((None, class_label_set))  # 將 None 作為佔位符,因為我們沒有收到影像資料
     except Exception as e:
         print(f"Error handling video frame: {e}")
 
-def generate_frames(edge_id):
-    while True:
-        frame_stream_queue = frame_stream_queues.get(edge_id, None)
-        if not frame_stream_queue:
-            # print(f"No stream queue found for edge {edge_id}")
-            time.sleep(1)
-            continue
+# def generate_frames(edge_id):
+#     rtmp_url = f"rtmp://13.214.171.73/live/stream_{edge_id}"
+#     print(rtmp_url)
+#     cap = cv2.VideoCapture(rtmp_url)
+#     print(cap)
+#     while True:
+#         ret, frame = cap.read()
+#         if not ret:
+#             break
 
-        try:
-            frame_encoded, class_label_set = frame_stream_queue.get(timeout=1)
-            # print(f"Yielding frame bytes for edge {edge_id}")
-           
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame_encoded + b'\r\n')
-        except Empty:
-            # print(f"Stream queue for edge {edge_id} is empty, waiting for frames")
-            time.sleep(0.1)
-            continue
+#         frame_stream_queue = frame_stream_queues.get(edge_id, None)
+#         if not frame_stream_queue:
+#             continue
+
+#         try:
+#             _, class_label_set = frame_stream_queue.get(timeout=1)
+#             yield (b'--frame\r\n'
+#                    b'Content-Type: image/jpeg\r\n\r\n' + cv2.imencode('.jpg', frame)[1].tobytes() + b'\r\n')
+#         except Empty:
+#             continue
+
+#     cap.release()
+def generate_frames(edge_id):
+    rtmp_url = f"rtmp://13.214.171.73/live/stream_{edge_id}"
+    cap = cv2.VideoCapture(rtmp_url)
+
+    while cap.isOpened():
+        ret, frame = cap.read()
+        if not ret:
+            break
+
+        # Directly yield the frame as a JPEG-encoded byte stream
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + cv2.imencode('.jpg', frame)[1].tobytes() + b'\r\n')
+
+    cap.release()
 
 
 @app.route('/')
@@ -104,24 +109,20 @@ def video_feed_route_1():
 def video_feed_route_2():
     return Response(generate_frames(2), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-# @app.route('/video_feed_3')
-# def video_feed_route_3():
-#     return Response(generate_frames(3), mimetype='multipart/x-mixed-replace; boundary=frame')
+# 如果需要更多的視頻流路由,可以在這裡添加
 
 @app.route('/get_class_label')
 def get_class_label():
     camera_id = request.args.get('camera_id', type=int)
-    #print(f"Received request for camera_id: {camera_id}")
 
     if camera_id in edge_labels:
         class_label_set = edge_labels[camera_id]
-        #print(f"Retrieved class labels: {class_label_set}")
     else:
         class_label_set = []
-        #print(f"No class labels found for camera_id {camera_id}")
 
     return jsonify(class_label_set)
 
+# 其他路由和函數保持不變
 @app.route('/submit_data', methods=['POST'])
 def submit():
     if request.method == 'POST':
@@ -273,7 +274,6 @@ def download():
 def reset_clock_status():
     return redirect(url_for('table'))
     
-
 
 if __name__ == "__main__":
     socketio.run(app, host='0.0.0.0', port=5000, debug=True)
