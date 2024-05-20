@@ -4,16 +4,13 @@ import socketio
 import pickle
 import time
 import threading
-from queue import Queue, Full, Empty
-
-# 使用串流模式傳輸影像
-def encode_image(img):
-    _, encoded_img = cv2.imencode('.jpg', img,[int(cv2.IMWRITE_JPEG_QUALITY), 30])
-    return encoded_img.tobytes()
+import subprocess
+from queue import Queue
+import queue
 
 # Replace <SERVER_IP> with the IP address of your server
 SERVER_IP = '172.17.244.11'
-SERVER_PORT = 5001
+SERVER_PORT = 5000
 
 # Initialize camera and YOLO model
 camera = cv2.VideoCapture(0)  # Replace 0 with the appropriate camera index
@@ -40,26 +37,41 @@ class EdgeComputing:
         self.class_label_set = []
         self.start_time = time.time()
         self.frame_counter = 0
-        self.encode_queue = Queue(maxsize=10)  # 限制 Queue 大小
-        self.stop_event = threading.Event()  # 創建一個事件對象
-        self.encode_thread = threading.Thread(target=self.encode_frames)
-        self.encode_thread.start()
-        self.edge_id=edge_id
+        self.stop_event = threading.Event()
+        self.frame_queue = Queue(maxsize=10)  # 限制隊列大小
+        self.rtmp_thread = threading.Thread(target=self.run_rtmp)
+        self.rtmp_thread.start()
+        self.edge_id = edge_id
 
-    def encode_frames(self):
-        while not self.stop_event.is_set():  # 檢查事件是否設置
-            success, frame = self.cap.read()
-            if success:
-                #frame_with_detections = self.detect_objects(frame, self.model)
-                encoded_frame = encode_image(frame)
-                #print(self.class_label_set)
-                class_labels_bytes = pickle.dumps(self.class_label_set)
-                #print("encode",class_labels_bytes)
-                data = pickle.dumps([self.edge_id, encoded_frame, class_labels_bytes], protocol=0)
-                try:
-                    self.encode_queue.put(data, timeout=1)
-                except Full:
-                    print("Queue is full, skipping frame")
+    def run_rtmp(self):
+        rtmp_url = "rtmp://13.214.171.73/live/stream_1"
+        rtmp_command = [
+            "ffmpeg",
+            "-f", "rawvideo",
+            "-vcodec", "rawvideo",
+            "-pix_fmt", "bgr24",
+            "-s", "640x480",
+            "-r", "30",
+            "-i", "-",
+            "-c:v", "libx264",
+            "-preset", "ultrafast",
+            "-tune", "zerolatency",
+            "-f", "flv",
+            rtmp_url
+        ]
+        self.rtmp_process = subprocess.Popen(rtmp_command, stdin=subprocess.PIPE)
+
+        while not self.stop_event.is_set():
+            try:
+                frame = self.frame_queue.get(timeout=1)
+            except queue.Empty:
+                continue
+            else:
+                print("Writing frame to FFmpeg process")
+                self.rtmp_process.stdin.write(frame.tobytes())
+
+        self.rtmp_process.stdin.close()
+        self.rtmp_process.wait()
 
     def detect_objects(self, frame, model):
         pre_result_cam = model.predict(frame, verbose=False)
@@ -84,8 +96,13 @@ class EdgeComputing:
     def stream_video(self, edge_id):
         try:
             while not self.stop_event.is_set():
-                try:
-                    data = self.encode_queue.get(timeout=1)
+                success, frame = self.cap.read()
+                if success:
+                    #frame_with_detections = self.detect_objects(frame, self.model)
+                    self.frame_queue.put(frame)
+
+                    class_labels_bytes = pickle.dumps(self.class_label_set)
+                    data = pickle.dumps([self.edge_id, class_labels_bytes], protocol=0)
                     sio.emit('video_frame', data)
 
                     self.frame_counter += 1
@@ -93,17 +110,15 @@ class EdgeComputing:
                     current_time = time.time()
                     elapsed_time = current_time - self.start_time
 
-                    if elapsed_time >= 1.0:  # 每秒執行一次
+                    if elapsed_time >= 1.0:
                         fps = self.frame_counter / elapsed_time
                         print(f"Frames per second: {fps}")
                         self.frame_counter = 0
                         self.start_time = time.time()
-                except Empty:
-                    print("Queue is empty, no frame to send")
         except KeyboardInterrupt:
             print("Keyboard Interrupt received, stopping...")
-            self.stop_event.set()  # 設置事件對象以通知線程終止
-            self.encode_thread.join()  # 等待線程完成
+            self.stop_event.set()
+            self.rtmp_thread.join()
 
 if __name__ == "__main__":
     edge_id = 1
@@ -118,7 +133,7 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         print("Main thread Keyboard Interrupt received, stopping...")
         edge_computing.stop_event.set()  # 設置事件對象以通知線程終止
-        edge_computing.encode_thread.join()  # 等待編碼線程完成
+        edge_computing.rtmp_thread.join()  # 等待RTMP線程完成
         stream_thread.join()  # 等待串流線程完成
         camera.release()
         sio.disconnect()

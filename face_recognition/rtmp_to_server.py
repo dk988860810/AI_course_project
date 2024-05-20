@@ -32,6 +32,6 @@ def start_stream(camera_name, rtmp_server, stream_key):
 if __name__ == "__main__":
     camera_name = "Lenovo EasyCamera"
     rtmp_server = "13.214.171.73"
-    stream_key = "aws"
+    stream_key = "stream_1"
     
     start_stream(camera_name, rtmp_server, stream_key)
