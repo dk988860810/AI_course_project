@@ -207,8 +207,8 @@ tr:hover {
   text-align: center;
 }
 
-/* Modal styles */
-.modal {
+body .modal {
+  display: block ;
   display: none;
   position: fixed;
   z-index: 1;
@@ -220,15 +220,17 @@ tr:hover {
   background-color: rgba(0, 0, 0, 0.4);
 }
 
-.modal-content {
+body .modal-content {
   background-color: #fefefe;
   margin: 15% auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 40%;
+  width: 40%; 
   border-radius: 4px;
   position: relative;
 }
+
+/* !important */
 
 .close {
   color: #aaa;
