@@ -305,7 +305,6 @@ class Face_Recognizer:
                 logging.debug("Frame ends\n\n")
 
     def run(self):
-        # cap = cv2.VideoCapture("video.mp4")  # Get video stream from video file
         cap = cv2.VideoCapture('rtmp://54.162.189.102/live/aws')  # Get video stream from camera
         self.process(cap)
 
@@ -373,7 +372,6 @@ fps = 0
 fps_show = 0
 start_time = time.time()
 
-cap = cv2.VideoCapture('rtmp://54.162.189.102/live/aws')  # Get video stream from camera
 
 
 # 删除之前存的人脸数据文件夹 / Delete old face folders
@@ -605,7 +603,6 @@ def video_feed():
 
 @app.route('/get_face')
 def get_face():
-    cap = cv2.VideoCapture('rtmp://54.162.189.102/live/aws')  # Get video stream from camera
     return render_template('get_face.html')
 
 

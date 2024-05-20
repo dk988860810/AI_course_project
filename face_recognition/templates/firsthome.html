@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>火災預警系統</title>
     <link rel="icon" href="../static/image/logo.png">
-    <link rel="stylesheet" href="../static/css/home.css">
+    <link rel="stylesheet" href="../static/css/firsthome.css">
 </head>
 
 <body>
@@ -24,7 +24,9 @@
             </div> -->
             <!-- <div class="nav-links">
                 <a href="/templates/login.html" id="login-link" class="login-button">登入</a> -->
-                <button class="login-button" onclick="location.href='/templates/login.html';">Log in</button>
+                <form action="{{ url_for('login') }}" method="post">
+                    <button class="login-button">Log in</button>  
+                </form>
             </div>
             
         </nav>
