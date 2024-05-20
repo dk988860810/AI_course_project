@@ -53,7 +53,7 @@ def handle_video_frame(data):
         edge_labels[edge_id] = class_label_set
 
         if edge_id not in frame_queues_and_threads:
-            frame_stream_queue = Queue(maxsize=30)
+            frame_stream_queue = Queue(maxsize=60)
             frame_stream_queues[edge_id] = frame_stream_queue
             # print(f"Created stream queue for edge {edge_id}")
 
