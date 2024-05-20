@@ -304,19 +304,19 @@ class Face_Recognizer:
 
                 logging.debug("Frame ends\n\n")
 
-    # def run(self):
-    #     cap = cv2.VideoCapture('rtmp://13.214.171.73/live/aws')  # Get video stream from camera
-    #     self.process(cap)
-    #
-    #     cap.release()
-    #     cv2.destroyAllWindows()
+    def run(self):
+        cap = cv2.VideoCapture('rtmp://54.162.189.102/live/aws')  # Get video stream from camera
+        self.process(cap)
+
+        cap.release()
+        cv2.destroyAllWindows()
 
 
-# def main():
-#     # logging.basicConfig(level=logging.DEBUG) # Set log level to 'logging.DEBUG' to print debug info of every frame
-#     logging.basicConfig(level=logging.INFO)
-#     Face_Recognizer_con = Face_Recognizer()
-#     Face_Recognizer_con.run()
+def main():
+    # logging.basicConfig(level=logging.DEBUG) # Set log level to 'logging.DEBUG' to print debug info of every frame
+    logging.basicConfig(level=logging.INFO)
+    Face_Recognizer_con = Face_Recognizer()
+    Face_Recognizer_con.run()
 
 
 ff_flag = False
@@ -326,7 +326,7 @@ name_list = ['unknown']
 def generate_frames():
     global ff_flag, name_list
     face_recognizer = Face_Recognizer()
-    # cap = cv2.VideoCapture('rtmp://13.214.171.73/live/aws')
+    cap = cv2.VideoCapture('rtmp://54.162.189.102/live/aws')
     for frame, face_found, name_list in face_recognizer.process(cap):
         ff_flag = False
         # print('face_found = ',face_found)
@@ -603,6 +603,7 @@ def video_feed():
 
 @app.route('/get_face')
 def get_face():
+    # cap = cv2.VideoCapture('rtmp://54.162.189.102/live/aws')  # Get video stream from camera
     return render_template('get_face.html')
 
 
@@ -623,7 +624,7 @@ def test_mysql():
 
 # 数据库连接配置
 db_config = {
-    'host': '13.214.171.73',
+    'host': '54.162.189.102',
     'user': 'test_user',
     'password': 'testpassword',
     'database': 'aws_test',
@@ -692,11 +693,11 @@ def input_name():
 def save_face():
     return save_current_face()
 
-cap = cv2.VideoCapture('rtmp://13.214.171.73/live/aws')
+
 def gen():
     global frame_start_time, label_warning
     frame_start_time = time.time()
-    # cap = cv2.VideoCapture('rtmp://13.214.171.73/live/aws')  # Get video stream from camera
+    cap = cv2.VideoCapture('rtmp://54.162.189.102/live/aws')  # Get video stream from camera
     while True:
         frame, label_warning = process(cap)
         # frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)  # 转换图像颜色为RGB
@@ -808,7 +809,7 @@ from werkzeug.utils import secure_filename
 
 # 连接到 MySQL 数据库
 conn = mysql.connector.connect(
-    host="13.214.171.73",
+    host="54.162.189.102",
     user="test_user",
     password="testpassword",
     database="aws_test"
