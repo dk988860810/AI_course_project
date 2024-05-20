@@ -149,24 +149,23 @@ def submit():
 @app.route('/table', methods=['GET'])
 def table():
     page = request.args.get('page', 1, type=int)
-    result = get_data(page=page)
+    result = get_data(page=page, per_page=10)
     return render_template('table.html', result=result)
 
-def get_data(page):
+def get_data(page, per_page):
     conn = mysql.connector.connect(**mysql_config)
     cursor = conn.cursor()
 
     try:
-        offset = (page - 1) * 20
+        offset = (page - 1) * per_page
 
         count_query = "SELECT COUNT(*) FROM test"
         cursor.execute(count_query)
         total_count = cursor.fetchone()[0]
-        total_pages = (total_count + 19) // 20  # Calculate total number of pages
+        total_pages = (total_count + per_page - 1) // per_page  # Calculate total number of pages
 
-
-        query = "SELECT * FROM test ORDER BY id DESC LIMIT 20 OFFSET %s"
-        cursor.execute(query, (offset,))
+        query = "SELECT * FROM test ORDER BY id DESC LIMIT %s OFFSET %s"
+        cursor.execute(query, (per_page, offset))
         data = cursor.fetchall()
 
         result = []

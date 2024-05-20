@@ -16,7 +16,7 @@
 <header>
   <div class="header-content">
     <img src="{{ url_for('static', filename='image/logo.png') }}" alt="Logo" class="logo">
-    <span class="system-name">火災預警系統</span>
+    <span class="system-name">員工資料</span>
     <nav>
       <div class="nav-buttons">
         <a href="/attendance" class="status-btn">出缺勤狀況</a>
@@ -114,10 +114,16 @@
       </table>
     </div>
 
-    <div class="pagination">
-      <button id="prevPage" disabled>上一頁</button>
-      <span id="currentPage">1</span>
-      <button id="nextPage">下一頁</button>
+    <div class="pagination-container">
+      <div class="pagination">
+        {% if page > 1 %}
+          <a href="{{ url_for('profile', page=page - 1) }}">上一頁</a>
+        {% endif %}
+        <span class="page-info">{{ page }} / {{ total_pages }}</span>
+        {% if page < total_pages %}
+          <a href="{{ url_for('profile', page=page + 1) }}">下一頁</a>
+        {% endif %}
+      </div>
     </div>
   </main>
 

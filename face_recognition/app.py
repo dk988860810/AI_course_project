@@ -740,20 +740,27 @@ def features_extraction():
 # 打卡名单 表格
 @app.route('/user_form')
 def user_form():
+    page = request.args.get('page', 1, type=int)
+    per_page = 10
+
     try:
         conn = mysql.connector.connect(**db_config)
         cursor = conn.cursor()
 
-        # 查询数据库中{name}的信息
-        # 查詢sql
-        cursor.execute("SELECT * FROM users")
-        # 取出查詢結果
+        # 计算总条目数
+        cursor.execute("SELECT COUNT(*) FROM users")
+        total_count = cursor.fetchone()[0]
+        total_pages = (total_count + per_page - 1) // per_page
+
+        # 查询当前页的数据
+        offset = (page - 1) * per_page
+        cursor.execute("SELECT * FROM users LIMIT %s OFFSET %s", (per_page, offset))
         users = cursor.fetchall()
-        # print(users)
+
         cursor.close()
         conn.close()
 
-        return render_template('user_form.html', users=users)
+        return render_template('user_form.html', users=users, page=page, total_pages=total_pages)
     except Exception as e:
         return jsonify({'message': str(e)})
 
@@ -874,21 +881,29 @@ def logout():
 
 # 用戶資料頁面路由（只有已登錄的用戶可以訪問）
 @app.route('/profile')
-def profile(): 
-    # 執行 SQL 查詢，取得員工資料
-    cursor = conn.cursor(dictionary=True)  # 使用 dictionary cursor 可以讓資料以字典形式返回
-    cursor.execute("SELECT * FROM HR_accounts")
-    rows = cursor.fetchall()
-    cursor.close()
+def profile():
+    page = request.args.get('page', 1, type=int)
+    per_page = 10
 
-    # 將資料傳送到模板中進行呈現
-    return render_template('HR.html', rows=rows)
-       
+    try:
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor(dictionary=True)
 
+        # 计算总条目数
+        cursor.execute("SELECT COUNT(*) FROM HR_accounts")
+        total_count = cursor.fetchone()['COUNT(*)']
+        total_pages = (total_count + per_page - 1) // per_page
 
-# 指定上傳照片的目錄
-UPLOAD_FOLDER = 'C:/report/try0516/static/profile_pic'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+        # 查询当前页的数据
+        offset = (page - 1) * per_page
+        cursor.execute("SELECT * FROM HR_accounts LIMIT %s OFFSET %s", (per_page, offset))
+        rows = cursor.fetchall()
+        cursor.close()
+        conn.close()
+
+        return render_template('HR.html', rows=rows, page=page, total_pages=total_pages)
+    except Exception as e:
+        return jsonify({'message': str(e)})
 
 @app.route('/update_profile', methods=['POST'])
 def update_profile():
