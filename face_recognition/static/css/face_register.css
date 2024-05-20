@@ -1,0 +1,125 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+    background-color: #ffffff; /* 浅蓝色背景 */
+}
+
+.header {
+    width: 100%;
+    background-color: #86A8E7; /* 浅蓝色背景 */
+    color: white;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* 左对齐 */
+    z-index: 1000; /* 确保头部在最上层 */ 
+    
+}
+
+.header .logo {
+    max-width: 50px;
+    margin-left: 20px;
+    margin-right: 10px; /* 添加间距 */
+
+}
+
+.header .header-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-left: 0; /* 确保紧贴logo */
+}
+
+.header .home-icon {
+    max-width: 30px;
+    margin-left: auto; /* 将home-icon推到右边 */
+    cursor: pointer;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding-top: 100px; /* 使内容不被固定的头部覆盖 */
+    box-sizing: border-box;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* 水平居中 */
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* 增加间距 */
+    width: 100%;
+}
+
+.form-group label {
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.underline-input {
+    padding: 10px;
+    font-size: 1rem;
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 10px;
+    border: none;
+    border-bottom: 2px solid #6b85b6; /* 只有底线，浅蓝色 */
+    border-radius: 0;
+    transition: border-color 0.3s, box-shadow 0.3s; /* 过渡效果 */
+    text-align: center; /* 文本居中 */
+}
+
+.underline-input:focus {
+    border-color: #86A8E7; /* 聚焦时的底线颜色，稍深的浅蓝色 */
+    box-shadow: 0 1px 0 rgba(79, 195, 247, 0.5); /* 聚焦时的阴影 */
+}
+
+.status-btn {
+    background-color: #86A8E7; /* 浅蓝色背景 */
+    color: white; /* 白色文字 */
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.status-btn:hover {
+    background-color: #536992; /* 更深的浅蓝色背景 */
+    color: #fff; /* 白色文字 */
+}
+
+.video-container {
+    margin-top: 20px;
+}
+
+.camera {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
