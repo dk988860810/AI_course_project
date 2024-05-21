@@ -7,7 +7,7 @@ import threading
 import subprocess
 
 # 将 <SERVER_IP> 替换为服务器的IP地址
-SERVER_IP = '192.168.8.150'
+SERVER_IP = '172.17.244.11'
 SERVER_PORT = 5000
 
 # 初始化摄像头和YOLO模型
@@ -38,11 +38,7 @@ class EdgeComputing:
         self.stop_event = threading.Event()
         self.edge_id = edge_id
 
-        # 启动RTMP线程
-        self.rtmp_thread = threading.Thread(target=self.run_rtmp)
-        self.rtmp_thread.start()
-
-    def run_rtmp(self):
+        # Initialize rtmp_process
         rtmp_url = "rtmp://13.214.171.73/live/stream_2"
         rtmp_command = [
             "ffmpeg",
@@ -59,6 +55,14 @@ class EdgeComputing:
             rtmp_url
         ]
         self.rtmp_process = subprocess.Popen(rtmp_command, stdin=subprocess.PIPE)
+
+        # Start the RTMP thread
+        self.rtmp_thread = threading.Thread(target=self.run_rtmp)
+        self.rtmp_thread.start()
+
+    def run_rtmp(self):
+        while not self.stop_event.is_set():
+            pass  # Add your RTMP streaming logic here if needed
 
     def detect_objects(self, frame):
         pre_result_cam = self.model.predict(frame, verbose=False)
@@ -85,8 +89,8 @@ class EdgeComputing:
             while not self.stop_event.is_set():
                 success, frame = self.cap.read()
                 if success:
-                    frame_with_detections = self.detect_objects(frame)
-                    self.rtmp_process.stdin.write(frame_with_detections.tobytes())
+                    #frame_with_detections = self.detect_objects(frame)
+                    self.rtmp_process.stdin.write(frame.tobytes())
 
                     class_labels_bytes = pickle.dumps(self.class_label_set)
                     data = pickle.dumps([self.edge_id, class_labels_bytes], protocol=0)
