@@ -11,10 +11,20 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/HR.css') }}">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+
   <style>
     a:hover {
         color: white !important;
     }
+
+    .modal-backdrop {
+        position: static;
+        top: 0;
+        left: 0;
+    }
+
 </style>
 </head>
 <body>
@@ -52,7 +62,6 @@
     <div class="modal fade" id="myModal">
         <div class="modal-dialog">
             <div class="modal-content">
-
                 <!-- Modal Header -->
                 <div class="modal-header">
                     <h4 class="modal-title">Features Extraction</h4>
@@ -76,7 +85,13 @@
 
     <a href="/face_recognition"><button class="status-btn face" >Face recognizer</button></a>
 
+<<<<<<< HEAD
     </div>    
+=======
+    <a href="/user_form"><button class="status-btn face">User Form</button></a>
+
+    </div>
+>>>>>>> 24681561ab468dbd1a4f2f3cebe05601867feb70
 
     <div class="table-container">
       <table>
@@ -165,11 +180,19 @@
     © 2024 火災預警系統
   </footer>
 
+
+
+
   <script src="{{ url_for('static', filename='js/HR.js') }}"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 24681561ab468dbd1a4f2f3cebe05601867feb70
 </body>
 </html>
