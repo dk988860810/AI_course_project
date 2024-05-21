@@ -641,13 +641,13 @@ def clock_in():
             clock_status_index = cursor.column_names.index('clock_status')
             if user[clock_status_index] != 'Clock In':
                 # 清空下班打卡时间和状态，并更新上班打卡时间和状态
-                update_query = f"UPDATE users SET clock_out_time = NULL, clock_out_status = NULL, clock_in_time = CONVERT_TZ(UTC_TIMESTAMP(), '+00:00', '+08:00'), clock_status = 'Clock In' WHERE name = '{name}'"
+                update_query = f"UPDATE users SET clock_in_time = CONVERT_TZ(UTC_TIMESTAMP(), '+00:00', '+08:00'), clock_status = 'Clock In' WHERE name = '{name}'"
                 cursor.execute(update_query)
                 conn.commit()
                 message = '打卡成功'
             else:
                 # 清空上班打卡时间和状态，并更新下班打卡时间和状态
-                update_query = f"UPDATE users SET clock_in_time = NULL, clock_status = NULL, clock_out_time = CONVERT_TZ(UTC_TIMESTAMP(), '+00:00', '+08:00'), clock_out_status = 'Clock Out' WHERE name = '{name}'"
+                update_query = f"UPDATE users SET clock_in_time = CONVERT_TZ(UTC_TIMESTAMP(), '+00:00', '+08:00'), clock_status = 'Clock Out' WHERE name = '{name}'"
                 cursor.execute(update_query)
                 conn.commit()
                 message = '下班'
@@ -886,13 +886,13 @@ def logout():
 # 定义一个函数来捕获视频流
 def capture_video():
     global cap
-    cap = cv2.VideoCapture('rtmp://13.214.171.73/live/aws')  # 获取视频流
+    cap = cv2.VideoCapture('rtmp://13.214.171.73/face/aws')  # 获取视频流
 
 # 用戶資料頁面路由（只有已登錄的用戶可以訪問）
 @app.route('/profile')
 def profile():
     # global cap
-    # cap = cv2.VideoCapture('rtmp://13.214.171.73/live/aws')  # Get video stream from camera
+    # cap = cv2.VideoCapture('rtmp://13.214.171.73/face/aws')  # Get video stream from camera
     # 在应用程序启动时启动视频捕获线程
     video_thread = threading.Thread(target=capture_video)
     video_thread.start()
