@@ -16,6 +16,8 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
+  height: 90px;
 }
 
 .header-content {
@@ -57,7 +59,7 @@ nav {
 }
 
 .status-btn.face {
-  background-color: #86A8E7;
+  background-color: #b3ceff;
   text-decoration: none;
   margin-right: 20px;
   padding: 10px 20px;
@@ -158,6 +160,8 @@ th {
   color: white;
   border-top: 1px dotted #ffffff;
   border-left: 1px dotted #ffffff;
+  font-weight: bold;
+  align-items: center; 
 }
 
 td {
@@ -304,3 +308,4 @@ footer {
 button, .status-btn, .pagination a {
   text-decoration: none;
 }
+

@@ -25,12 +25,12 @@ body {
     align-items: center;
     justify-content: flex-start; /* 左对齐 */
     z-index: 1000; /* 确保头部在最上层 */ 
+    height: 90px;
     
 }
 
 .header .logo {
-    max-width: 50px;
-    margin-left: 20px;
+    height: 50px;
     margin-right: 10px; /* 添加间距 */
 
 }

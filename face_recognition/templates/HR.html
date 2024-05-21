@@ -24,8 +24,8 @@
     <span class="system-name">員工資料</span>
     <nav>
       <div class="nav-buttons">
-        <a href="/attendance" class="status-btn">出缺勤狀況</a>
-        <a href="/employee_data" class="status-btn">員工資料</a>
+        <a href="/user_form" class="status-btn face">出缺勤狀況</a>
+        <a href="/get_face" class="status-btn face">臉部註冊</a>
         <a href="{{ url_for('login') }}" class="logout-link">
           <button class="logout-button">Log out</button>
         </a>
@@ -40,15 +40,12 @@
       <button id="searchBtn" class="search-btn"><i class="material-icons">search</i></button>
       <button id="addEmployeeBtn" class="add-employee-btn">新增員工</button>
 
-    <a href="/get_face"><button class="status-btn face">臉部註冊</button></a>
-
     <!-- 在這裡加入 Bootstrap 彈窗的按鈕 -->
 <!--    <a href="/features_extraction"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Features Extraction</button></a>-->
 <!--    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Features Extraction</button>-->
 
 <!--    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Features Extraction</button>-->
 <form onsubmit="executeRoute(event)">
-    <button type="submit" data-toggle="modal" data-target="#myModal">Features Extraction</button>
 </form>
 
     <!-- The Modal -->
@@ -78,8 +75,6 @@
     </div>
 
     <a href="/face_recognition"><button class="status-btn face" >Face recognizer</button></a>
-
-    <a href="/user_form"><button class="status-btn face">User Form</button></a>
 
     </div>    
 
@@ -175,5 +170,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+
 </body>
 </html>
