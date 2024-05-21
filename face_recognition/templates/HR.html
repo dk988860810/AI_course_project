@@ -11,10 +11,20 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/HR.css') }}">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+
   <style>
     a:hover {
         color: white !important;
     }
+
+    .modal-backdrop {
+        position: static;
+        top: 0;
+        left: 0;
+    }
+
 </style>
 </head>
 <body>
@@ -24,8 +34,8 @@
     <span class="system-name">員工資料</span>
     <nav>
       <div class="nav-buttons">
-        <a href="/attendance" class="status-btn">出缺勤狀況</a>
-        <a href="/employee_data" class="status-btn">員工資料</a>
+        <a href="/user_form" class="status-btn face">出缺勤狀況</a>
+        <a href="/get_face" class="status-btn face">臉部註冊</a>
         <a href="{{ url_for('login') }}" class="logout-link">
           <button class="logout-button">Log out</button>
         </a>
@@ -40,22 +50,18 @@
       <button id="searchBtn" class="search-btn"><i class="material-icons">search</i></button>
       <button id="addEmployeeBtn" class="add-employee-btn">新增員工</button>
 
-    <a href="/get_face"><button class="status-btn face">臉部註冊</button></a>
-
     <!-- 在這裡加入 Bootstrap 彈窗的按鈕 -->
 <!--    <a href="/features_extraction"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Features Extraction</button></a>-->
 <!--    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Features Extraction</button>-->
 
 <!--    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Features Extraction</button>-->
 <form onsubmit="executeRoute(event)">
-    <button type="submit" data-toggle="modal" data-target="#myModal">Features Extraction</button>
 </form>
 
     <!-- The Modal -->
     <div class="modal fade" id="myModal">
         <div class="modal-dialog">
             <div class="modal-content">
-
                 <!-- Modal Header -->
                 <div class="modal-header">
                     <h4 class="modal-title">Features Extraction</h4>
@@ -78,11 +84,9 @@
     </div>
 
     <a href="/face_recognition"><button class="status-btn face" >Face recognizer</button></a>
-
-    <a href="/user_form"><button class="status-btn face">User Form</button></a>
-
     </div>    
 
+    </div>
     <div class="table-container">
       <table>
         <thead>
@@ -169,6 +173,9 @@
   <footer>
     © 2024 火災預警系統
   </footer>
+
+
+
 
   <script src="{{ url_for('static', filename='js/HR.js') }}"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
