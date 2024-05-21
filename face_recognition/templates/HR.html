@@ -86,9 +86,8 @@
     <a href="/face_recognition"><button class="status-btn face" >Face recognizer</button></a>
     </div>    
 
-    </div>
     <div class="table-container">
-      <table>
+      <table class="table table-bordered">
         <thead>
           <tr>
             <th>工號</th>
@@ -102,20 +101,22 @@
             <th>操作</th>
           </tr>
         </thead>
-        <tbody id="HR_accounts">
-          {% for HR_accounts in rows %}
+        <tbody>
+          {% for row in rows %}
           <tr>
-            <td>{{ HR_accounts.工號 }}</td>
-            <td>{{ HR_accounts.姓名 }}</td>
-            <td>{{ HR_accounts.職務名稱 }}</td>
-            <td>{{ HR_accounts.所屬組別 }}</td>
-            <td>{{ HR_accounts.辦公位置 }}</td>
-            <td>{{ HR_accounts.聯絡電話 }}</td>
-            <td>{{ HR_accounts.緊急聯絡人 }}</td>
-            <td>{{ HR_accounts.緊急聯絡人電話 }}</td>
+            <td>{{ row['工號'] }}</td>
+            <td>{{ row['姓名'] }}</td>
+            <td>{{ row['職務名稱'] }}</td>
+            <td>{{ row['所屬組別'] }}</td>
+            <td>{{ row['辦公位置'] }}</td>
+            <td>{{ row['聯絡電話'] }}</td>
+            <td>{{ row['緊急聯絡人'] }}</td>
+            <td>{{ row['緊急聯絡人電話'] }}</td>
             <td>
-              <button class="edit-btn" data-HR_accounts-id="{{ HR_accounts.工號 }}">編輯</button>
-              <button class="delete-btn" data-HR_accounts-id="{{ HR_accounts.工號 }}">刪除</button>
+              <button class="edit-btn" data-toggle="modal" data-target="#editModal" data-id="{{ row['工號'] }}">編輯</button>
+              <form action="/delete/{{ row['工號'] }}" method="post" style="display:inline;">
+                <button type="submit" class="delete-btn">刪除</button>
+              </form>
             </td>
           </tr>
           {% endfor %}
@@ -170,6 +171,56 @@
   </div>
 
 
+  <!-- 編輯員工彈出視窗 -->
+<div id="editModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">編輯員工資料</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="editEmployeeForm">
+          <input type="hidden" id="editId" name="id">
+          <div class="form-group">
+            <label for="editName">姓名:</label>
+            <input type="text" id="editName" name="name" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="editJobTitle">職務:</label>
+            <input type="text" id="editJobTitle" name="jobTitle" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="editDepartment">部門:</label>
+            <input type="text" id="editDepartment" name="department" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="editLocation">辦公位置:</label>
+            <input type="text" id="editLocation" name="location" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="editPhone">聯絡電話:</label>
+            <input type="tel" id="editPhone" name="phone" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="editEmergencyContact">緊急聯絡人:</label>
+            <input type="text" id="editEmergencyContact" name="emergencyContact" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="editEmergencyPhone">緊急聯絡人電話:</label>
+            <input type="tel" id="editEmergencyPhone" name="emergencyPhone" class="form-control" required>
+          </div>
+          <button type="submit" class="btn btn-primary">保存</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
   <footer>
     © 2024 火災預警系統
   </footer>
@@ -182,5 +233,45 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+
+  <script>
+    $(document).ready(function() {
+      // Edit button click
+      $('.edit-btn').on('click', function() {
+        var row = $(this).closest('tr');
+        var id = row.find('td:eq(0)').text();
+        var name = row.find('td:eq(1)').text();
+        var jobTitle = row.find('td:eq(2)').text();
+        var department = row.find('td:eq(3)').text();
+        var location = row.find('td:eq(4)').text();
+        var phone = row.find('td:eq(5)').text();
+        var emergencyContact = row.find('td:eq(6)').text();
+        var emergencyPhone = row.find('td:eq(7)').text();
+    
+        $('#editId').val(id);
+        $('#editName').val(name);
+        $('#editJobTitle').val(jobTitle);
+        $('#editDepartment').val(department);
+        $('#editLocation').val(location);
+        $('#editPhone').val(phone);
+        $('#editEmergencyContact').val(emergencyContact);
+        $('#editEmergencyPhone').val(emergencyPhone);
+      });
+    
+      // Edit form submit
+      $('#editEmployeeForm').on('submit', function(e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        $.post('/edit', formData, function(response) {
+          if (response.success) {
+            location.reload();
+          } else {
+            alert(response.message);
+          }
+        });
+      });
+    });
+    </script>
+
 </body>
 </html>

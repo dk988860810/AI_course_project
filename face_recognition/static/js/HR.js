@@ -168,3 +168,64 @@ function nextPage() {
     renderEmployeeList();
   }
 }
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  const editButtons = document.querySelectorAll('.edit-btn');
+  const deleteButtons = document.querySelectorAll('.delete-btn');
+
+  editButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const row = this.closest('tr');
+      const data = {
+        id: row.querySelector('.edit-btn').dataset.employeeId,
+        name: row.children[1].innerText,
+        position: row.children[2].innerText,
+        department: row.children[3].innerText,
+        location: row.children[4].innerText,
+        phone: row.children[5].innerText,
+        emergency_contact: row.children[6].innerText,
+        emergency_phone: row.children[7].innerText
+      };
+
+      fetch('/update_employee', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'success') {
+          alert('更新成功');
+        } else {
+          alert('更新失敗');
+        }
+      });
+    });
+  });
+
+  deleteButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const id = this.dataset.employeeId;
+
+      fetch('/delete_employee', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id: id })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'success') {
+          alert('刪除成功');
+          location.reload();
+        } else {
+          alert('刪除失敗');
+        }
+      });
+    });
+  });
+});

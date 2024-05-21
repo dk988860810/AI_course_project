@@ -958,6 +958,50 @@ def update_profile():
         return redirect(url_for('login'))
 
 
+
+@app.route('/edit', methods=['POST'])
+def edit_employee():
+    data = request.form
+    emp_id = data['id']
+    name = data['name']
+    job_title = data['jobTitle']
+    department = data['department']
+    location = data['location']
+    phone = data['phone']
+    emergency_contact = data['emergencyContact']
+    emergency_phone = data['emergencyPhone']
+
+    try:
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor()
+        cursor.execute("""
+            UPDATE HR_accounts 
+            SET 姓名 = %s, 職務名稱 = %s, 所屬組別 = %s, 辦公位置 = %s, 聯絡電話 = %s, 緊急聯絡人 = %s, 緊急聯絡人電話 = %s
+            WHERE 工號 = %s
+        """, (name, job_title, department, location, phone, emergency_contact, emergency_phone, emp_id))
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return jsonify({'success': True})
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)})
+
+@app.route('/delete/<int:emp_id>', methods=['POST'])
+def delete_employee(emp_id):
+    try:
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM HR_accounts WHERE 工號 = %s", (emp_id,))
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return redirect(url_for('profile'))
+    except Exception as e:
+        return jsonify({'message': str(e)})
+
+
+
+
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
     pre_work_mkdir()
