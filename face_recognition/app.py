@@ -886,13 +886,13 @@ def logout():
 # 定义一个函数来捕获视频流
 def capture_video():
     global cap
-    cap = cv2.VideoCapture('rtmp://13.214.171.73/live/aws')  # 获取视频流
+    cap = cv2.VideoCapture('rtmp://13.214.171.73/face/aws')  # 获取视频流
 
 # 用戶資料頁面路由（只有已登錄的用戶可以訪問）
 @app.route('/profile')
 def profile():
     # global cap
-    # cap = cv2.VideoCapture('rtmp://13.214.171.73/live/aws')  # Get video stream from camera
+    # cap = cv2.VideoCapture('rtmp://13.214.171.73/face/aws')  # Get video stream from camera
     # 在应用程序启动时启动视频捕获线程
     video_thread = threading.Thread(target=capture_video)
     video_thread.start()
