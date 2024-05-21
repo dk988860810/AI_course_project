@@ -641,13 +641,13 @@ def clock_in():
             clock_status_index = cursor.column_names.index('clock_status')
             if user[clock_status_index] != 'Clock In':
                 # 清空下班打卡时间和状态，并更新上班打卡时间和状态
-                update_query = f"UPDATE users SET clock_out_time = NULL, clock_out_status = NULL, clock_in_time = CONVERT_TZ(UTC_TIMESTAMP(), '+00:00', '+08:00'), clock_status = 'Clock In' WHERE name = '{name}'"
+                update_query = f"UPDATE users SET clock_in_time = CONVERT_TZ(UTC_TIMESTAMP(), '+00:00', '+08:00'), clock_status = 'Clock In' WHERE name = '{name}'"
                 cursor.execute(update_query)
                 conn.commit()
                 message = '打卡成功'
             else:
                 # 清空上班打卡时间和状态，并更新下班打卡时间和状态
-                update_query = f"UPDATE users SET clock_in_time = NULL, clock_status = NULL, clock_out_time = CONVERT_TZ(UTC_TIMESTAMP(), '+00:00', '+08:00'), clock_out_status = 'Clock Out' WHERE name = '{name}'"
+                update_query = f"UPDATE users SET clock_in_time = CONVERT_TZ(UTC_TIMESTAMP(), '+00:00', '+08:00'), clock_status = 'Clock Out' WHERE name = '{name}'"
                 cursor.execute(update_query)
                 conn.commit()
                 message = '下班'
