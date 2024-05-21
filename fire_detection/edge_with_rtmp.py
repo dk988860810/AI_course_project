@@ -8,7 +8,7 @@ import subprocess
 
 # 将 <SERVER_IP> 替换为服务器的IP地址
 SERVER_IP = '172.17.244.11'
-SERVER_PORT = 5000
+SERVER_PORT = 5001
 
 # 初始化摄像头和YOLO模型
 camera = cv2.VideoCapture(0)  # 替换0为适当的摄像头索引
@@ -39,15 +39,16 @@ class EdgeComputing:
         self.edge_id = edge_id
 
         # Initialize rtmp_process
-        rtmp_url = "rtmp://13.214.171.73/live/stream_2"
+        rtmp_url = "rtmp://13.214.171.73:1940/fire/stream_2"
         rtmp_command = [
             "ffmpeg",
             "-f", "rawvideo",
             "-vcodec", "rawvideo",
             "-pix_fmt", "bgr24",
             "-s", "640x480",
-            "-r", "30",
+            "-r", "10",
             "-i", "-",
+            "-b:v","300k",
             "-c:v", "libx264",
             "-preset", "ultrafast",
             "-tune", "zerolatency",
