@@ -792,6 +792,9 @@ import mysql.connector
 import re
 import os
 from werkzeug.utils import secure_filename
+from flask_bcrypt import Bcrypt
+from flask_mysqldb import MySQL
+from flask_login import LoginManager, login_user, logout_user, login_required, UserMixin, current_user
 
 # 连接到 MySQL 数据库
 conn = mysql.connector.connect(
@@ -800,7 +803,24 @@ conn = mysql.connector.connect(
     password="testpassword",
     database="aws_test"
 )
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
 
+class User(UserMixin):
+    def __init__(self, id, username, role):
+        self.id = id
+        self.username = username
+        self.role = role
+
+@login_manager.user_loader
+def load_user(user_id):
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM test_accounts WHERE id = %s", (user_id,))
+    user = cursor.fetchone()
+    cursor.close()
+    if user:
+        return User(int(user["id"]), user["username"], user["role"])
+    return None
 
 # 首頁路由
 @app.route('/')
@@ -818,50 +838,78 @@ def login():
         password = request.form['password']
 
         cursor = conn.cursor(dictionary=True)  # 使用字典游標，以便更容易地訪問結果
-        cursor.execute('SELECT * FROM accounts WHERE username = %s AND password = %s', (username, password))
-        account = cursor.fetchone()
+        cursor.execute('SELECT * FROM test_accounts WHERE username = %s ', (username, ))
+        user = cursor.fetchone()
         cursor.close()
 
-        if account:
-            session['loggedin'] = True
-            session['id'] = account['id']
-            session['username'] = account['username']
-            return redirect(url_for('profile'))
+        if user and user['password'] == password:  # 检查明文密码
+            login_user(User(int(user["id"]), user["password"], user["role"]))
+            if user["role"] == 'HR':
+                return redirect(url_for('HR'))
+            elif user["role"] == 'police':
+                return redirect(url_for('police'))
+            elif user["role"] == 'fire':
+                return redirect(url_for('fire'))
         else:
             msg = '用戶名/密碼不正確！'
 
     return render_template('login.html', msg=msg)
 
 
+@app.route('/HR')
+@login_required
+def HR():
+    if current_user.role != 'HR':
+        return redirect(url_for('login'))
+    return redirect(url_for('profile'))
+
+@app.route('/police')
+@login_required
+def police():
+    if current_user.role != 'police':
+        return redirect(url_for('login'))
+    return redirect('http://127.0.0.1:5001/')
+
+@app.route('/fire')
+@login_required
+def fire():
+    if current_user.role != 'fire':
+        return redirect(url_for('login'))
+    return redirect('http://127.0.0.1:5001/table')
+
 # 用於註冊頁面的路由
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     msg = ''
 
-    if request.method == 'POST' and 'username' in request.form and 'password' in request.form and 'email' in request.form:
-        fullname = request.form['fullname']
+    if request.method == 'POST' and 'username' in request.form and 'password' in request.form :
+        
         username = request.form['username']
         password = request.form['password']
-        email = request.form['email']
+        role=request.form['role']
 
         cursor = conn.cursor()
-        cursor.execute('SELECT * FROM accounts WHERE username = %s', (username,))
+        cursor.execute('SELECT * FROM test_accounts WHERE username = %s', (username,))
         account = cursor.fetchone()
-
-        if account:
-            msg = '帳戶已存在！'
-        elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
-            msg = '無效的電子郵件地址！'
-        elif not re.match(r'[A-Za-z0-9]+', username):
-            msg = '用戶名必須只包含字母和數字！'
-        elif not username or not password or not email:
-            msg = '請填寫表單！'
-        else:
-            cursor.execute('INSERT INTO accounts VALUES (NULL, %s, %s, %s, %s ,NULL)',
-                           (fullname, username, password, email))
-            conn.commit()
-            msg = '您已成功註冊！'
-
+        try:
+            if account:
+                msg = '帳戶已存在！'
+            elif not re.match(r'[A-Za-z0-9]+', username):
+                msg = '用戶名必須只包含字母和數字！'
+            elif not username or not password :
+                msg = '請填寫表單！'
+            else:
+                cursor.execute('INSERT INTO test_accounts (username, password, role) VALUES ( %s, %s, %s)',
+                        ( username, password, role))
+        
+                conn.commit()
+                msg = '您已成功註冊！'
+        
+        except Exception as e:
+            conn.rollback()
+            msg = f'發生錯誤：{str(e)}'
+        finally:
+            cursor.close()
     elif request.method == 'POST':
         msg = '請填寫表單！'
 
