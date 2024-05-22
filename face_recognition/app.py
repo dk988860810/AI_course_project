@@ -1000,7 +1000,41 @@ def delete_employee(emp_id):
         return jsonify({'message': str(e)})
 
 
+@app.route('/add_employee', methods=['POST'])
+def add_employee():
+    # 获取表单数据
+    job_id = request.form['job_id']
 
+    name = request.form['name']
+    job_title = request.form['jobTitle']
+    department = request.form['department']
+    location = request.form['location']
+    phone = request.form['phone']
+    emergency_contact = request.form['emergencyContact']
+    emergency_phone = request.form['personalFiles']
+
+    # 连接 MySQL 数据库
+    db = mysql.connector.connect(**db_config)
+    cursor = db.cursor()
+
+    # 构建 SQL 插入语句
+    sql = "INSERT INTO HR_accounts (工號, 姓名, 職務名稱, 所屬組別, 辦公位置, 聯絡電話, 緊急聯絡人, 緊急聯絡人電話) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+    values = (job_id, name, job_title, department, location, phone, emergency_contact, emergency_phone)
+    print(sql)
+    try:
+        # 执行 SQL 语句
+        cursor.execute(sql, values)
+        db.commit()
+        print("Data inserted successfully!")
+    except mysql.connector.Error as error:
+        print(f"Error inserting data: {error}")
+    finally:
+        # 关闭数据库连接
+        cursor.close()
+        db.close()
+
+    # 返回响应或重定向到其他页面
+    return redirect(url_for('profile'))
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
