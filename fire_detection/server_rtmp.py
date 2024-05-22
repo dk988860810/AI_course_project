@@ -197,7 +197,7 @@ def download():
     config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
     conn = mysql.connector.connect(**mysql_config)
     cursor = conn.cursor()
-    query = "SELECT * FROM employees"
+    query = "SELECT * FROM users"
     cursor.execute(query)
     result = cursor.fetchall()
     cursor.close()
@@ -210,6 +210,7 @@ def download():
     html = """
     <html>
     <head>
+        <meta charset="UTF-8">
         <style>
             table, th, td {
                 border: 1px solid black;
@@ -220,18 +221,20 @@ def download():
                 background-color: #f2f2f2;
             }
         </style>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap');
+        </style>
     </head>
     <body>
-    <h1>Employee Data</h1>
+    <h1>員工資料</h1>
     <table>
         <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Job Title</th>
-            <th>Department</th>
-            <th>Office Location</th>
-            <th>Phone Number</th>
-            <th>Emergency Contact</th>
+            <th>工號</th>
+            <th>姓名</th>
+            <th>工作職稱</th>
+            <th>所在區域</th>
+            <th>打卡時間</th>
+            <th>打卡狀態</th>
         </tr>
     """
     
@@ -245,15 +248,14 @@ def download():
             <td>{row[3]}</td>
             <td>{row[4]}</td>
             <td>{row[5]}</td>
-            <td>{row[6]}</td>
         </tr>
         """
 
-    html += "</table><br><h1>Floor Plan</h1>"
+    html += "</table><br><h1>樓層平面圖</h1>"
     count=1
     # 添加图片
     for img in imgs:
-        html+=f"<br><h2>{count} Floor</h2>"
+        html+=f"<br><h2>{count}樓 平面圖</h2>"
         img_url = url_for('static', filename=f'img/floorplan/{img}', _external=True)
         html += f"<img src='{img_url}' style='max-width:100%;height:auto;'><br>"
         count+=1
