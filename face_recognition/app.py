@@ -1027,6 +1027,13 @@ def edit_employee():
             SET 姓名 = %s, 職務名稱 = %s, 所屬組別 = %s, 辦公位置 = %s, 聯絡電話 = %s, 緊急聯絡人 = %s, 緊急聯絡人電話 = %s
             WHERE 工號 = %s
         """, (name, job_title, department, location, phone, emergency_contact, emergency_phone, emp_id))
+
+        cursor.execute("""
+            UPDATE users 
+            SET name = %s, department = %s, position = %s
+            WHERE id = %s
+        """, (name, job_title, location, emp_id))
+
         conn.commit()
         cursor.close()
         conn.close()
@@ -1040,6 +1047,7 @@ def delete_employee(emp_id):
         conn = mysql.connector.connect(**db_config)
         cursor = conn.cursor()
         cursor.execute("DELETE FROM HR_accounts WHERE 工號 = %s", (emp_id,))
+        cursor.execute("DELETE FROM users WHERE id = %s", (emp_id,))
         conn.commit()
         cursor.close()
         conn.close()
@@ -1068,10 +1076,13 @@ def add_employee():
     # 构建 SQL 插入语句
     sql = "INSERT INTO HR_accounts (工號, 姓名, 職務名稱, 所屬組別, 辦公位置, 聯絡電話, 緊急聯絡人, 緊急聯絡人電話) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
     values = (job_id, name, job_title, department, location, phone, emergency_contact, emergency_phone)
+    punchin = "INSERT INTO users (id, name, department, position) VALUES (%s, %s, %s, %s)"
+    punchin_value = (job_id, name, job_title, location)
     print(sql)
     try:
         # 执行 SQL 语句
         cursor.execute(sql, values)
+        cursor.execute(punchin, punchin_value)
         db.commit()
         print("Data inserted successfully!")
     except mysql.connector.Error as error:
