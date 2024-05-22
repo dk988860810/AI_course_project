@@ -13,8 +13,8 @@
         </div>
         <nav>
         <ul class="container nav-links">
-            <li><a href="#">出缺勤狀況</a></li>
-            <li><a href="#">員工資料</a></li>
+            <li><a href="{{ url_for('HR') }}">員工資料</a></li>
+            <li><a href="{{ url_for('get_face') }}">臉部註冊</a></li>
             <li><a href="{{ url_for('login') }}">登出</a></li>
         </ul>
         </nav>

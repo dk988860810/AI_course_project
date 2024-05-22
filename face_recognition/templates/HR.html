@@ -36,6 +36,36 @@
     <span class="system-name">員工資料</span>
     <nav>
       <div class="nav-buttons">
+        <form onsubmit="executeRoute(event)">
+        </form>
+        
+            <!-- The Modal -->
+            <div class="modal fade" id="myModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Features Extraction</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+        
+                        <!-- Modal Body -->
+                        <div class="modal-body">
+                            <!-- Modal 內容 -->
+                            <p>特征提取成功</p>
+                        </div>
+        
+                        <!-- Modal Footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+        
+                    </div>
+                </div>
+            </div>
+        
+            <a href="/face_recognition"><button class="status-btn face" >Face recognizer</button></a>
+        
         <a href="/user_form" class="status-btn face">出缺勤狀況</a>
         <a href="/get_face" class="status-btn face">臉部註冊</a>
         <a href="{{ url_for('login') }}" class="logout-link">
@@ -57,35 +87,6 @@
 <!--    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Features Extraction</button>-->
 
 <!--    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Features Extraction</button>-->
-<form onsubmit="executeRoute(event)">
-</form>
-
-    <!-- The Modal -->
-    <div class="modal fade" id="myModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title">Features Extraction</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                <!-- Modal Body -->
-                <div class="modal-body">
-                    <!-- Modal 內容 -->
-                    <p>特征提取成功</p>
-                </div>
-
-                <!-- Modal Footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <a href="/face_recognition"><button class="status-btn face" >Face recognizer</button></a>
     </div>    
 
     <div class="table-container">
