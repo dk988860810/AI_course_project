@@ -38,8 +38,8 @@ header {
 }
 
 .logout-button {
-  background-color: #ff6b6b;
-  color: #fff;
+  background-color: #ffffff;
+  color: #000000;
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
@@ -48,7 +48,7 @@ header {
   text-decoration: none;
 }
 .logout-button:hover {
-  background-color: #972e2e;
+  background-color: #86A8E7;
 }
 
 .table-container {
