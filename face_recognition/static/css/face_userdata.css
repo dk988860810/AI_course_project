@@ -41,7 +41,18 @@ footer {
   height: 50px;
   margin-right: 10px;
 }
-
+.logout-button {
+  background-color: #ff6b6b;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.logout-button:hover {
+  background-color: #ff4d4d;
+}
 /* Header content styles */
 .header-content {
   display: flex;
@@ -122,7 +133,6 @@ tr:hover {
 
 /* Button styles */
 button {
-  display: block;
   margin: 20px auto;
   padding: 10px 20px;
   background-color: #4CAF50;
@@ -167,4 +177,38 @@ button:hover {
 
 .pagination p {
   text-align: center;
+}
+.status-btn.face {
+  background-color: #00000000;
+  text-decoration: none;
+  margin-right: 20px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  margin-left: 10px;
+}
+
+.status-btn.face:hover {
+  background-color: #536992; /* 更深的浅蓝色背景 */
+  color: #fff; /* 白色文字 */
+}
+
+.status-btn:hover {
+  background-color: #536992;
+}
+
+button, .status-btn, .pagination a {
+  text-decoration: none;
+  color: #ffff;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.nav-buttons {
+  display: flex;
+  align-items: center;
 }

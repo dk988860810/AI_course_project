@@ -12,11 +12,13 @@
             <h2>出缺勤狀況</h2>
         </div>
         <nav>
-            <ul class="container nav-links">
-                <li><a href="{{ url_for('HR') }}">員工資料</a></li>
-                <li><a href="{{ url_for('get_face') }}">臉部註冊</a></li>
-                <li><a href="{{ url_for('login') }}">登出</a></li>
-            </ul>
+            <div class="nav-buttons">
+                <a href="{{ url_for('HR') }}" class="status-btn face">員工資料</a>
+                <a href="{{ url_for('get_face') }}" class="status-btn face">臉部註冊</a>
+                <a href="{{ url_for('login') }}" class="logout-link">
+                    <button class="logout-button">登出</button>
+                </a>
+            </div>
         </nav>
     </header>
     <main>
