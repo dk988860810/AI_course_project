@@ -272,7 +272,6 @@ footer {
   color: #fff; /* 设置文字颜色 */
   padding: 25px; /* 设置内边距 */
   text-align: left; /* 设置文本居中 */
-  position: fixed; /* 将页脚固定在底部 */
   width: 100%; /* 设置宽度为100% */
   bottom: 0; /* 设置距离底部的距离为0 */
   display: flex;

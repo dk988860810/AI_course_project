@@ -39,7 +39,7 @@ class EdgeComputing:
         self.edge_id = edge_id
 
         # Initialize rtmp_process
-        rtmp_url = "rtmp://13.214.171.73:1940/fire/stream_1"
+        rtmp_url = "rtmp://13.214.171.73:1940/fire/stream_2"
         rtmp_command = [
             "ffmpeg",
             "-f", "rawvideo",
@@ -114,7 +114,7 @@ class EdgeComputing:
             self.rtmp_process.wait()
 
 if __name__ == "__main__":
-    edge_id = 1
+    edge_id = 2
     edge_computing = EdgeComputing(camera, model, edge_id)
     stream_thread = threading.Thread(target=edge_computing.stream_video)
     stream_thread.start()

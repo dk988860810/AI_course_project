@@ -59,28 +59,6 @@ def handle_video_frame(data):
     except Exception as e:
         print(f"Error handling video frame: {e}")
 
-# def generate_frames(edge_id):
-#     rtmp_url = f"rtmp://13.214.171.73/live/stream_{edge_id}"
-#     print(rtmp_url)
-#     cap = cv2.VideoCapture(rtmp_url)
-#     print(cap)
-#     while True:
-#         ret, frame = cap.read()
-#         if not ret:
-#             break
-
-#         frame_stream_queue = frame_stream_queues.get(edge_id, None)
-#         if not frame_stream_queue:
-#             continue
-
-#         try:
-#             _, class_label_set = frame_stream_queue.get(timeout=1)
-#             yield (b'--frame\r\n'
-#                    b'Content-Type: image/jpeg\r\n\r\n' + cv2.imencode('.jpg', frame)[1].tobytes() + b'\r\n')
-#         except Empty:
-#             continue
-
-#     cap.release()
 def generate_frames(edge_id):
     rtmp_url = f"rtmp://13.214.171.73:1940/fire/stream_{edge_id}"
     cap = cv2.VideoCapture(rtmp_url)
@@ -101,15 +79,18 @@ def generate_frames(edge_id):
 def index():
     return render_template('index.html')
 
-@app.route('/video_feed_1')
-def video_feed_route_1():
-    return Response(generate_frames(1), mimetype='multipart/x-mixed-replace; boundary=frame')
+@app.route('/video_feed/<int:edge_id>')
+def video_feed_route(edge_id):
+    if edge_id not in frame_queues_and_threads:
+        frame_stream_queue = Queue(maxsize=30)
+        frame_stream_queues[edge_id] = frame_stream_queue
 
-@app.route('/video_feed_2')
-def video_feed_route_2():
-    return Response(generate_frames(2), mimetype='multipart/x-mixed-replace; boundary=frame')
-
-# 如果需要更多的視頻流路由,可以在這裡添加
+        thread = threading.Thread(target=frame_processing_thread, args=(edge_id,))
+        thread.daemon = True
+        thread.start()
+        frame_queues_and_threads[edge_id] = (frame_stream_queue, thread)
+    
+    return Response(generate_frames(edge_id), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/get_class_label')
 def get_class_label():
