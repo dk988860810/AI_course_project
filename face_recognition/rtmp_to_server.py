@@ -14,7 +14,7 @@ def start_stream(camera_name, rtmp_server, stream_key):
         '-preset', 'ultrafast',
         '-tune', 'zerolatency',
         '-f', 'flv',
-        f'rtmp://{rtmp_server}/live/{stream_key}'
+        f'rtmp://{rtmp_server}/face/{stream_key}'
     ]
 
     try:
@@ -41,7 +41,7 @@ def start_stream(camera_name, rtmp_server, stream_key):
 
 # Example usage
 if __name__ == "__main__":
-    camera_name = "Integrated Webcam"
+    camera_name = "HD Webcam"
     rtmp_server = "13.214.171.73"
     stream_key = "aws"
 
