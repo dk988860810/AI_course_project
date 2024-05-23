@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
 * {
-  margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
@@ -20,8 +19,7 @@ body {
   padding: 40px;
   border-radius: 10px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-  max-width: 400px;
-  width: 100%;
+  width: 500px;
   text-align: center;
   animation: fade-in 0.5s ease-in-out;
 }
@@ -30,6 +28,13 @@ body {
   max-width: 150px;
   height: auto;
   margin-bottom: 30px;
+}
+
+.container h2 {
+  margin-top: 0;
+  color: #333;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  font-size: 24px; /* 与登录页面标题字体大小一致 */
 }
 
 .form-group {
@@ -42,6 +47,7 @@ label {
   font-weight: 500;
   margin-bottom: 8px;
   color: #666;
+  font-size: 16px; /* 与登录页面标签字体大小一致 */
 }
 
 input[type="text"],
@@ -73,7 +79,7 @@ select:focus {
 }
 
 input[type="submit"] {
-  padding: 10px 20px;
+  padding: 15px; /* 与登录页面按钮padding一致 */
   background-color: #86A8E7;
   color: #fff;
   border: none;
@@ -84,6 +90,8 @@ input[type="submit"] {
   transition: background-color 0.3s ease;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
   margin-bottom: 10px;
+  width: 100%;
+  padding: 15px;
 }
 
 input[type="submit"]:hover {
@@ -95,6 +103,7 @@ input[type="submit"]:hover {
   display: block;
   text-align: center;
   margin-top: 10px;
+  font-size: 16px; /* 与登录页面链接字体大小一致 */
 }
 
 #msg {
