@@ -60,7 +60,7 @@ def handle_video_frame(data):
         print(f"Error handling video frame: {e}")
 
 def generate_frames(edge_id):
-    rtmp_url = f"rtmp://13.214.171.73:1940/fire/stream_{edge_id}"
+    rtmp_url = f"rtmp://13.214.171.73:{1935+edge_id}/fire{edge_id}/stream_{edge_id}"
     cap = cv2.VideoCapture(rtmp_url)
 
     while cap.isOpened():

@@ -11,7 +11,7 @@ SERVER_IP = '13.214.171.73'
 SERVER_PORT = 5001
 
 # 初始化摄像头和YOLO模型
-camera = cv2.VideoCapture(0)  # 替换0为适当的摄像头索引
+camera = cv2.VideoCapture("testvideo.mp4")  # 替换0为适当的摄像头索引
 model = YOLO("model/best.pt")
 
 # 创建一个SocketIO客户端实例
@@ -39,7 +39,7 @@ class EdgeComputing:
         self.edge_id = edge_id
 
         # Initialize rtmp_process
-        rtmp_url = "rtmp://13.214.171.73:1940/fire/stream_2"
+        rtmp_url = "rtmp://13.214.171.73:1937/fire2/stream_2"
         rtmp_command = [
             "ffmpeg",
             "-f", "rawvideo",
