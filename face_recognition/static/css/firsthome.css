@@ -58,6 +58,7 @@ nav {
   overflow: hidden;
   box-shadow: 0 5px 15px #193047;
   border-radius: 25px;
+  margin: 0px 30px;
 }
 
 .login-button:hover {
@@ -90,7 +91,13 @@ nav {
 
 
 /* “系統”樣式 */
-
+.nav-links{
+  display: flex;
+  list-style: none;
+  color: #ffffff;
+  justify-content: space-between;
+  align-items: center;
+}
 
 
 
@@ -496,6 +503,7 @@ footer {
   cursor: pointer;
   overflow: hidden;
   transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+  margin: 0px 30px;
 }
 .btn-draw:after {
   content: '';
@@ -551,7 +559,7 @@ footer {
   transition-delay: 0.4s;
 }
 .btn-draw:hover {
-  color: #e4e4e2;
+  color: #ffffff63;
   background-color: #ffffff;
   transition-delay: 0.6s;
 }
