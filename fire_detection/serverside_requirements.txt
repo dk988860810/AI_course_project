@@ -1,0 +1,6 @@
+flask
+Flask-socketIO
+websocket-client
+mysql-connector-python
+opencv-python
+pdfkit
