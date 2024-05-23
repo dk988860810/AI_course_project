@@ -94,13 +94,13 @@
                             <source src="/video_feed_1" type="video/mp4"> -->
                     </div>
                     <div class="checking">
-                        This is a warning from </br>
+                        此警報來自 </br>
                         <span id="check_text"></span></br>
-                        Please check!</br>
-                        3Min Countdown
+                        請確認!</br>
+                        3分鐘倒數
                         <div id="countdown_warning"></div>
                         <a href="#" id="checkButton" class="button" data-bs-toggle="modal"
-                            data-bs-target="#call_cancel">Checking</a>
+                            data-bs-target="#call_cancel">確認</a>
                     </div>
                 </div>
             </div>
@@ -119,13 +119,13 @@
                 </div>
                 <div class="modal-body">
                     <div class="reporting">
-                        The 10-Min Countdown has startd!</br>
-                        Please report or cancel!</br>
+                        開始倒數10分鐘</br>
+                        麻煩通報或取消</br>
                         <div id="countdown_reporting"></div>
                         <a href="#" id="confirmButton" class="button1" data-bs-toggle="modal"
-                            data-bs-target="#endreport">Report</a>
+                            data-bs-target="#endreport">通報</a>
                         <a href="#" id="cancelButton" class="button2" data-bs-toggle="modal"
-                            data-bs-target="#cancelreport">Cancel</a>
+                            data-bs-target="#cancelreport">取消</a>
                     </div>
                 </div>
             </div>
@@ -136,16 +136,16 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Report</h5>
+                    <h5 class="modal-title">通報</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal">
                         <!--<span aria-hidden="true">&times;</span>-->
                     </button>
                 </div>
                 <div class="modal-body">
-                    Appreciate for your report!</br>
+                    感謝您的通報!</br>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">關閉</button>
                 </div>
             </div>
 
@@ -157,17 +157,17 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Report</h5>
+                    <h5 class="modal-title">提交</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal">
                         <!--<span aria-hidden="true">&times;</span>-->
                     </button>
                 </div>
                 <div class="modal-body">
-                    Out of time!</br>
-                    Already call the 911!
+                    時限已超過!</br>
+                    已通知119消防局
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">關閉</button>
                 </div>
             </div>
 
@@ -179,7 +179,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Cancel</h5>
+                    <h5 class="modal-title">取消</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal">
                         <!--<span aria-hidden="true">&times;</span>-->
                     </button>
@@ -188,8 +188,7 @@
                     <textarea id="multilineInput" placeholder="Enter your text here"></textarea>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="submitbtn">Submit</button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="submitbtn">送出</button>
                 </div>
             </div>
 
@@ -299,7 +298,7 @@
             var floor = title.substring(0, 2);
             var area = title.substring(2);
             var cancel_reason = document.getElementById('multilineInput').value;
-            var situation = "Cancel"
+            var situation = "無異狀"
 
             var xhr = new XMLHttpRequest();
             xhr.open('POST', '/submit_data', true);
@@ -318,7 +317,7 @@
             var title = document.getElementById('videoModalLabel').innerText;
             var floor = title.substring(0, 2);
             var area = title.substring(2);
-            var situation = "Confirm"
+            var situation = "確認"
 
             var xhr = new XMLHttpRequest();
             xhr.open('POST', '/submit_data', true);

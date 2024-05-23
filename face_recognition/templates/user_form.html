@@ -8,58 +8,60 @@
 <body>
     <header>
         <div class="header-content">
-        <img src="../static/image/logo.png" alt="Logo" class="logo">
-        <h2>出缺勤狀況</h2>
+            <img src="../static/image/logo.png" alt="Logo" class="logo">
+            <h2>出缺勤狀況</h2>
         </div>
         <nav>
-        <ul class="container nav-links">
-            <li><a href="{{ url_for('HR') }}">員工資料</a></li>
-            <li><a href="{{ url_for('get_face') }}">臉部註冊</a></li>
-            <li><a href="{{ url_for('login') }}">登出</a></li>
-        </ul>
+            <div class="nav-buttons">
+                <a href="{{ url_for('HR') }}" class="status-btn face">員工資料</a>
+                <a href="{{ url_for('get_face') }}" class="status-btn face">臉部註冊</a>
+                <a href="{{ url_for('login') }}" class="logout-link">
+                    <button class="logout-button">登出</button>
+                </a>
+            </div>
         </nav>
     </header>
-    
-    <div class="container">
-        <form action="/reset_clock_status" method="get">
-            <button type="submit">Reset Clock Status</button>
-        </form>
-        <table id="users_table" border="1">
-            <thead>
-                <tr>
-                    <th>1</th>
-                    <th>2</th>
-                    <th>3</th>
-                    <th>4</th>
-                    <th>5</th>
-                    <th>6</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for user in users %}
-                <tr>
-                    {% for item in user %}
-                    <td>{{ item }}</td>
+    <main>
+        <div class="table-container">
+            <!-- <form action="/reset_clock_status" method="get">
+                <button type="submit">Reset Clock Status</button>
+            </form> -->
+            <table id="users_table" border="1">
+                <thead>
+                    <tr>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>5</th>
+                        <th>6</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        <tr>
+                            {% for item in user %}
+                                <td>{{ item }}</td>
+                            {% endfor %}
+                        </tr>
                     {% endfor %}
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-        <div class="pagination-container">
-            <div class="pagination">
-                {% if page > 1 %}
-                    <a href="{{ url_for('user_form', page=page - 1) }}">上一頁</a>
-                {% endif %}
-                <span class="page-info">{{ page }} / {{ total_pages }}</span>
-                {% if page < total_pages %}
-                    <a href="{{ url_for('user_form', page=page + 1) }}">下一頁</a>
-                {% endif %}
+                </tbody>
+            </table>
+            <div class="pagination-container">
+                <div class="pagination">
+                    {% if page > 1 %}
+                        <a href="{{ url_for('user_form', page=page - 1) }}">上一頁</a>
+                    {% endif %}
+                    <span class="page-info">{{ page }} / {{ total_pages }}</span>
+                    {% if page < total_pages %}
+                        <a href="{{ url_for('user_form', page=page + 1) }}">下一頁</a>
+                    {% endif %}
+                </div>
             </div>
         </div>
-    </div>
-    
+    </main>
     <footer>
         © 2024 火災預警系統
-      </footer>
+    </footer>
 </body>
 </html>

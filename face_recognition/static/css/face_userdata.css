@@ -1,7 +1,20 @@
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
+/* 通用样式 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
+
+html, body {
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
 /* Header styles */
 header {
   background-color: #86A8E7;
@@ -13,65 +26,93 @@ header {
   width: 100%;
   height: 90px;
 }
-
 footer {
-    background: #86A8E7;
-    color: #fff; /* 设置文字颜色 */
-    padding: 10px 25px; /* 设置内边距 */
-    text-align: left; /* 设置文本居中 */
-    position: fixed; /* 将页脚固定在底部 */
-    width: 100%; /* 设置宽度为100% */
-    bottom: 0; /* 设置距离底部的距离为0 */
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-shadow: #555 0 -2px 10px;
+  background-color: #86A8E7;
+  padding: 20px;
+  text-align: center;
+  color: white;
+  position: relative;
+  bottom: 0;
+  width: 100%;
 }
-.logo {
-    height: 50px;
-    margin-right: 10px;
-  }
 
-.header-content {
-    display: flex;
-    align-items: center;
+/* Logo styles */
+.logo {
+  height: 50px;
+  margin-right: 10px;
 }
-  
+.logout-button {
+  background-color: #ff6b6b;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.logout-button:hover {
+  background-color: #ff4d4d;
+}
+/* Header content styles */
+.header-content {
+  display: flex;
+  align-items: center;
+}
+
+/* Main container */
+main {
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 60px; /* to avoid overlapping with footer */
+  padding: 55px;
+}
+
 .container {
-    padding:20px 80px 20px; /* Adjusted to avoid overlap with header and footer */
+  padding: 20px 80px;
 }
 
 h1 {
-    text-align: center;
-    color: #333;
+  text-align: center;
+  color: #333;
 }
+
+/* Table styles */
+.table-container {
+  max-width: 1200px;
+  margin: 20px auto;
+  border-radius: 4px;
+}
+
 table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
 }
 
 table, th, td {
-    border: 1px solid #ddd;
+  border: 1px solid #ddd;
 }
 
 th, td {
-    padding: 10px;
-    text-align: left;
+  padding: 15px;
+  text-align: center;
 }
 
 th {
-    background-color: #86A8E7;
-    color: #333;
+  background-color: #86A8E7;
+  color: #333;
 }
 
 tr:nth-child(even) {
-    background-color: #f9f9f9;
+  background-color: #f9f9f9;
 }
 
 tr:hover {
-    background-color: #f1f1f1;
+  background-color: #f1f1f1;
 }
+
+/* Navigation styles */
 .nav-links {
   display: flex;
   justify-content: end;
@@ -79,54 +120,95 @@ tr:hover {
   color: white;
   flex-direction: row;
 }
+
 .nav-links li {
   margin: 0 10px;
 }
+
 .nav-links a {
   color: #ffffff;
   text-decoration: none;
   font-weight: bold;
 }
 
+/* Button styles */
 button {
-    display: block;
-    margin: 20px auto;
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
+  margin: 20px auto;
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
 }
 
 button:hover {
-    background-color: #45a049;
+  background-color: #45a049;
 }
 
+/* Pagination styles */
 .pagination-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-  }
-  .pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .pagination a {
-    text-decoration: none;
-    padding: 10px 20px;
-    margin: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #86A8E7;
-    color: #ffffff;
-  }
-  .pagination a:hover {
-    background-color: #b8d1ff;
-  }
-  .pagination p {
-    text-align: center;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination a {
+  text-decoration: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #86A8E7;
+  color: #ffffff;
+}
+
+.pagination a:hover {
+  background-color: #b8d1ff;
+}
+
+.pagination p {
+  text-align: center;
+}
+.status-btn.face {
+  background-color: #00000000;
+  text-decoration: none;
+  margin-right: 20px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  margin-left: 10px;
+}
+
+.status-btn.face:hover {
+  background-color: #536992; /* 更深的浅蓝色背景 */
+  color: #fff; /* 白色文字 */
+}
+
+.status-btn:hover {
+  background-color: #536992;
+}
+
+button, .status-btn, .pagination a {
+  text-decoration: none;
+  color: #ffff;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.nav-buttons {
+  display: flex;
+  align-items: center;
+}

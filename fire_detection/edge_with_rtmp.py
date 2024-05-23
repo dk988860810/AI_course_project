@@ -39,7 +39,7 @@ class EdgeComputing:
         self.edge_id = edge_id
 
         # Initialize rtmp_process
-        rtmp_url = "rtmp://13.214.171.73:1940/fire/stream_1"
+        rtmp_url = "rtmp://13.214.171.73:1936/fire1/stream_1"
         rtmp_command = [
             "ffmpeg",
             "-f", "rawvideo",
