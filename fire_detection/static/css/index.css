@@ -98,8 +98,8 @@ header {
 }
 
 .dropdown-menu li a:hover {
-  background-color: #f1f1f1;
-  color: #536992;
+  background-color: #86A8E7;
+  color: #ffffff !important;
 }
 
 /* Logout Button */
