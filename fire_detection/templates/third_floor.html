@@ -48,7 +48,26 @@
   </header>
 
 <body>
-    
+    <div class="text-center">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#imageModal">
+            平面圖
+        </button>
+    </div>
+
+    <!-- 模态框 -->
+    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="imageModalLabel">三樓平面圖</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img src="../static/img/floorplan/floor_plan3.png" alt="Image" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="flex-container">
         <div class="container" id="first_container">
