@@ -4,23 +4,62 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    box-sizing: border-box;
+    background-color: #ffffff; /* 浅蓝色背景 */
 }
+
+.header {
+    width: 100%;
+    background-color: #86A8E7; /* 浅蓝色背景 */
+    color: white;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000; /* 确保头部在最上层 */ 
+    height: 90px;
+}
+
+.header .logo {
+    height: 50px;
+    margin: 10px; /* 添加间距 */
+}
+
+.header .header-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-left: 0; /* 确保紧贴logo */
+}
+
+
+
+
+
 
 .container {
     max-width: 800px;
-    margin: 50px auto;
-    padding: 0 20px;
+    margin: 92px auto;
+    padding: 100px 20px;
+    text-align: center;
 }
 
 h1 {
     text-align: center;
     color: #343a40;
+    margin-bottom: 20px;
 }
 
 img {
     display: block;
-    margin: 20px auto;
+    margin: 0 auto;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -58,4 +97,17 @@ img {
 
 .btn-secondary:hover {
     background-color: #5a6268;
+}
+
+
+
+/* Footer styles */
+footer {
+    background-color: #86A8E7;
+    padding: 20px;
+    text-align: center;
+    color: white;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: auto; /* 将footer推到页面底部 */
 }
