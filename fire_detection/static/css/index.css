@@ -129,7 +129,7 @@ header {
 }
 
 .container {
-  top: 100px;
+  /* top: 100px; */
   height: 375px;
   width: 500px;
   flex: 1;
