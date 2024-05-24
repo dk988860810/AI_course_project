@@ -79,6 +79,15 @@ def generate_frames(edge_id):
 def index():
     return render_template('index.html')
 
+@app.route('/second_floor')
+def second_floor():
+    return render_template('second_floor.html')
+
+@app.route('/third_floor')
+def third_floor():
+    return render_template('third_floor.html')
+    
+
 @app.route('/video_feed/<int:edge_id>')
 def video_feed_route(edge_id):
     if edge_id not in frame_queues_and_threads:
@@ -256,7 +265,8 @@ def download():
 @app.route('/redirect')
 def reset_clock_status():
     return redirect(url_for('table'))
-    
+
+
 
 if __name__ == "__main__":
     socketio.run(app, host='0.0.0.0', port=5000, debug=True)
