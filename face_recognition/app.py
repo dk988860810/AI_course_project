@@ -669,6 +669,7 @@ def clear_data_route():
 def input_name():
     global get_input_name
     name = request.form['name']
+    print('route_sf')
     get_input_name = create_face_folder(name)
     return get_input_name
 
