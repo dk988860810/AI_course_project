@@ -11,9 +11,17 @@
 </head>
 <body>
     <header class="header">
+        <div class="header-content">
         <img src="{{ url_for('static', filename='image/logo.png') }}" alt="Logo" class="logo">
         <span class="header-text">臉部註冊</span>
-        <img src="{{ url_for('static', filename='image/home.png') }}" class="home-icon" onclick="goToIndex()">
+        </div>
+        <div class="nav-buttons">
+        <a href="/user_form" class="status-btn face">出缺勤狀況</a>
+        <a href="/profile" class="status-btn face">員工資料</a>
+        <a href="{{ url_for('login') }}" class="logout-link">
+          <button class="logout-button">登出</button>
+        </a>
+        </div>
     </header>
     
     <div class="wrapper">
@@ -54,7 +62,7 @@
 
 <!--            features-->
                     <form onsubmit="executeRoute(event)">
-                        <button class="status-btn"  type="submit" data-toggle="modal" data-target="#myModal">面部特征提取</button>
+                        <button class="status-btn"  type="submit" data-toggle="modal" data-target="#myModal">面部特徵提取</button>
                     </form>
         </div>
         <p id="label_warning_content"></p>
