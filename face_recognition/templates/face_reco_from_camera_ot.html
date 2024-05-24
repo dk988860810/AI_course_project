@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Streaming</title>
+    <title>火災預警系統</title>
+    <link rel="icon" href="{{ url_for('static', filename='image/logo.png') }}">
     <!-- 引入 Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
@@ -11,9 +12,17 @@
    <script src="{{ url_for('static', filename='js/face_reco.js') }}"></script>
 </head>
 <body>
-    <h1>Real-Time Face Recognition with Webcam</h1>
-    <img src="{{ url_for('video_feed') }}" width="640" height="360" alt="Video Stream">
+    <header class="header">
+        <img src="{{ url_for('static', filename='image/logo.png') }}" alt="Logo" class="logo">
+        <span class="header-text">打卡系統</span>
+        <!-- <img src="{{ url_for('static', filename='image/home.png') }}" class="home-icon" onclick="goToIndex()"> -->
+    </header>
 
+    <!-- Video Stream -->
+    <div class="container">
+    <h1>請將你的臉置於鏡頭前</h1>
+    <img src="{{ url_for('video_feed') }}" width="750" height="400" alt="Video Stream">
+    </div>
     <!-- Bootstrap 5 Modal -->
     <div class="modal" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -40,6 +49,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-
+    <footer>
+        © 2024 火災預警系統
+      </footer>
 </body>
 </html>

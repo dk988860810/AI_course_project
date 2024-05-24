@@ -17,25 +17,11 @@
         a:hover {
             color: white !important;
         }
-        .btn-primary{
-            background-color: #86A8E7;
-            border-color: #ffffff
-        }
-        .btn-primary:hover{
-            background-color: #6883b6;
-            border-color: #ffffff
-        }
-        .texrarea {
-            justify-content: center;
-            text-align: center;
-            align-items: center;
-            margin: auto;
-}
     </style>
 <header>
     <div class="header-content">
       <img src="./static/img/logo.png" alt="Logo" class="logo">
-      <span class="header-title">一樓影像</span>
+      <span class="header-title">三樓影像</span>
     </div>
       <nav>
         <div class="header-right">
@@ -73,37 +59,38 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="imageModalLabel">一樓平面圖</h5>
+                    <h5 class="modal-title" id="imageModalLabel">三樓平面圖</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <img src="../static/img/floorplan/floor_plan1.png" alt="Image" class="img-fluid">
+                    <img src="../static/img/floorplan/floor_plan3.png" alt="Image" class="img-fluid">
                 </div>
             </div>
         </div>
     </div>
-    
+
     <div class="flex-container">
         <div class="container" id="first_container">
             <a href="#" data-bs-toggle="modal" data-bs-target="#check">
-                <img src="/video_feed/1" width="500" height="375" class="screen">
+                <img src="/video_feed/7" width="500" height="375" class="screen">
             </a>
-            <div class="topleft">1樓A區</div>
+            <div class="topleft">3樓A區</div>
 
         </div>
 
         <div class="container" id="second_container">
             <a href="#" data-bs-toggle="modal" data-bs-target="#check">
-                <img src="/video_feed/2" width="500" height="375" class="screen">
+                <img src="/video_feed/8" width="500" height="375" class="screen">
             </a>
-            <div class="topleft">1樓B區</div>
+            <div class="topleft">3樓B區</div>
 
         </div>
 
         <div class="container" id="third_container">
             <a href="#" data-bs-toggle="modal" data-bs-target="#check">
-                <img src="/video_feed/3" width="500" height="375" class="screen">
+                <img src="/video_feed/9" width="500" height="375" class="screen">
             </a>
-            <div class="topleft">1樓C區</div>
+            <div class="topleft">3樓C區</div>
 
         </div>
     </div>
@@ -115,6 +102,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="videoModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
                         <!--<span aria-hidden="true">&times;</span>-->
                     </button>
                 </div>
@@ -130,7 +118,7 @@
                         請確認!</br>
                         3分鐘倒數
                         <div id="countdown_warning"></div>
-                        <a href="#" id="checkButton" class="button1" data-bs-toggle="modal"
+                        <a href="#" id="checkButton" class="button" data-bs-toggle="modal"
                             data-bs-target="#call_cancel">確認</a>
                     </div>
                 </div>
@@ -143,7 +131,10 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="callcancellabel">通報或取消</h5>
+                    <h5 class="modal-title" id="callcancellabel">Report or Cancel</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                        <!--<span aria-hidden="true">&times;</span>-->
+                    </button>
                 </div>
                 <div class="modal-body">
                     <div class="reporting">
@@ -165,6 +156,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">通報</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
                         <!--<span aria-hidden="true">&times;</span>-->
                     </button>
                 </div>
@@ -185,6 +177,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">提交</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
                         <!--<span aria-hidden="true">&times;</span>-->
                     </button>
                 </div>
@@ -202,14 +195,16 @@
     </div>
 
     <div class="modal fade" id="cancelreport">
-        <div class="modal-dialog cancel">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">取消原因</h5>
+                    <h5 class="modal-title">取消</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                        <!--<span aria-hidden="true">&times;</span>-->
                     </button>
                 </div>
                 <div class="modal-body">
-                    <textarea id="multilineInput" placeholder="輸入取消原因" class="cancelreport"></textarea>
+                    <textarea id="multilineInput" placeholder="Enter your text here"></textarea>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="submitbtn">送出</button>
@@ -223,9 +218,9 @@
 
     <script>
         var containerMap = {
-            '1': 'first_container',
-            '2': 'second_container',
-            '3': 'third_container'
+            '7': 'first_container',
+            '8': 'second_container',
+            '9': 'third_container'
         };
         var cooldownTimers = {};
 
@@ -262,7 +257,7 @@
             }
 
             // 循環監聽每個攝影機ID
-            for (var i = 1; i <= 3; i++) {
+            for (var i = 7; i <= 9; i++) {
                 var containerId = containerMap[String(i)];
                 setInterval(fetchClassLabels.bind(null, i, containerId), 1000);
             }
@@ -285,15 +280,15 @@
 
         // 为每个图片容器添加点击事件监听器
         document.getElementById('first_container').addEventListener('click', function () {
-            updateModal('1樓A區', '/video_feed/1');
+            updateModal('3樓A區', '/video_feed/7');
         });
 
         document.getElementById('second_container').addEventListener('click', function () {
-            updateModal('1樓B區', '/video_feed/2');
+            updateModal('3樓B區', '/video_feed/8');
         });
 
         document.getElementById('third_container').addEventListener('click', function () {
-            updateModal('1樓C區', '/video_feed/3');
+            updateModal('3樓C區', '/video_feed/9');
         });
 
         $('#check').on('shown.bs.modal', function (e) {

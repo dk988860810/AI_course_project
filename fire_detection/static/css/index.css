@@ -122,6 +122,50 @@ header {
   background-color: #ff4d4d;
 }
 
+.button1 {
+  /* 設置 Button 1 的樣式 */
+  border: none;
+  border-radius: 5px;
+  background-color: #ff3636e8; /* 設置不同的背景顏色 */
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 5px 5px 5px gray;
+  font-size: 35px;
+  cursor: pointer;
+  display: inline-block; /* 設置按鈕為內聯塊元素 */
+  margin: 20px 10px; /* 調整按鈕的外邊距 */
+  padding: 5px 10px;
+  border-radius: 10px;
+  margin-left:30px ;
+  color: #fff;
+}
+.button1:hover {
+  background-color:#cc2a2acb ;
+  cursor: pointer;
+}
+
+.button2 {
+  /* 設置 Button 2 的樣式 */
+  border: none;
+  border-radius: 5px;
+  background-color: #919191d5; /* 設置不同的背景顏色 */
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 5px 5px 5px gray;
+  font-size: 35px;
+  cursor: pointer;
+  display: inline-block; /* 設置按鈕為內聯塊元素 */
+  margin: 20px 10px; /* 調整按鈕的外邊距 */
+  padding: 5px 10px;
+  border-radius: 10px;
+  margin-left: 160px;
+  color: #fff;
+}
+.button2:hover {
+  background-color: #5a5a5ad5;
+  cursor: pointer;
+}
+
 .flex-container {
   display: flex;
   justify-content: space-between;
@@ -129,7 +173,7 @@ header {
 }
 
 .container {
-  top: 100px;
+  /* top: 100px; */
   height: 375px;
   width: 500px;
   flex: 1;
@@ -189,6 +233,14 @@ body {
   flex: 1 1 auto;
   padding: 1rem;
   display: flex;
+  text-align: center;
+  width: 100%;
+}
+.texrarea {
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  margin: auto;
 }
 
 .reporting {
@@ -196,10 +248,13 @@ body {
   font-size: 30px;
   margin-left: 80px;
   margin: auto;
+  align-content: center;
+  justify-content: center;
+  text-align: center;
 }
 
 #multilineInput {
-  width: 300px;
+  width: 400px;
   height: 150px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -258,4 +313,13 @@ footer {
 .text-center {
   text-align: center;
   margin-top: 50px; /* Reduce this value to move the button closer to the header */
+}
+
+.cancelreport{
+  justify-items: center;
+  width: 50%;
+}
+
+.cancel{
+  width: 400px;
 }
