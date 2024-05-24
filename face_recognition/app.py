@@ -304,24 +304,14 @@ class Face_Recognizer:
                 #        b'Content-Type: image/jpeg\r\n\r\n' + img_rd + b'\r\n')
 
                 logging.debug("Frame ends\n\n")
-    def run(self):
-        # cap = cv2.VideoCapture("video.mp4")  # Get video stream from video file
-        cap = cv2.VideoCapture('rtmp://13.214.171.73/face/aws')  # Get video stream from camera
-        self.process(cap)
-
-        cap.release()
-        cv2.destroyAllWindows()
 
 
-def main():
-    # logging.basicConfig(level=logging.DEBUG) # Set log level to 'logging.DEBUG' to print debug info of every frame
-    logging.basicConfig(level=logging.INFO)
-    Face_Recognizer_con = Face_Recognizer()
-    Face_Recognizer_con.run()
 
 
 ff_flag = False
-name_list=['unknown']
+name_list = ['unknown']
+
+
 def generate_frames():
     global ff_flag, name_list, cap
     face_recognizer = Face_Recognizer()
@@ -335,7 +325,7 @@ def generate_frames():
         # else:
         #     ff_flag = False
         yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 
 # Dlib 正向人脸检测器 / Use frontal face detector of Dlib
@@ -432,13 +422,14 @@ def update_fps():
 def create_face_folder(name):
     global existing_faces_cnt, ss_cnt, current_face_dir, face_folder_created_flag
     existing_faces_cnt += 1
+    print('创建')
     if name:
         current_face_dir = path_photos_from_camera + \
-                            "person_" + str(existing_faces_cnt) + "_" + \
-                            name
+                           "person_" + str(existing_faces_cnt) + "_" + \
+                           name
     else:
         current_face_dir = path_photos_from_camera + \
-                            "person_" + str(existing_faces_cnt)
+                           "person_" + str(existing_faces_cnt)
     os.makedirs(current_face_dir)
     ss_cnt = 0  # 将人脸计数器清零 / Clear the cnt of screen shots
     face_folder_created_flag = True  # Face folder already created
@@ -471,7 +462,10 @@ def save_current_face():
     else:
         return "Please run step 2!"
 
+
 label_warning = ''
+
+
 # 获取人脸 / Main process of face detection and saving
 def process(cap):
     global current_frame, current_frame_faces_cnt, face_ROI_height, face_ROI_width, \
@@ -513,6 +507,7 @@ def process(cap):
 
     return current_frame, label_warning
 
+
 # 要读取人脸图像文件的路径 / Path of cropped faces
 path_images_from_camera = "data/data_faces_from_camera/"
 
@@ -521,6 +516,7 @@ predictor = dlib.shape_predictor('data/data_dlib/shape_predictor_68_face_landmar
 
 # Dlib Resnet 人脸识别模型，提取 128D 的特征矢量 / Use Dlib resnet50 model to get 128D face descriptor
 face_reco_model = dlib.face_recognition_model_v1("data/data_dlib/dlib_face_recognition_resnet_model_v1.dat")
+
 
 # 返回单张图像的 128D 特征 / Return 128D features for single image
 # Input:    path_img           <class 'str'>
@@ -540,6 +536,7 @@ def return_128d_features(path_img):
         face_descriptor = 0
         logging.warning("no face")
     return face_descriptor
+
 
 # 返回 personX 的 128D 特征均值 / Return the mean value of 128D face descriptor for person X
 # Input:    path_face_personX        <class 'str'>
@@ -568,8 +565,10 @@ def return_features_mean_personX(path_face_personX):
         features_mean_personX = np.zeros(128, dtype=object, order='C')
     return features_mean_personX
 
+
 app = Flask(__name__)
 app.secret_key = 'mmm'
+
 
 @app.route('/get_ff_flag')
 def get_ff_flag():
@@ -594,6 +593,7 @@ def video_feed():
 def get_face():
     return render_template('get_face.html')
 
+
 @app.route('/face_recognition')
 def start_video():
     return render_template('face_reco_from_camera_ot.html')
@@ -602,6 +602,7 @@ def start_video():
 @app.route('/face_reco_suc')
 def face_reco_suc():
     return render_template('face_reco_suc.html')
+
 
 @app.route('/test_mysql')
 def test_mysql():
@@ -616,6 +617,7 @@ db_config = {
     'database': 'aws_test',
     'auth_plugin': 'mysql_native_password'
 }
+
 
 # 读写mysql
 # 处理打卡请求
@@ -660,6 +662,7 @@ def clock_in():
     except Exception as e:
         return jsonify({'message': str(e)})
 
+
 @app.route('/clear_data', methods=['POST'])
 def clear_data_route():
     return clear_data()
@@ -669,7 +672,6 @@ def clear_data_route():
 def input_name():
     global get_input_name
     name = request.form['name']
-    print('route_sf')
     get_input_name = create_face_folder(name)
     return get_input_name
 
@@ -678,18 +680,17 @@ def input_name():
 def save_face():
     return save_current_face()
 
-stop_video_stream = False
+
 def gen():
     global frame_start_time, label_warning,cap
     frame_start_time = time.time()
-    while not stop_video_stream:
+    while True:
         frame, label_warning = process(cap)
         # frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)  # 转换图像颜色为RGB
         frame = cv2.resize(frame, (640, 480))
         update_fps()
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + cv2.imencode('.jpg', frame)[1].tobytes() + b'\r\n')
-
 
 
 @app.route('/video_feed_gf')
@@ -702,6 +703,7 @@ def get_label_warning():
     global label_warning
     return jsonify({'label_warning': label_warning})
 
+
 @app.route('/stop_video_capture')
 def stop_video_capture():
     # 在这里添加停止视频捕获的代码
@@ -711,13 +713,11 @@ def stop_video_capture():
 
 @app.route('/features_extraction')
 def features_extraction():
-    global stop_video_stream
-    stop_video_stream = True
-    time.sleep(2)
     logging.basicConfig(level=logging.INFO)
     # 获取已录入的最后一个人脸序号 / Get the order of latest person
     person_list = os.listdir("data/data_faces_from_camera/")
     person_list.sort()
+
     with open("data/features_all.csv", "w", newline="") as csvfile:
         writer = csv.writer(csvfile)
         for person in person_list:
@@ -738,6 +738,7 @@ def features_extraction():
         logging.info("所有录入人脸数据存入 / Save all the features of faces registered into: data/features_all.csv")
 
     return "Features extracted and saved into 'data/features_all.csv' successfully!"
+
 
 # 打卡名单 表格
 @app.route('/user_form')
@@ -932,15 +933,13 @@ def logout():
 
 # 定义一个函数来捕获视频流
 def capture_video():
-    global cap, stop_video_stream
+    global cap
     cap = cv2.VideoCapture('rtmp://13.214.171.73/face/aws')  # 获取视频流
-    # cap = cv2.VideoCapture(0)  # 获取视频流
-    stop_video_stream = False
 
 # 用戶資料頁面路由（只有已登錄的用戶可以訪問）
 @app.route('/profile')
 def profile():
-    global cap
+    # global cap
     # cap = cv2.VideoCapture('rtmp://13.214.171.73/face/aws')  # Get video stream from camera
     # 在应用程序启动时启动视频捕获线程
     video_thread = threading.Thread(target=capture_video)
@@ -1096,7 +1095,6 @@ def add_employee():
     # 返回响应或重定向到其他页面
     return redirect(url_for('profile'))
 
-check_existing_faces_cnt()
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
     pre_work_mkdir()
