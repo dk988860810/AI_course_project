@@ -867,14 +867,14 @@ def HR():
 def police():
     if current_user.role != 'police':
         return redirect(url_for('login'))
-    return redirect('http://127.0.0.1:5001/')
+    return redirect('https://www.firedetect.infinityfreeapp.com/')
 
 @app.route('/fire')
 @login_required
 def fire():
     if current_user.role != 'fire':
         return redirect(url_for('login'))
-    return redirect('http://127.0.0.1:5001/table')
+    return redirect('https://www.firedetect.infinityfreeapp.com/table')
 
 # 用於註冊頁面的路由
 @app.route('/register', methods=['GET', 'POST'])
