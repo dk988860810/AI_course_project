@@ -41,7 +41,7 @@ def start_stream(camera_name, rtmp_server, stream_key):
 
 # Example usage
 if __name__ == "__main__":
-    camera_name = "HD Webcam"
+    camera_name = "Integrated Webcam"
     rtmp_server = "13.214.171.73"
     stream_key = "aws"
 
