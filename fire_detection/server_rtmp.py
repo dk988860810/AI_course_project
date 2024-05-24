@@ -183,7 +183,7 @@ def get_data(page, per_page):
 
 @app.route('/download_data')
 def download():
-    path_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
+    path_wkhtmltopdf = "/usr/bin/wkhtmltopdf"
     config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
     conn = mysql.connector.connect(**mysql_config)
     cursor = conn.cursor()
@@ -202,6 +202,13 @@ def download():
     <head>
         <meta charset="UTF-8">
         <style>
+            @font-face {
+                font-family: 'Noto Sans';
+                src: url('/path/to/NotoSansCJK-Regular.ttc') format('truetype');
+            }
+            body {
+                font-family: 'Noto Sans', sans-serif;
+            }
             table, th, td {
                 border: 1px solid black;
                 border-collapse: collapse;
@@ -210,9 +217,6 @@ def download():
             th {
                 background-color: #f2f2f2;
             }
-        </style>
-        <style>
-            @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap');
         </style>
     </head>
     <body>
