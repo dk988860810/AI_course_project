@@ -13,18 +13,25 @@ body {
     width: 100%;
     background-color: #86A8E7; /* 浅蓝色背景 */
     color: white;
-    text-align: center;
+    /* text-align: center; */
     padding: 20px;
-    box-sizing: border-box;
+    /* box-sizing: border-box; */
     position: fixed;
-    top: 0;
-    left: 0;
+    /* top: 0;
+    left: 0; */
     display: flex;
     align-items: center;
-    justify-content: flex-start; /* 左对齐 */
+    /* justify-content: flex-start;  */
     z-index: 1000; /* 确保头部在最上层 */ 
     height: 90px;
+    justify-content: space-between;
+    width: 100%;
 }
+
+.header-content {
+    display: flex;
+    align-items: center;
+  }
 
 .header .logo {
     height: 50px;
@@ -32,16 +39,73 @@ body {
 }
 
 .header .header-text {
-    font-size: 1.5rem;
+    font-size: 24px;
     font-weight: bold;
-    margin-left: 0; /* 确保紧贴logo */
+    /* margin-left: -1360px; */
+    /* margin-left: 0;  */
 }
 
-.header .home-icon {
-    max-width: 30px;
-    margin-left: auto; /* 将home-icon推到右边 */
+
+/* Navigation styles */
+nav {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+  }
+  
+  .nav-buttons {
+    display: flex;
+    align-items: center;
+  }
+
+/* Button styles */
+.status-btn {
+    color: #fff;
+    text-decoration: none;
+    margin-right: 20px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #ffffff28;
+    transition: background-color 0.3s;
+  }
+  
+  .status-btn.face {
+    background-color: #00000000;
+    text-decoration: none;
+    margin-right: 20px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    margin-left: 10px;
+  }
+  
+  .status-btn.face:hover {
+    background-color: #536992; /* 更深的浅蓝色背景 */
+    color: #fff; /* 白色文字 */
+  }
+  
+  .status-btn:hover {
+    background-color: #536992;
+  }
+  
+  /* Logout button styles */
+  .logout-button {
+    background-color: #ff6b6b;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
     cursor: pointer;
-}
+    transition: background-color 0.3s;
+  }
+  .logout-button:hover {
+    background-color: #ff4d4d;
+  }
+
+
+
+
+
 
 .wrapper {
     display: flex;
