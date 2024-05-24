@@ -25,6 +25,12 @@
             background-color: #6883b6;
             border-color: #ffffff
         }
+        .texrarea {
+            justify-content: center;
+            text-align: center;
+            align-items: center;
+            margin: auto;
+}
     </style>
 <header>
     <div class="header-content">
@@ -68,7 +74,6 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="imageModalLabel">一樓平面圖</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <img src="../static/img/floorplan/floor_plan1.png" alt="Image" class="img-fluid">
@@ -110,7 +115,6 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="videoModalLabel">Modal title</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal">
                         <!--<span aria-hidden="true">&times;</span>-->
                     </button>
                 </div>
@@ -140,9 +144,6 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="callcancellabel">通報或取消</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal">
-                        <!--<span aria-hidden="true">&times;</span>-->
-                    </button>
                 </div>
                 <div class="modal-body">
                     <div class="reporting">
@@ -164,7 +165,6 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">通報</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal">
                         <!--<span aria-hidden="true">&times;</span>-->
                     </button>
                 </div>
@@ -185,7 +185,6 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">提交</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal">
                         <!--<span aria-hidden="true">&times;</span>-->
                     </button>
                 </div>
@@ -203,16 +202,14 @@
     </div>
 
     <div class="modal fade" id="cancelreport">
-        <div class="modal-dialog">
+        <div class="modal-dialog cancel">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">取消</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal">
-                        <!--<span aria-hidden="true">&times;</span>-->
+                    <h5 class="modal-title">取消原因</h5>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <textarea id="multilineInput" placeholder="在此輸入" class="text-area"></textarea>
+                    <textarea id="multilineInput" placeholder="輸入取消原因" class="cancelreport"></textarea>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="submitbtn">送出</button>

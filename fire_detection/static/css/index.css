@@ -236,7 +236,7 @@ body {
   text-align: center;
   width: 100%;
 }
-.texr-area {
+.texrarea {
   justify-content: center;
   text-align: center;
   align-items: center;
@@ -254,7 +254,7 @@ body {
 }
 
 #multilineInput {
-  width: 300px;
+  width: 400px;
   height: 150px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -313,4 +313,13 @@ footer {
 .text-center {
   text-align: center;
   margin-top: 50px; /* Reduce this value to move the button closer to the header */
+}
+
+.cancelreport{
+  justify-items: center;
+  width: 50%;
+}
+
+.cancel{
+  width: 400px;
 }
