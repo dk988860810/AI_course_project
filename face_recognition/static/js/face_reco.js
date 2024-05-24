@@ -26,7 +26,7 @@ function checkFfFlag() {
                     if (index > -1) {
                         nameList.splice(index, 1);
                     }
-                }, 6000); // 一分钟后执行
+                }, 15000); // 一分钟后执行
             }
         })
         .catch(error => console.error('Error:', error));

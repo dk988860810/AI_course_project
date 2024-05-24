@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>臉部註冊</title>
+    <title>火災預警系統</title>
     <link rel="icon" href="{{ url_for('static', filename='image/logo.png') }}">
     <script src="{{ url_for('static', filename='js/get_face.js') }}"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/face_register.css') }}">
@@ -19,22 +19,43 @@
     <div class="wrapper">
         <div class="form-group">
             <form action="/clear_data" method="post">
-                <input type="submit" value="Clear Data" class="status-btn">
+                <input type="submit" value="清除數據" class="status-btn">
             </form>
         </div>
         <div class="video-container">
             <img src="/video_feed_gf" width="640" height="360" alt="Video Stream" class="camera">
         </div>
         <div class="form-group">
-            <form id="nameForm" onsubmit="handleSubmit(event)">
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" class="underline-input">
-                <div class="form-row">
-                    <input type="submit" value="Input Name" class="status-btn" onclick="handleSubmit(event)">
-                    <input type="button" value="Save Face" class="status-btn" onclick="handleSaveFace(event)">
-                    <input type="button" value="features_extraction" class="status-btn" onclick="handleFeaturesExtraction(event)">
+<!--            <form id="nameForm" onsubmit="handleSubmit(event)">-->
+<!--                <label for="name">Name</label>-->
+<!--                <input type="text" id="name" name="name" class="underline-input">-->
+<!--                <div class="form-row">-->
+<!--                    <input type="submit" value="Input Name" class="status-btn" onclick="handleSubmit(event)">-->
+<!--                    <input type="button" value="Save Face" class="status-btn" onclick="handleSaveFace(event)">-->
+<!--                </div>-->
+<!--            </form>-->
+                <div style="text-align: left;">
+
+                    <label for="name">Name</label>
+                     <div>
+                    <input type="text" id="name" name="name" class="underline-input" style="width: 350px;">
                 </div>
-            </form>
+                </div>
+
+                    <div class="container_input">
+                    <form id="nameForm" onsubmit="handleSubmit(event)">
+                        <input type="submit" class="status-btn" value="輸入姓名">
+                    </form>
+<!--                    save face-->
+                    <form id="saveFaceForm" onsubmit="handleSaveFace(event)">
+                        <input type="submit" class="status-btn" value="保存圖像">
+                    </form>
+                    </div>
+
+<!--            features-->
+                    <form onsubmit="executeRoute(event)">
+                        <button class="status-btn"  type="submit" data-toggle="modal" data-target="#myModal">面部特征提取</button>
+                    </form>
         </div>
         <p id="label_warning_content"></p>
     </div>
@@ -44,6 +65,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <!-- Modal Header -->
+
                 <div class="modal-header">
                     <h4 class="modal-title">特徵提取</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -86,6 +108,65 @@
         function goToIndex() {
             window.location.href = '/profile';
         }
+
+<!--        features-->
+        function executeRoute(event) {
+            event.preventDefault();
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/features_extraction", true);
+            xhr.send();
+        }
+
+// <!--        inputname-->
+        function handleSubmit(event) {
+            event.preventDefault(); // 阻止表单的默认提交行为
+
+            const name = document.getElementById('name').value;
+            const xhr = new XMLHttpRequest();
+            const url = '/input_name';
+
+            xhr.open('POST', url, true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    alert('Name submitted: ' + xhr.responseText); // 处理响应数据
+                }
+            };
+
+            xhr.send('name=' + encodeURIComponent(name));
+        }
+// <!--        save face-->
+        function handleSaveFace(event) {
+            event.preventDefault(); // 阻止表单的默认提交行为
+
+            const xhr = new XMLHttpRequest();
+            const url = '/save_face';
+
+            xhr.open('POST', url, true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    alert('Face data saved: ' + xhr.responseText); // 处理响应数据
+                }
+            };
+
+            xhr.send();
+        }
     </script>
+    <style>
+        /* 设置容器样式 */
+        .container_input {
+            display: flex;           /* 使用 Flexbox 布局 */
+            justify-content: center; /* 水平居中排列 */
+            align-items: center;     /* 垂直居中排列 */
+            gap: 10px;               /* 按钮之间的间距 */
+            padding: 20px;           /* 容器内边距 */
+        }
+    </style>
+      <footer>
+        © 2024 火災預警系統
+      </footer>
 </body>
 </html>

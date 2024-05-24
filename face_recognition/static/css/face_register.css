@@ -4,8 +4,6 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     min-height: 100vh;
     box-sizing: border-box;
     background-color: #ffffff; /* 浅蓝色背景 */
@@ -26,13 +24,11 @@ body {
     justify-content: flex-start; /* 左对齐 */
     z-index: 1000; /* 确保头部在最上层 */ 
     height: 90px;
-    
 }
 
 .header .logo {
     height: 50px;
     margin-right: 10px; /* 添加间距 */
-
 }
 
 .header .header-text {
@@ -55,6 +51,7 @@ body {
     width: 100%;
     padding-top: 100px; /* 使内容不被固定的头部覆盖 */
     box-sizing: border-box;
+    flex: 1;
 }
 
 .form-group {
@@ -120,4 +117,15 @@ body {
 .camera {
     border: 1px solid #ccc;
     border-radius: 5px;
+}
+
+/* Footer styles */
+footer {
+    background-color: #86A8E7;
+    padding: 20px;
+    text-align: center;
+    color: white;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: auto; /* 将footer推到页面底部 */
 }

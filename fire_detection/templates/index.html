@@ -17,6 +17,14 @@
         a:hover {
             color: white !important;
         }
+        .btn-primary{
+            background-color: #86A8E7;
+            border-color: #ffffff
+        }
+        .btn-primary:hover{
+            background-color: #6883b6;
+            border-color: #ffffff
+        }
     </style>
 <header>
     <div class="header-content">
@@ -48,9 +56,27 @@
   </header>
 
 <body>
-    
+    <div class="text-center">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#imageModal">
+            平面圖
+        </button>
+    </div>
 
-    <div class="flex-container">
+    <!-- 模态框 -->
+    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="imageModalLabel">一樓平面圖</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img src="../static/img/floorplan/floor_plan1.png" alt="Image" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="flex-container">
         <div class="container" id="first_container">
             <a href="#" data-bs-toggle="modal" data-bs-target="#check">
                 <img src="/video_feed/1" width="500" height="375" class="screen">
