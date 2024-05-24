@@ -202,21 +202,17 @@ def download():
     <head>
         <meta charset="UTF-8">
         <style>
-            @font-face {
-                font-family: 'Noto Sans';
-                src: url('/path/to/NotoSansCJK-Regular.ttc') format('truetype');
-            }
-            body {
-                font-family: 'Noto Sans', sans-serif;
-            }
-            table, th, td {
-                border: 1px solid black;
-                border-collapse: collapse;
-                padding: 5px;
-            }
-            th {
-                background-color: #f2f2f2;
-            }
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        body {
+            font-family: 'Noto Sans CJK', sans-serif;
+        }
         </style>
     </head>
     <body>
