@@ -49,10 +49,10 @@ class EdgeComputing:
             "-f", "rawvideo",
             "-vcodec", "rawvideo",
             "-pix_fmt", "bgr24",
-            "-s", "320x240",
-            "-r", "15",
+            "-s", "640x480",
+            "-r", "10",
             "-i", "-",
-            "-b:v","300k",
+            "-b:v","500k",
             "-c:v", "libx264",
             "-preset", "ultrafast",
             "-tune", "zerolatency",
@@ -60,14 +60,6 @@ class EdgeComputing:
             rtmp_url
         ]
         self.rtmp_process = subprocess.Popen(rtmp_command, stdin=subprocess.PIPE)
-
-        # Start the RTMP thread
-        self.rtmp_thread = threading.Thread(target=self.run_rtmp)
-        self.rtmp_thread.start()
-
-    def run_rtmp(self):
-        while not self.stop_event.is_set():
-            pass  # Add your RTMP streaming logic here if needed
 
     def detect_objects(self, frame):
         pre_result_cam = self.model.predict(frame, verbose=False,device="0")
@@ -87,6 +79,7 @@ class EdgeComputing:
                 output_text = f'{class_label} {class_conf}'
                 cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (255, 0, 0), 3)
                 cv2.putText(frame, output_text, org, font, fontScale, color, thickness)
+        print(self.class_label_set)
         return frame
 
     def stream_video(self):
@@ -98,6 +91,7 @@ class EdgeComputing:
                     self.rtmp_process.stdin.write(frame_with_detections.tobytes())
 
                     class_labels_bytes = pickle.dumps(self.class_label_set)
+                    
                     data = pickle.dumps([self.edge_id, class_labels_bytes], protocol=0)
                     sio.emit('video_frame', data)
 

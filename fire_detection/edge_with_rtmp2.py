@@ -48,7 +48,7 @@ class EdgeComputing:
             "-s", "640x480",
             "-r", "10",
             "-i", "-",
-            "-b:v","300k",
+            #"-b:v","300k",
             "-c:v", "libx264",
             "-preset", "ultrafast",
             "-tune", "zerolatency",
@@ -90,8 +90,8 @@ class EdgeComputing:
             while not self.stop_event.is_set():
                 success, frame = self.cap.read()
                 if success:
-                    #frame_with_detections = self.detect_objects(frame)
-                    self.rtmp_process.stdin.write(frame.tobytes())
+                    frame_with_detections = self.detect_objects(frame)
+                    self.rtmp_process.stdin.write(frame_with_detections.tobytes())
 
                     class_labels_bytes = pickle.dumps(self.class_label_set)
                     data = pickle.dumps([self.edge_id, class_labels_bytes], protocol=0)
